@@ -7,7 +7,7 @@ export const validateInvestment = (req, res, next) => {
     fundName,
     purchaseNav,
     fundType,
-    shortCode,
+    logoCode,
     shortName,
   } = req.body;
 
@@ -17,7 +17,7 @@ export const validateInvestment = (req, res, next) => {
     "fundName",
     "purchaseNav",
     "fundType",
-    "shortCode",
+    "logoCode",
     "shortName",
   ];
 

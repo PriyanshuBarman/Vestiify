@@ -4,11 +4,11 @@ export const calculateUpdatedPortfolio = (
   redemptionAmt,
   redemptionUnits
 ) => {
-  const investedAmt = fund.investedAmt.toNumber() - costBasis;
-  const marketValue = fund.marketValue.toNumber() - redemptionAmt;
+  const invested = fund.invested.toNumber() - costBasis;
+  const current = fund.current.toNumber() - redemptionAmt;
   const units = fund.units.toNumber() - redemptionUnits;
-  const pnl = marketValue - investedAmt;
-  const roi = investedAmt > 0 ? (pnl / investedAmt) * 100 : 0;
+  const pnl = current - invested;
+  const returnPercent = invested > 0 ? (pnl / invested) * 100 : 0;
 
-  return { investedAmt, marketValue, units, pnl, roi };
+  return { invested, current, units, pnl, returnPercent };
 };

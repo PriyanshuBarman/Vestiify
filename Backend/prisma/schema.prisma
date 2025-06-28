@@ -35,10 +35,10 @@ model UserPortfolio {
   userId        String
   user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   portfolioType PortfolioType
-  totalInv      Decimal       @db.Decimal(10, 2)
-  totalMv       Decimal       @db.Decimal(10, 2)
-  totalPnl      Decimal       @default(0.00) @db.Decimal(10, 2)
-  totalRoi      Decimal       @default(0.00) @db.Decimal(8, 2)
+  invested      Decimal       @db.Decimal(10, 2)
+  current       Decimal       @db.Decimal(10, 2)
+  pnl           Decimal       @default(0.00) @db.Decimal(10, 2)
+  returnPercent Decimal       @default(0.00) @db.Decimal(8, 2)
   updatedAt     DateTime      @default(now()) @updatedAt
 
   @@unique([userId, portfolioType])
@@ -83,20 +83,20 @@ enum TransactionType {
 // ======== MfPortfolio =======
 
 model MfPortfolio {
-  id          String   @id @default(uuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  latestNav   Decimal  @db.Decimal(10, 4)
-  fundCode    String
-  fundName    String
-  shortName   String
-  fundType    FundType
-  shortCode   String // it's need to get fund logo
-  units       Decimal  @db.Decimal(10, 4)
-  investedAmt Decimal  @db.Decimal(10, 2)
-  marketValue Decimal  @db.Decimal(10, 2)
-  pnl         Decimal  @default(0.00) @db.Decimal(10, 2)
-  roi         Decimal  @default(0.00) @db.Decimal(8, 2)
+  id               String   @id @default(uuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  latestNav        Decimal  @db.Decimal(10, 4) // stores latest nav (it also needs to updates every day )
+  fundCode         String
+  fundName         String
+  shortName        String
+  fundType         FundType
+  logoCode         String // it's need to get fund logo
+  units            Decimal  @db.Decimal(10, 4)
+  invested         Decimal  @db.Decimal(10, 2)
+  current          Decimal  @db.Decimal(10, 2)
+  pnl              Decimal  @default(0.00) @db.Decimal(10, 2)
+  returnPercent    Decimal  @default(0.00) @db.Decimal(8, 2)
   dayChangePercent Decimal? @default(0.00) @db.Decimal(5, 2)
   dayChangeValue   Decimal? @default(0) @db.Decimal(10, 2)
   createdAt        DateTime @default(now())
@@ -147,18 +147,18 @@ model MfWatchlist {
 // ======== StockPortfolio =======
 
 model StockPortfolio {
-  id          String   @id @default(uuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  symbol      String
-  stockName   String
-  quantity    Int
-  latestPrice Decimal? @db.Decimal(10, 2)
-  investedAmt Decimal  @db.Decimal(10, 2)
-  marketValue Decimal  @db.Decimal(10, 2)
-  pnl         Decimal  @default(0.00) @db.Decimal(10, 2)
-  roi         Decimal  @default(0.00) @db.Decimal(8, 2)
-  updatedAt   DateTime @default(now()) @updatedAt
+  id            String   @id @default(uuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  symbol        String
+  stockName     String
+  quantity      Int
+  latestPrice   Decimal? @db.Decimal(10, 2)
+  invested      Decimal  @db.Decimal(10, 2)
+  current       Decimal  @db.Decimal(10, 2)
+  pnl           Decimal  @default(0.00) @db.Decimal(10, 2)
+  returnPercent Decimal  @default(0.00) @db.Decimal(8, 2)
+  updatedAt     DateTime @default(now()) @updatedAt
 
   @@unique([userId, symbol])
 }

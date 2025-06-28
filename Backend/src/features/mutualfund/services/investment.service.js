@@ -13,7 +13,7 @@ export const processInvestment = async (data) => {
     fundName,
     purchaseNav,
     fundType,
-    shortCode,
+    logoCode,
     shortName,
   } = data;
 
@@ -34,10 +34,10 @@ export const processInvestment = async (data) => {
       fundName,
       fundType,
       units: purchaseUnits,
-      marketValue: investmentAmt,
-      investedAmt: investmentAmt,
+      current: investmentAmt,
+      invested: investmentAmt,
       latestNav: purchaseNav,
-      shortCode,
+      logoCode,
       shortName,
     });
   } else {

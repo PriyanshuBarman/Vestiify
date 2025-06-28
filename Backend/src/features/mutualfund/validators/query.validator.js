@@ -1,7 +1,7 @@
 export const validateQuery = (req, res, next) => {
   const { sort_by, order_by, fund_type } = req.query;
 
-  const validSortOptions = ["investedAmt", "marketValue", "pnl", "roi"];
+  const validSortOptions = ["invested", "current", "pnl", "returnPercent"];
   const validOrderOptions = ["asc", "desc"];
   const validFundTypes = ["EQUITY", "DEBT", "HYBRID", "OTHER"];
 

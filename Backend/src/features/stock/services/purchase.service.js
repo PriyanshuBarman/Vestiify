@@ -24,8 +24,8 @@ export const processPurchase = async (data) => {
       symbol,
       stockName,
       quantity,
-      investedAmt: investmentAmt,
-      marketValue: investmentAmt,
+      invested: investmentAmt,
+      current: investmentAmt,
       // latestPrice: price,
     });
   } else {

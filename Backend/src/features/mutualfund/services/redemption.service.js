@@ -12,7 +12,7 @@ export const fullRedemption = async (userId, fundCode) => {
 
   if (!fund) throw new ApiError(400, "Not invested in this fund");
 
-  const redemptionAmt = fund.marketValue.toNumber();
+  const redemptionAmt = fund.current.toNumber();
   const redemptionUnits = fund.units.toNumber();
 
   await portfolioRepo.delete({ id: fund.id });
@@ -32,11 +32,10 @@ export const partialRedemption = async (userId, fundCode, redemptionAmt) => {
   // ------------------------------------------------------------------------------ Validations
   if (!fund) throw new ApiError(400, "Not invested in this fund");
 
-  if (redemptionAmt > fund.marketValue.toNumber())
+  if (redemptionAmt > fund.current.toNumber())
     throw new ApiError(400, "insufficient fund balance");
 
-  if (redemptionAmt === fund.marketValue.toNumber())
-    return fullRedemption(userId, fundCode);
+  if (redemptionAmt === fund.current.toNumber()) return fullRedemption(userId, fundCode);
   // ------------------------------------------------------------------------------// Validations
 
   const redemptionUnits = redemptionAmt / fund.latestNav.toNumber();

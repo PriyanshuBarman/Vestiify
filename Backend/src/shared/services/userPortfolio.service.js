@@ -14,8 +14,8 @@ export const addToUserPortfolio = async ({ userId, investmentAmt, portfolioType 
     await userPortfolioRepo.create({
       userId,
       portfolioType,
-      totalMv: investmentAmt,
-      totalInv: investmentAmt,
+      current: investmentAmt,
+      invested: investmentAmt,
     });
   } else {
     await userPortfolioRepo.update(
@@ -25,7 +25,6 @@ export const addToUserPortfolio = async ({ userId, investmentAmt, portfolioType 
   }
 };
 
-
 // prettier-ignore
 export const subtractUserPortfolio = async ({userId,amount,portfolioType,costBasis = null}) => {
   const userPortfolio = await userPortfolioRepo.findUnique({
@@ -33,7 +32,7 @@ export const subtractUserPortfolio = async ({userId,amount,portfolioType,costBas
   });
   
   // If Last Redemption/Sell, DELETE userPortfolio else UPDATE existing userPortfolio
-  if (amount === userPortfolio.totalMv.toNumber()) {
+  if (amount === userPortfolio.current.toNumber()) {
      await userPortfolioRepo.delete({ id: userPortfolio.id });
   } else {
     await userPortfolioRepo.update(
