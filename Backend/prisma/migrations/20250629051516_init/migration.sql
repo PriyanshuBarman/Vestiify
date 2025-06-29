@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE `User` (
+CREATE TABLE `user` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
@@ -10,27 +10,27 @@ CREATE TABLE `User` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `User_email_key`(`email`),
+    UNIQUE INDEX `user_email_key`(`email`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `UserPortfolio` (
+CREATE TABLE `user_portfolio` (
     `id` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
     `portfolioType` ENUM('MF', 'STOCK', 'GOLD') NOT NULL,
-    `totalInv` DECIMAL(10, 2) NOT NULL,
-    `totalMv` DECIMAL(10, 2) NOT NULL,
-    `totalPnl` DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
-    `totalRoi` DECIMAL(8, 2) NOT NULL DEFAULT 0.00,
+    `invested` DECIMAL(10, 2) NOT NULL,
+    `current` DECIMAL(10, 2) NOT NULL,
+    `pnl` DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+    `returnPercent` DECIMAL(8, 2) NOT NULL DEFAULT 0.00,
     `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `UserPortfolio_userId_portfolioType_key`(`userId`, `portfolioType`),
+    UNIQUE INDEX `user_portfolio_userId_portfolioType_key`(`userId`, `portfolioType`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Transaction` (
+CREATE TABLE `transaction` (
     `id` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
     `amount` DECIMAL(10, 2) NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE `Transaction` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `MfPortfolio` (
+CREATE TABLE `mf_portfolio` (
     `id` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
     `latestNav` DECIMAL(10, 4) NOT NULL,
@@ -54,23 +54,23 @@ CREATE TABLE `MfPortfolio` (
     `fundName` VARCHAR(191) NOT NULL,
     `shortName` VARCHAR(191) NOT NULL,
     `fundType` ENUM('EQUITY', 'DEBT', 'HYBRID', 'OTHER') NOT NULL,
-    `shortCode` VARCHAR(191) NOT NULL,
+    `logoCode` VARCHAR(191) NOT NULL,
     `units` DECIMAL(10, 4) NOT NULL,
-    `investedAmt` DECIMAL(10, 2) NOT NULL,
-    `marketValue` DECIMAL(10, 2) NOT NULL,
+    `invested` DECIMAL(10, 2) NOT NULL,
+    `current` DECIMAL(10, 2) NOT NULL,
     `pnl` DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
-    `roi` DECIMAL(8, 2) NOT NULL DEFAULT 0.00,
+    `returnPercent` DECIMAL(8, 2) NOT NULL DEFAULT 0.00,
     `dayChangePercent` DECIMAL(5, 2) NULL DEFAULT 0.00,
     `dayChangeValue` DECIMAL(10, 2) NULL DEFAULT 0,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `MfPortfolio_userId_fundCode_key`(`userId`, `fundCode`),
+    UNIQUE INDEX `mf_portfolio_userId_fundCode_key`(`userId`, `fundCode`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `MfHolding` (
+CREATE TABLE `mf_holding` (
     `id` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
     `fundCode` VARCHAR(191) NOT NULL,
@@ -85,37 +85,37 @@ CREATE TABLE `MfHolding` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `MfWatchlist` (
+CREATE TABLE `mf_watchlist` (
     `id` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
     `fundCode` VARCHAR(191) NOT NULL,
     `fundName` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `MfWatchlist_userId_fundCode_key`(`userId`, `fundCode`),
+    UNIQUE INDEX `mf_watchlist_userId_fundCode_key`(`userId`, `fundCode`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `StockPortfolio` (
+CREATE TABLE `stock_portfolio` (
     `id` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
     `symbol` VARCHAR(191) NOT NULL,
     `stockName` VARCHAR(191) NOT NULL,
     `quantity` INTEGER NOT NULL,
     `latestPrice` DECIMAL(10, 2) NULL,
-    `investedAmt` DECIMAL(10, 2) NOT NULL,
-    `marketValue` DECIMAL(10, 2) NOT NULL,
+    `invested` DECIMAL(10, 2) NOT NULL,
+    `current` DECIMAL(10, 2) NOT NULL,
     `pnl` DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
-    `roi` DECIMAL(8, 2) NOT NULL DEFAULT 0.00,
+    `returnPercent` DECIMAL(8, 2) NOT NULL DEFAULT 0.00,
     `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `StockPortfolio_userId_symbol_key`(`userId`, `symbol`),
+    UNIQUE INDEX `stock_portfolio_userId_symbol_key`(`userId`, `symbol`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `StockHolding` (
+CREATE TABLE `stock_holding` (
     `id` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
     `symbol` VARCHAR(191) NOT NULL,
@@ -130,37 +130,37 @@ CREATE TABLE `StockHolding` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `StockWatchlist` (
+CREATE TABLE `stock_watchlist` (
     `id` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
     `symbol` VARCHAR(191) NOT NULL,
     `stockName` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `StockWatchlist_userId_symbol_key`(`userId`, `symbol`),
+    UNIQUE INDEX `stock_watchlist_userId_symbol_key`(`userId`, `symbol`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `UserPortfolio` ADD CONSTRAINT `UserPortfolio_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `user_portfolio` ADD CONSTRAINT `user_portfolio_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Transaction` ADD CONSTRAINT `Transaction_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `transaction` ADD CONSTRAINT `transaction_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `MfPortfolio` ADD CONSTRAINT `MfPortfolio_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `mf_portfolio` ADD CONSTRAINT `mf_portfolio_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `MfHolding` ADD CONSTRAINT `MfHolding_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `mf_holding` ADD CONSTRAINT `mf_holding_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `MfWatchlist` ADD CONSTRAINT `MfWatchlist_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `mf_watchlist` ADD CONSTRAINT `mf_watchlist_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `StockPortfolio` ADD CONSTRAINT `StockPortfolio_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `stock_portfolio` ADD CONSTRAINT `stock_portfolio_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `StockHolding` ADD CONSTRAINT `StockHolding_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `stock_holding` ADD CONSTRAINT `stock_holding_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `StockWatchlist` ADD CONSTRAINT `StockWatchlist_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `stock_watchlist` ADD CONSTRAINT `stock_watchlist_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

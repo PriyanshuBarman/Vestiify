@@ -26,6 +26,8 @@ model User {
   userPortfolio  UserPortfolio[]
   mfWatchlist    MfWatchlist[]
   stockWatchlist StockWatchlist[]
+
+  @@map("user")
 }
 
 // ======== UserPortfolio =======
@@ -42,6 +44,7 @@ model UserPortfolio {
   updatedAt     DateTime      @default(now()) @updatedAt
 
   @@unique([userId, portfolioType])
+  @@map("user_portfolio")
 }
 
 enum PortfolioType {
@@ -64,6 +67,8 @@ model Transaction {
   quantity  Decimal?        @db.Decimal(10, 2)
   price     Decimal?        @db.Decimal(10, 4)
   createdAt DateTime        @default(now())
+
+  @@map("transaction")
 }
 
 enum AssetType {
@@ -103,6 +108,7 @@ model MfPortfolio {
   updatedAt        DateTime @default(now()) @updatedAt
 
   @@unique([userId, fundCode])
+  @@map("mf_portfolio")
 }
 
 enum FundType {
@@ -125,6 +131,8 @@ model MfHolding {
   amount       Decimal  @db.Decimal(10, 2)
   purchaseDate DateTime @default(now())
   updatedAt    DateTime @default(now()) @updatedAt
+
+  @@map("mf_holding")
 }
 
 // ======== MfWatchlist =======
@@ -138,6 +146,7 @@ model MfWatchlist {
   createdAt DateTime @default(now())
 
   @@unique([userId, fundCode])
+  @@map("mf_watchlist")
 }
 
 // ===============================================// MUTUAL FUND ==============================================
@@ -161,6 +170,7 @@ model StockPortfolio {
   updatedAt     DateTime @default(now()) @updatedAt
 
   @@unique([userId, symbol])
+  @@map("stock_portfolio")
 }
 
 // ======== StockHolding =======
@@ -176,6 +186,8 @@ model StockHolding {
   price        Decimal  @db.Decimal(10, 2)
   purchaseDate DateTime @default(now())
   updatedAt    DateTime @default(now()) @updatedAt
+
+  @@map("stock_holding")
 }
 
 // ======== StockWatchlist =======
@@ -189,6 +201,7 @@ model StockWatchlist {
   createdAt DateTime @default(now())
 
   @@unique([userId, symbol])
+  @@map("stock_watchlist")
 }
 
 // ===============================================// STOCK ==============================================

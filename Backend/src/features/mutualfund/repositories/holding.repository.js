@@ -2,7 +2,7 @@ import { CrudRepository } from "../../../shared/repositories/crud.repository.js"
 
 class HoldingRepository extends CrudRepository {
   constructor() {
-    super("MfHolding");
+    super("mfHolding");
   }
 }
 
