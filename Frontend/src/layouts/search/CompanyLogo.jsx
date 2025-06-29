@@ -14,7 +14,9 @@ function CompanyLogo({ searchCategory, item }) {
         </Avatar>
       )}
 
-      {searchCategory === "mutual_funds" && <FundLogo shortCode={item.short_code} className="sm:size-10 size-9 rounded-full" />}
+      {searchCategory === "mutual_funds" && (
+        <FundLogo logoCode={item.short_code} className="size-9 rounded-full sm:size-10" />
+      )}
 
       {searchCategory === "etfs" && (
         <ChartCandlestickIcon

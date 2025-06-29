@@ -10,12 +10,12 @@ function YourInvestments() {
       <SectionHeading heading={"Your investments"} subHeading={"Dashboard"} />
       <Card className="mt-4 min-w-3xs justify-between lg:flex-col xl:flex-row">
         <div>
-          <span className="font-medium sm:text-lg">₹{portfolio?.totalRoi}</span>
+          <span className="font-medium sm:text-lg">₹{portfolio?.returnPercent}</span>
           <br />
           <span className="text-sm">Total Returns</span>
         </div>
         <div>
-          <span className="font-medium sm:text-lg">₹{portfolio?.totalMv}</span>
+          <span className="font-medium sm:text-lg">₹{portfolio?.current}</span>
           <br />
           <span className="text-sm">Current</span>
         </div>

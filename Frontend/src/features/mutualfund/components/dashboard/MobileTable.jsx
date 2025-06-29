@@ -5,8 +5,8 @@ import FundLogo from "../FundLogo";
 import FilterBtn from "./FilterBtn";
 
 const columns = [
-  { label: "Current(Invested)", data1: "marketValue", data2: "investedAmt", unit1: "₹", unit2: "₹" },
-  { label: "Returns(%)", data1: "pnl", data2: "roi", unit1: "₹", unit2: "%" },
+  { label: "Current(Invested)", data1: "current", data2: "invested", unit1: "₹", unit2: "₹" },
+  { label: "Returns(%)", data1: "pnl", data2: "returnPercent", unit1: "₹", unit2: "%" },
   { label: "Day change(%)", data1: "dayChangeValue", data2: "dayChangePercent", unit1: "₹", unit2: "%" },
 ];
 
@@ -21,7 +21,7 @@ function MobileTable({ portfolio, sortBy, setSortBy, order, setOrder }) {
   const getColor = (fund) => {
     switch (activeColumn.label) {
       case "Current(Invested)":
-        return fund.marketValue >= fund.investedAmt ? "text-primary" : "text-red-500";
+        return fund.current >= fund.invested ? "text-primary" : "text-red-500";
 
       case "Returns(%)":
         return fund.pnl >= 0 ? "text-primary" : "text-red-500";
@@ -53,7 +53,7 @@ function MobileTable({ portfolio, sortBy, setSortBy, order, setOrder }) {
           {portfolio?.map((item) => (
             <TableRow key={item.fundCode}>
               <TableCell className="flex items-center gap-4 py-4 pl-4">
-                <FundLogo shortCode={item.shortCode} />
+                <FundLogo logoCode={item.logoCode} />
 
                 <div>
                   <h4 className="font-medium text-wrap">{item.shortName} Fund</h4>

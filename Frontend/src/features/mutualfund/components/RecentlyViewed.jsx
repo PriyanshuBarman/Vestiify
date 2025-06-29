@@ -48,7 +48,7 @@ function RecentlyViewed() {
               <CardLG
                 key={fund.code}
                 code={fund.code}
-                shortCode={fund.short_code}
+                logoCode={fund.short_code}
                 shortName={fund.short_name + " Fund"}
                 threeYearReturn={fund.returns.year_3}
               />
@@ -76,7 +76,7 @@ function Row({ fund, activeLabelIdx }) {
 
   return (
     <div onClick={handleClick} className="flex min-w-full items-center border-b pb-4 sm:hidden">
-      <FundLogo shortCode={fund.short_code} />
+      <FundLogo logoCode={fund.short_code} />
 
       <div className="ml-4">
         <span className="text-sm">{fund.short_name} Fund</span>

@@ -41,11 +41,7 @@ export const processInvestment = async (data) => {
       shortName,
     });
   } else {
-    const updatedValues = calculateUpdatedPortfolio(
-      prevInv,
-      investmentAmt,
-      purchaseUnits
-    );
+    const updatedValues = calculateUpdatedPortfolio(prevInv, investmentAmt, purchaseUnits);
     await portfolioRepo.update(
       { id: prevInv.id },
       { ...updatedValues, latestNav: purchaseNav }

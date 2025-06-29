@@ -37,7 +37,7 @@ function HomePage() {
       </SwiperSlide>
 
       <SwiperSlide data-hash="investments" className="min-h-svh">
-        {activeTabIndex === 0 && (
+        {activeTabIndex === 1 && (
           <Suspense fallback={<TabLoader />}>
             <InvestmentsTab />
           </Suspense>

@@ -69,7 +69,7 @@ function MobileTable({ peers, setPeers, activeColumn, setActiveColumn }) {
         {peers?.map((item) => (
           <TableRow key={item.unique_fund_code}>
             <TableCell className="flex items-center gap-4 py-4 pl-4">
-              <FundLogo shortCode={item.short_code} className="size-8.5" />
+              <FundLogo logoCode={item.short_code} className="size-8.5" />
               <div>
                 <Link to={`/mutual-funds/${item.unique_fund_code}`}>
                   <h4 className="text-foreground overflow-hidden font-[430] text-wrap">{item.short_name}</h4>
@@ -137,7 +137,7 @@ function DesktopTable({ peers, setPeers, activeColumn, setActiveColumn, sortOrde
           {peers?.map((item) => (
             <TableRow key={item.unique_fund_code}>
               <TableCell className="flex items-center gap-8 py-4 pl-8">
-                <FundLogo shortCode={item.short_code} />
+                <FundLogo logoCode={item.short_code} />
                 <div>
                   <Link to={`/mutual-funds/${item.unique_fund_code}`}>
                     <h4 className="text-base text-wrap">{item.name}</h4>

@@ -8,7 +8,7 @@ function CardSM({ fund }) {
     <Link to={`/mutual-funds/${fund.unique_fund_code}`} className="w-full">
       <Card tabIndex={0} className="h- min-w-72 text-inherit">
         <CardHeader>
-          <FundLogo shortCode={fund.short_code} className="size-8.5" />
+          <FundLogo logoCode={fund.short_code} className="size-8.5" />
         </CardHeader>
 
         <CardTitle className="flex justify-between gap-2 text-sm font-[500]">

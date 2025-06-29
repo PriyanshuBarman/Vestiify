@@ -11,9 +11,9 @@ export const processPurchase = async (data) => {
 
   const balance = await walletRepo.checkBalance(userId);
 
-  const investmentAmt = quantity * price;
+  const invested = quantity * price;
 
-  if (investmentAmt > balance) throw new ApiError(400, "Insufficient wallet balance");
+  if (invested > balance) throw new ApiError(400, "Insufficient wallet balance");
 
   const prevInv = await portfolioRepo.findUnique({ userId_symbol: { userId, symbol } });
 
@@ -24,12 +24,12 @@ export const processPurchase = async (data) => {
       symbol,
       stockName,
       quantity,
-      invested: investmentAmt,
-      current: investmentAmt,
+      invested: invested,
+      current: invested,
       // latestPrice: price,
     });
   } else {
-    const updatedValues = calculateUpdatedPortfolio(prevInv, investmentAmt, quantity);
+    const updatedValues = calculateUpdatedPortfolio(prevInv, invested, quantity);
     await portfolioRepo.update({ id: prevInv.id }, updatedValues);
   }
   // ---------------------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ export const processPurchase = async (data) => {
     code: symbol,
     tnxType: "BUY",
     assetType: "STOCK",
-    amount: investmentAmt,
+    amount: invested,
     name: stockName,
   }); // shared
 
@@ -52,10 +52,10 @@ export const processPurchase = async (data) => {
     symbol,
     quantity,
     stockName,
-    amount: investmentAmt,
+    amount: invested,
   });
 
-  await addToUserPortfolio({ userId, investmentAmt, portfolioType: "STOCK" }); // shared
+  await addToUserPortfolio({ userId, invested, portfolioType: "STOCK" }); // shared
 
-  await walletRepo.debitBalance(userId, investmentAmt); // shared
+  await walletRepo.debitBalance(userId, invested); // shared
 };

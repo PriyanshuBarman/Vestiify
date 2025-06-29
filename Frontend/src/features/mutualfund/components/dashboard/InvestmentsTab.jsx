@@ -7,7 +7,7 @@ import MobileTable from "./MobileTable";
 import SectionCards from "./SectionCards";
 
 function InvestmentsTab() {
-  const [sortBy, setSortBy] = useState("marketValue");
+  const [sortBy, setSortBy] = useState("current");
   const [order, setOrder] = useState("desc");
 
   const { data } = useGetPortfolio();

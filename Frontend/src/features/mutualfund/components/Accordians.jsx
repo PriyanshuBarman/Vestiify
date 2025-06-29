@@ -77,7 +77,7 @@ function Accordians({ fund, code }) {
         <AccordionTrigger className="text-base sm:text-xl">Fund house & investment objective</AccordionTrigger>
         <AccordionContent className="space-y-8">
           <div className="mt-4 flex items-center gap-2">
-            <FundLogo shortCode={fund?.short_code} />
+            <FundLogo logoCode={fund?.short_code} />
             <h2 className="ml-2 text-sm sm:text-base sm:font-medium">{fund?.fund_name}</h2>
           </div>
 

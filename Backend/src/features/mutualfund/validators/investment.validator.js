@@ -1,15 +1,7 @@
 import { ApiError } from "../../../utils/apiError.utils.js";
 
 export const validateInvestment = (req, res, next) => {
-  const {
-    investmentAmt,
-    fundCode,
-    fundName,
-    purchaseNav,
-    fundType,
-    logoCode,
-    shortName,
-  } = req.body;
+  const { investmentAmt } = req.body;
 
   const requiredFields = [
     "investmentAmt",

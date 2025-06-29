@@ -1,17 +1,17 @@
 // prettier-ignore
-export const calculateUpdatedPortfolio = (prevInv, investmentAmt, purchaseUnits) => {
+export const calculateUpdatedPortfolio = (prevInv, invested, purchaseUnits) => {
   
-  const newInvestedAmt = prevInv.invested.toNumber() + investmentAmt;
+  const newInvested = prevInv.invested.toNumber() + invested;
   const newUnits = prevInv.units.toNumber() + purchaseUnits;
-  const newMv = prevInv.current.toNumber() + investmentAmt;
-  const newPnl = newMv - newInvestedAmt;
-  const newRoi = newInvestedAmt > 0 ? (newPnl / newInvestedAmt) * 100 : 0;
+  const newCurrent = prevInv.current.toNumber() + invested;
+  const newPnl = newCurrent - newInvested;
+  const newReturnPercent = newInvested > 0 ? (newPnl / newInvested) * 100 : 0;
 
   return {
-    invested: newInvestedAmt,
+    invested: newInvested,
     units: newUnits,
-    current: newMv,
+    current: newCurrent,
     pnl: newPnl,
-    returnPercent: newRoi,
+    returnPercent: newReturnPercent,
   };
 }

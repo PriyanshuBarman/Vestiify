@@ -21,7 +21,7 @@ function PopularFunds() {
               <CardLG
                 key={fund.unique_fund_code}
                 code={fund.unique_fund_code}
-                shortCode={fund.short_code}
+                logoCode={fund.short_code}
                 shortName={fund.short_name}
                 threeYearReturn={fund.three_year_return}
               />

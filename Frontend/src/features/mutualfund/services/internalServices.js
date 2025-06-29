@@ -6,7 +6,7 @@ export const processInvestment = async (amount, fund) => {
   const { data } = await axios.post(
     `${baseURL}/mutual-funds/invest`,
     {
-      invested: Number(amount),
+      investmentAmt: Number(amount),
       fundCode: fund?.code,
       fundName: fund?.name,
       purchaseNav: fund?.nav.nav,

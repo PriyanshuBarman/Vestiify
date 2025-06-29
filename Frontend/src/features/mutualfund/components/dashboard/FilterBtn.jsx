@@ -8,10 +8,10 @@ import { useState } from "react";
 
 const sortOptions = [
   { label: "Fund Name", value: "fundName" },
-  { label: "Market Value", value: "marketValue" },
-  { label: "Returns", value: "pnl" },
-  { label: "Invested Amount", value: "investedAmt" },
-  { label: "ROI", value: "roi" },
+  { label: "Current Value", value: "current" },
+  { label: "Invested Amount", value: "invested" },
+  { label: "P&L", value: "pnl" },
+  { label: "Return Percent", value: "returnPercent" },
 ];
 
 function FilterBtn({ sortBy, setSortBy, order, setOrder }) {

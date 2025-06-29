@@ -2,12 +2,12 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/ca
 import { Link } from "react-router";
 import FundLogo from "./FundLogo";
 
-function CardLG({ code, shortCode, shortName, threeYearReturn }) {
+function CardLG({ code, logoCode, shortName, threeYearReturn }) {
   return (
     <Link to={`/mutual-funds/${code}`}>
       <Card className="h-42 w-47 cursor-pointer justify-between text-inherit transition-normal duration-300 hover:scale-101">
         <CardHeader>
-          <FundLogo shortCode={shortCode} />
+          <FundLogo logoCode={logoCode} />
         </CardHeader>
 
         <CardTitle className="text-[0.85rem] font-semibold">{shortName}</CardTitle>

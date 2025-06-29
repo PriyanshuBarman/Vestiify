@@ -24,6 +24,7 @@ export const fullRedemption = async (userId, fundCode) => {
   await postRedemptionOperations(userId, fund, redemptionAmt, redemptionUnits); // helper
 };
 
+
 export const partialRedemption = async (userId, fundCode, redemptionAmt) => {
   const fund = await portfolioRepo.findUnique({
     userId_fundCode: { userId, fundCode },
@@ -33,7 +34,7 @@ export const partialRedemption = async (userId, fundCode, redemptionAmt) => {
   if (!fund) throw new ApiError(400, "Not invested in this fund");
 
   if (redemptionAmt > fund.current.toNumber())
-    throw new ApiError(400, "insufficient fund balance");
+    throw new ApiError(400, "Insufficient fund balance");
 
   if (redemptionAmt === fund.current.toNumber()) return fullRedemption(userId, fundCode);
   // ------------------------------------------------------------------------------// Validations

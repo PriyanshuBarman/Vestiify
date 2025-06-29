@@ -1,29 +1,29 @@
 export const calculatePortfolioAfterSell = (userPortfolio, redemptionAmt, costBasis) => {
-  const newTotalInv = costBasis
+  const newInvested = costBasis
     ? userPortfolio.invested.toNumber() - costBasis
     : userPortfolio.invested.toNumber() - redemptionAmt;
-  const newTotalMv = userPortfolio.invested.toNumber() - redemptionAmt;
-  const newTotalPnl = newTotalMv - newTotalInv;
-  const newTotalRoi = (newTotalPnl / newTotalInv) * 100;
+  const newCurrent = userPortfolio.invested.toNumber() - redemptionAmt;
+  const newPnl = newCurrent - newInvested;
+  const newReturnPercent = (newPnl / newInvested) * 100;
 
   return {
-    invested: newTotalInv,
-    current: newTotalMv,
-    pnl: newTotalPnl,
-    returnPercent: newTotalRoi,
+    invested: newInvested,
+    current: newCurrent,
+    pnl: newPnl,
+    returnPercent: newReturnPercent,
   };
 };
 
-export const calculatePortfolioAfterBuy = (userPortfolio, investmentAmt) => {
-  const newTotalInv = userPortfolio.invested.toNumber() + investmentAmt;
-  const newTotalMv = userPortfolio.invested.toNumber() + investmentAmt;
-  const newTotalPnl = newTotalMv - newTotalInv;
-  const newTotalRoi = (newTotalPnl / newTotalInv) * 100;
+export const calculatePortfolioAfterBuy = (userPortfolio, invested) => {
+  const newInvested = userPortfolio.invested.toNumber() + invested;
+  const newCurrent = userPortfolio.invested.toNumber() + invested;
+  const newPnl = newCurrent - newInvested;
+  const newReturnPercent = (newPnl / newInvested) * 100;
 
   return {
-    invested: newTotalInv,
-    current: newTotalMv,
-    pnl: newTotalPnl,
-    returnPercent: newTotalRoi,
+    invested: newInvested,
+    current: newCurrent,
+    pnl: newPnl,
+    returnPercent: newReturnPercent,
   };
 };

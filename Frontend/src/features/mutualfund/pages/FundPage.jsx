@@ -30,7 +30,7 @@ function FundPage() {
       <div className="h-full w-full space-y-4 text-inherit sm:space-y-6 lg:w-[67%]">
         <div className="px-4">
           <div className="flex justify-between">
-            <FundLogo shortCode={fund?.short_code} className="border sm:size-13" />
+            <FundLogo logoCode={fund?.short_code} className="border sm:size-13" />
             <div className="icons flex items-center gap-8">
               <Search onClick={handleSearchClick} />
               <Bookmark />
