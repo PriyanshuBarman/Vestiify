@@ -1,4 +1,4 @@
-import { ApiError } from "../../../utils/apiError.utils.js";
+import { ApiError } from "../../../shared/utils/apiError.utils.js";
 import { portfolioRepo } from "../repositories/index.repository.js";
 
 //prettier-ignore

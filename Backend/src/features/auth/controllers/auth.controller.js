@@ -1,4 +1,4 @@
-import { asyncHandler } from "../../../utils/asyncHandler.utils.js";
+import { asyncHandler } from "../../../shared/utils/asyncHandler.utils.js";
 import * as authService from "../services/auth.service.js";
 
 const COOKIE_OPTIONS = {

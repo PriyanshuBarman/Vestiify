@@ -1,4 +1,4 @@
-import { asyncHandler } from "../../../utils/asyncHandler.utils.js";
+import { asyncHandler } from "../../../shared/utils/asyncHandler.utils.js";
 import * as redemptionService from "../services/redemption.service.js";
 
 export const fullRedemption = asyncHandler(async (req, res) => {
@@ -7,11 +7,8 @@ export const fullRedemption = asyncHandler(async (req, res) => {
 
   await redemptionService.fullRedemption(userId, fundCode);
 
-  return res
-    .status(200)
-    .json({ success: true, message: "All units redeemed successfully" });
+  return res.status(200).json({ success: true, message: "All units redeemed successfully" });
 });
-
 
 export const partialRedemption = asyncHandler(async (req, res) => {
   const { userId } = req.user;

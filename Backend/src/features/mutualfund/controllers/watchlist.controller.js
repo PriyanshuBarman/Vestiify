@@ -1,4 +1,4 @@
-import { asyncHandler } from "../../../utils/asyncHandler.utils.js";
+import { asyncHandler } from "../../../shared/utils/asyncHandler.utils.js";
 import * as wishlistService from "../services/watchlist.service.js";
 
 export const getWatchlist = asyncHandler(async (req, res) => {

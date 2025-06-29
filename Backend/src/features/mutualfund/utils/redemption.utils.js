@@ -1,4 +1,3 @@
-// prettier-ignore
 export const calculateUpdatedPortfolio = (fund, costBasis, redemptionAmt, redemptionUnits) => {
   const newInvested = fund.invested.toNumber() - costBasis;
   const newCurrent = fund.current.toNumber() - redemptionAmt;

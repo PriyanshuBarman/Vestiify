@@ -1,4 +1,4 @@
-import { asyncHandler } from "../../../utils/asyncHandler.utils.js";
+import { asyncHandler } from "../../../shared/utils/asyncHandler.utils.js";
 import * as tnxService from "../services/tnx.service.js";
 
 export const getPortfolioTnx = asyncHandler(async (req, res) => {
@@ -8,7 +8,6 @@ export const getPortfolioTnx = asyncHandler(async (req, res) => {
 
   return res.status(200).json({ success: true, tnx });
 });
-
 
 export const getFundTnx = asyncHandler(async (req, res) => {
   const { userId } = req.user;

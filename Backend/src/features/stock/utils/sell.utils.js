@@ -1,8 +1,7 @@
 export const calculateUpdatedPortfolio = (prev, costBasis, quantity, price) => {
   const newInvested = prev.invested.toNumber() - costBasis;
-  // const newCurrent = prev.current.toNumber() - sellAmount;
-  const newQty = prev.quantity - quantity;
   const newCurrent = newQty * price;
+  const newQty = prev.quantity - quantity;
   const newPnl = newCurrent - newInvested;
   const newReturnPercent = newInvested > 0 ? (newPnl / newInvested) * 100 : 0;
 

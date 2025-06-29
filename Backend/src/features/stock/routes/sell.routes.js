@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { isAuthenticated } from "../../../middlewares/authMiddleware.js";
+import { isAuthenticated } from "../../../shared/middlewares/authMiddleware.js";
 import * as sellController from "../controllers/sell.controller.js";
 import { validateSellAllQty, validateSellSomeQty } from "../validators/sell.validator.js";
 

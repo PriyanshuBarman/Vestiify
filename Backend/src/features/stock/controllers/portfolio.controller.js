@@ -1,5 +1,5 @@
-import { ApiError } from "../../../utils/apiError.utils.js";
-import { asyncHandler } from "../../../utils/asyncHandler.utils.js";
+import { ApiError } from "../../../shared/utils/apiError.utils.js";
+import { asyncHandler } from "../../../shared/utils/asyncHandler.utils.js";
 import * as portfolioService from "../services/portfolio.service.js";
 
 export const getPortfolio = asyncHandler(async (req, res) => {

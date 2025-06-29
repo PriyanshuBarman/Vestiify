@@ -1,11 +1,8 @@
-import { ApiError } from "../../../utils/apiError.utils.js";
+import { ApiError } from "../../../shared/utils/apiError.utils.js";
 import { portfolioRepo } from "../repositories/portfolio.repository.js";
 
 export const fetchPortfolio = async (userId, sort_by, order_by) => {
-  const portfolio = await portfolioRepo.findMany(
-    { userId },
-    { orderBy: { [sort_by]: order_by } }
-  );
+  const portfolio = await portfolioRepo.findMany({ userId }, { orderBy: { [sort_by]: order_by } });
 
   if (!portfolio.length) throw new ApiError(400, "Not invested in any stock");
 

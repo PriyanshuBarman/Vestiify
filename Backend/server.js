@@ -2,8 +2,8 @@ import "dotenv/config";
 import cors from "cors";
 import express from "express";
 import cookieParser from "cookie-parser";
-import { errorHandler } from "./src/middlewares/errorHandler.js";
-import { notFoundHandler } from "./src/middlewares/notFoundHandler.js";
+import { errorHandler } from "./src/shared/middlewares/errorHandler.js";
+import { notFoundHandler } from "./src/shared/middlewares/notFoundHandler.js";
 import { authRoutes } from "./src/features/auth/routes/auth.routes.js";
 import { mutualFundRoutes } from "./src/features/mutualfund/routes/index.routes.js";
 import { stockRoutes } from "./src/features/stock/routes/index.routes.js";
@@ -34,4 +34,3 @@ app.use(errorHandler);
 app.listen(process.env.PORT || 3000, () => {
   console.log("Server is running");
 });
-

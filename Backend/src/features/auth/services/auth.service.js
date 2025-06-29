@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { ApiError } from "../../../utils/apiError.utils.js";
+import { ApiError } from "../../../shared/utils/apiError.utils.js";
 import { userRepo } from "../../user/repositories/user.repository.js";
 
 const JWT_SECRET = process.env.JWT_SECRET;

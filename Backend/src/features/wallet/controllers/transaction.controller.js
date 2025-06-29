@@ -1,4 +1,4 @@
-import { asyncHandler } from "../../../utils/asyncHandler.utils.js";
+import { asyncHandler } from "../../../shared/utils/asyncHandler.utils.js";
 import * as tnxService from "../services/tnx.service.js";
 
 export const getAllTnx = asyncHandler(async (req, res) => {

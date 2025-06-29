@@ -1,4 +1,4 @@
-import { asyncHandler } from "../../../utils/asyncHandler.utils.js";
+import { asyncHandler } from "../../../shared/utils/asyncHandler.utils.js";
 import * as investmentService from "../services/investment.service.js";
 
 export const handleInvest = asyncHandler(async (req, res) => {

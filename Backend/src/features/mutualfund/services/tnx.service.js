@@ -1,5 +1,5 @@
 import { tnxRepo } from "../../../shared/repositories/index.repository.js";
-import { ApiError } from "../../../utils/apiError.utils.js";
+import { ApiError } from "../../../shared/utils/apiError.utils.js";
 
 export const fetchPortfolioTnx = async (userId) => {
   const tnx = await tnxRepo.findMany(

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { isAuthenticated } from "../../../middlewares/authMiddleware.js";
+import { isAuthenticated } from "../../../shared/middlewares/authMiddleware.js";
 import * as portfolioController from "../controllers/portfolio.controller.js";
 import { validateQuery } from "../validators/portfolioQuery.validator.js";
 

@@ -1,20 +1,12 @@
 import { tnxRepo, walletRepo } from "../../../shared/repositories/index.repository.js";
-import { ApiError } from "../../../utils/apiError.utils.js";
+import { ApiError } from "../../../shared/utils/apiError.utils.js";
 import { holdingRepo, portfolioRepo } from "../repositories/index.repository.js";
 import { calculateUpdatedPortfolio } from "../utils/investment.utils.js";
 
 // Main Handler
 export const processInvestment = async (data) => {
-  const {
-    userId,
-    investmentAmt,
-    fundCode,
-    fundName,
-    purchaseNav,
-    fundType,
-    logoCode,
-    shortName,
-  } = data;
+  const { userId, investmentAmt, fundCode, fundName, purchaseNav, fundType, logoCode, shortName } =
+    data;
 
   const balance = await walletRepo.checkBalance(userId);
   if (investmentAmt > balance) throw new ApiError(400, "Insufficient wallet balance");
@@ -41,10 +33,7 @@ export const processInvestment = async (data) => {
     });
   } else {
     const updatedValues = calculateUpdatedPortfolio(prevInv, investmentAmt, purchaseUnits);
-    await portfolioRepo.update(
-      { id: prevInv.id },
-      { ...updatedValues, latestNav: purchaseNav }
-    );
+    await portfolioRepo.update({ id: prevInv.id }, { ...updatedValues, latestNav: purchaseNav });
   }
   // --------------------------------------------------------------------------------------------
 

@@ -1,6 +1,4 @@
-// prettier-ignore
 export const calculateUpdatedPortfolio = (prevInv, invested, purchaseUnits) => {
-  
   const newInvested = prevInv.invested.toNumber() + invested;
   const newUnits = prevInv.units.toNumber() + purchaseUnits;
   const newCurrent = prevInv.current.toNumber() + invested;
@@ -14,4 +12,4 @@ export const calculateUpdatedPortfolio = (prevInv, invested, purchaseUnits) => {
     pnl: newPnl,
     returnPercent: newReturnPercent,
   };
-}
+};

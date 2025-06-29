@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { isAuthenticated } from "../../../middlewares/authMiddleware.js";
+import { isAuthenticated } from "../../../shared/middlewares/authMiddleware.js";
 import * as tnxController from "../controllers/transaction.controller.js";
 
 export const tnxRoutes = Router();

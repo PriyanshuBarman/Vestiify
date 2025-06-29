@@ -1,4 +1,4 @@
-import { ApiError } from "../../../utils/apiError.utils.js";
+import { ApiError } from "../../../shared/utils/apiError.utils.js";
 
 export const validateSellSomeQty = (req, res, next) => {
   const { symbol, quantity, price } = req.body;

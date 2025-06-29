@@ -1,5 +1,5 @@
 import { fifoRedemption } from "./fifo.service.js";
-import { ApiError } from "../../../utils/apiError.utils.js";
+import { ApiError } from "../../../shared/utils/apiError.utils.js";
 import { walletRepo, tnxRepo } from "../../../shared/repositories/index.repository.js";
 import { holdingRepo, portfolioRepo } from "../repositories/index.repository.js";
 import { calculateUpdatedPortfolio } from "../utils/redemption.utils.js";
@@ -29,8 +29,7 @@ export const partialRedemption = async (userId, fundCode, redemptionAmt) => {
   // ------------------------------------------------------------------------------ Validations
   if (!fund) throw new ApiError(400, "Not invested in this fund");
 
-  if (redemptionAmt > fund.current.toNumber())
-    throw new ApiError(400, "Insufficient fund balance");
+  if (redemptionAmt > fund.current.toNumber()) throw new ApiError(400, "Insufficient fund balance");
 
   if (redemptionAmt === fund.current.toNumber()) return fullRedemption(userId, fundCode);
   // ------------------------------------------------------------------------------// Validations

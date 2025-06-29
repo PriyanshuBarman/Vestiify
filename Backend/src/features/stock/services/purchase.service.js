@@ -1,5 +1,5 @@
 import { tnxRepo, walletRepo } from "../../../shared/repositories/index.repository.js";
-import { ApiError } from "../../../utils/apiError.utils.js";
+import { ApiError } from "../../../shared/utils/apiError.utils.js";
 import { holdingRepo, portfolioRepo } from "../repositories/index.repository.js";
 import { calculateUpdatedPortfolio } from "../utils/purchase.utils.js";
 

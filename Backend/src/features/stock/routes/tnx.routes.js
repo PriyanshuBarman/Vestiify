@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as tnxController from "../controllers/tnx.controller.js";
-import { isAuthenticated } from "../../../middlewares/authMiddleware.js";
+import { isAuthenticated } from "../../../shared/middlewares/authMiddleware.js";
 
 export const tnxRoutes = Router();
 
