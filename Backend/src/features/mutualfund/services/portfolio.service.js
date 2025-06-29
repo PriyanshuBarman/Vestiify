@@ -1,4 +1,3 @@
-import { userPortfolioRepo } from "../../../shared/repositories/index.repository.js";
 import { ApiError } from "../../../utils/apiError.utils.js";
 import { portfolioRepo } from "../repositories/index.repository.js";
 
@@ -19,7 +18,12 @@ export const fetchFund = async (userId, fundCode) => {
 };
 
 export const fetchPortfolioSummary = async (userId) => {
-  return await userPortfolioRepo.findUnique({
-    userId_portfolioType: { userId, portfolioType: "MF" },
-  });
+  const result = await portfolioRepo.getPortfolioSummary(userId);
+
+  const { current, invested, pnl, dayChangeValue } = result._sum;
+
+  const returnPercent = (pnl / current) * 100;
+  const dayChangePercent = (dayChangeValue / current) * 100;
+
+  return { current, invested, pnl, returnPercent, dayChangeValue, dayChangePercent };
 };

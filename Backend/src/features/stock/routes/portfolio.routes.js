@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { isAuthenticated } from "../../../middlewares/authMiddleware.js";
 import * as portfolioController from "../controllers/portfolio.controller.js";
-import { validateQuery } from "../validators/query.validator.js";
+import { validateQuery } from "../validators/portfolioQuery.validator.js";
 
 export const portfolioRoutes = Router();
 

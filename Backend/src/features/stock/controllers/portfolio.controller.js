@@ -1,6 +1,6 @@
 import { ApiError } from "../../../utils/apiError.utils.js";
 import { asyncHandler } from "../../../utils/asyncHandler.utils.js";
-import * as portfolioService from "../services/portfolio.service.js"; // prettier-ignore
+import * as portfolioService from "../services/portfolio.service.js";
 
 export const getPortfolio = asyncHandler(async (req, res) => {
   const { userId } = req.user;

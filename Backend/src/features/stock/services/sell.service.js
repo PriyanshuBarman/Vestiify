@@ -1,5 +1,4 @@
 import { tnxRepo, walletRepo } from "../../../shared/repositories/index.repository.js";
-import { subtractUserPortfolio } from "../../../shared/services/userPortfolio.service.js";
 import { ApiError } from "../../../utils/apiError.utils.js";
 import { holdingRepo, portfolioRepo } from "../repositories/index.repository.js";
 import { calculateUpdatedPortfolio } from "../utils/sell.utils.js";
@@ -23,7 +22,6 @@ export const sellAllQty = async (userId, symbol, price) => {
     tnxType: "SELL",
   });
   await portfolioRepo.delete({ id: prev.id });
-  await subtractUserPortfolio({ userId, amount, portfolioType: "STOCK" }); // shared
   await holdingRepo.deleteMany({ userId, symbol });
   await walletRepo.creditBalance(userId, amount);
 };
@@ -46,7 +44,6 @@ export const sellSomeQty = async (userId, symbol, price, quantity) => {
   const updatedValues = calculateUpdatedPortfolio(prev, costBasis, quantity, price);
 
   await portfolioRepo.update({ id: prev.id }, updatedValues);
-  await subtractUserPortfolio({ userId, costBasis, amount, portfolioType: "STOCK" }); // shared
   await walletRepo.creditBalance(userId, amount);
   await tnxRepo.create({
     userId,

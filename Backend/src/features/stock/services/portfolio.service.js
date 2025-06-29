@@ -1,4 +1,3 @@
-import { userPortfolioRepo } from "../../../shared/repositories/userPortfolio.repository.js";
 import { ApiError } from "../../../utils/apiError.utils.js";
 import { portfolioRepo } from "../repositories/portfolio.repository.js";
 
@@ -14,7 +13,6 @@ export const fetchPortfolio = async (userId, sort_by, order_by) => {
 };
 
 export const fetchStock = async (userId, symbol) => {
-  console.log(userId, symbol);
   const stock = await portfolioRepo.findUnique({ userId_symbol: { userId, symbol } });
 
   if (!stock) throw new ApiError(400, "Stock Not Found in Portfolio");
@@ -23,11 +21,10 @@ export const fetchStock = async (userId, symbol) => {
 };
 
 export const fetchPortfolioSummary = async (userId) => {
-  const portfolio = await userPortfolioRepo.findUnique({
-    userId_portfolioType: { userId, portfolioType: "STOCK" },
-  });
+  const result = await portfolioRepo.getPortfolioSummary(userId);
+  const { current, invested, pnl, dayChangeValue } = result._sum;
 
-  if (!portfolio) throw new ApiError(400, "Not invested in any fund");
+  const returnPercent = (pnl / current) * 100;
 
-  return portfolio;
+  return { current, invested, pnl, returnPercent, dayChangeValue };
 };

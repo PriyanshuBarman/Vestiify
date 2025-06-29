@@ -23,34 +23,10 @@ model User {
   mfHolding      MfHolding[]
   stockPortfolio StockPortfolio[]
   stockHoldings  StockHolding[]
-  userPortfolio  UserPortfolio[]
   mfWatchlist    MfWatchlist[]
   stockWatchlist StockWatchlist[]
 
   @@map("user")
-}
-
-// ======== UserPortfolio =======
-
-model UserPortfolio {
-  id            String        @id @default(uuid())
-  userId        String
-  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  portfolioType PortfolioType
-  invested      Decimal       @db.Decimal(10, 2)
-  current       Decimal       @db.Decimal(10, 2)
-  pnl           Decimal       @default(0.00) @db.Decimal(10, 2)
-  returnPercent Decimal       @default(0.00) @db.Decimal(8, 2)
-  updatedAt     DateTime      @default(now()) @updatedAt
-
-  @@unique([userId, portfolioType])
-  @@map("user_portfolio")
-}
-
-enum PortfolioType {
-  MF
-  STOCK
-  GOLD
 }
 
 // ======== Transaction =======

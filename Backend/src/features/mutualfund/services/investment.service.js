@@ -1,5 +1,4 @@
 import { tnxRepo, walletRepo } from "../../../shared/repositories/index.repository.js";
-import { addToUserPortfolio } from "../../../shared/services/userPortfolio.service.js";
 import { ApiError } from "../../../utils/apiError.utils.js";
 import { holdingRepo, portfolioRepo } from "../repositories/index.repository.js";
 import { calculateUpdatedPortfolio } from "../utils/investment.utils.js";
@@ -69,8 +68,6 @@ export const processInvestment = async (data) => {
     assetType: "MF",
     tnxType: "BUY",
   });
-
-  await addToUserPortfolio({ userId, investmentAmt, portfolioType: "MF" });
 
   await walletRepo.debitBalance(userId, investmentAmt);
 };

@@ -1,7 +1,6 @@
 import { fifoRedemption } from "./fifo.service.js";
 import { ApiError } from "../../../utils/apiError.utils.js";
 import { walletRepo, tnxRepo } from "../../../shared/repositories/index.repository.js";
-import { subtractUserPortfolio } from "../../../shared/services/userPortfolio.service.js";
 import { holdingRepo, portfolioRepo } from "../repositories/index.repository.js";
 import { calculateUpdatedPortfolio } from "../utils/redemption.utils.js";
 
@@ -19,11 +18,8 @@ export const fullRedemption = async (userId, fundCode) => {
 
   await holdingRepo.deleteMany({ userId, fundCode });
 
-  await subtractUserPortfolio({ userId, amount: redemptionAmt, portfolioType: "MF" });
-
   await postRedemptionOperations(userId, fund, redemptionAmt, redemptionUnits); // helper
 };
-
 
 export const partialRedemption = async (userId, fundCode, redemptionAmt) => {
   const fund = await portfolioRepo.findUnique({
@@ -46,13 +42,6 @@ export const partialRedemption = async (userId, fundCode, redemptionAmt) => {
     { userId_fundCode: { userId, fundCode } },
     calculateUpdatedPortfolio(fund, costBasis, redemptionAmt, redemptionUnits)
   );
-
-  await subtractUserPortfolio({
-    userId,
-    costBasis,
-    amount: redemptionAmt,
-    portfolioType: "MF",
-  }); // shared
 
   await postRedemptionOperations(userId, fund, redemptionAmt, redemptionUnits); // helper
 };
