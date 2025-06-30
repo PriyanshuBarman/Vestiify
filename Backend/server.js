@@ -9,6 +9,7 @@ import { mutualFundRoutes } from "./src/features/mutualfund/routes/index.routes.
 import { stockRoutes } from "./src/features/stock/routes/index.routes.js";
 import { userRoutes } from "./src/features/user/routes/user.routes.js";
 import { walletRoutes } from "./src/features/wallet/routes/index.routes.js";
+import "./src/cron/cronRunner.js";
 
 const app = express();
 
