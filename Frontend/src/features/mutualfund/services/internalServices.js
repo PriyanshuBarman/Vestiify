@@ -7,12 +7,13 @@ export const processInvestment = async (amount, fund) => {
     `${baseURL}/mutual-funds/invest`,
     {
       investmentAmt: Number(amount),
-      fundCode: fund?.code,
-      fundName: fund?.name,
-      purchaseNav: fund?.nav.nav,
-      fundType: fund?.category,
+      fundCode: fund.code,
+      fundName: fund.name,
+      fundType: fund.category,
       logoCode: fund.short_code,
       shortName: fund.short_name,
+      latestNav: fund.nav.nav,
+      latestNavDate: fund.nav.date,
     },
     { withCredentials: true },
   );

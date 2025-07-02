@@ -1,110 +1,76 @@
-import axios from "axios";
 import { db } from "../../config/db.config.js";
+import { clearNavCache, fetchNAVData } from "../utils/fetchNAVData.js";
 
-const navCache = new Map();
+const failedFunds = [];
 
-const fetchNAVData = async (fundCode) => {
-  if (navCache.has(fundCode)) return navCache.get(fundCode);
-
-  const { data } = await axios.get(
-    `${process.env.EXTERNAL_API_BASE_URL}/mf/api/v5/fund_schemes/${fundCode}.json`
-  );
-
-  console.log("Latest Nav: ", data[0].nav); // Testing (will be removed)
-  console.log("Prev Nav: ", data[0].last_nav); // Testing (will be removed)
-
-  const latestNav = data[0].nav.nav;
-  const prevNav = data[0].last_nav.nav;
-
-  const navInfo = { latestNav, prevNav };
-  navCache.set(fundCode, navInfo);
-
-  return navInfo;
-};
-
-export const updateAllMfPortfolio = async () => {
+export const mfPortfolioUpdater = async () => {
   console.log("⏳ MF Portfolio Updater Started...");
+  clearNavCache();
 
-  navCache.clear();
+  const yesterdayStr = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+  const portfolios = await db.mfPortfolio.findMany({
+    where: {
+      latestNavDate: {
+        lt: new Date(yesterdayStr),
+      },
+    },
+  });
 
-  const portfolios = await db.mfPortfolio.findMany();
-  const failedFunds = [];
+  console.log(portfolios);
 
   for (const fund of portfolios) {
-    const units = fund.units.toNumber();
-    const invested = fund.invested;
-
     try {
-      const { latestNav, prevNav } = await fetchNAVData(fund.fundCode);
-
-      const current = units * latestNav;
-      const pnl = current - invested;
-      const returnPercent = (pnl / invested) * 100;
-      const dayChangeValue = units * (latestNav - prevNav);
-      const dayChangePercent = ((latestNav - prevNav) / prevNav) * 100;
-
-      await db.mfPortfolio.update({
-        where: { id: fund.id },
-        data: {
-          current,
-          pnl,
-          returnPercent,
-          latestNav,
-          dayChangeValue,
-          dayChangePercent,
-        },
-      });
+      await updateFund(fund);
     } catch (err) {
       failedFunds.push(fund);
-      console.error(`❌ Failed: ${fund.fundCode}`, {
-        error: err.message,
-        timestamp: new Date().toLocaleString("en-IN", {
-          timeZone: "Asia/Kolkata",
-        }),
-      });
+      console.error(` Failed: ${fund.fundCode}`, { error: err.message });
     }
   }
 
   // Retry failed ones once
   if (failedFunds.length) {
-    console.log(`🔁 Retrying ${failedFunds.length} failed fund updates...`);
-
-    for (const fund of failedFunds) {
-      const units = fund.units.toNumber();
-      const invested = fund.invested;
-
-      try {
-        const { latestNav, prevNav } = await fetchNAVData(fund.fundCode);
-
-        const current = units * latestNav;
-        const pnl = current - invested;
-        const returnPercent = (pnl / invested) * 100;
-        const dayChangeValue = units * (latestNav - prevNav);
-        const dayChangePercent = ((latestNav - prevNav) / prevNav) * 100;
-
-        await db.mfPortfolio.update({
-          where: { id: fund.id },
-          data: {
-            current,
-            pnl,
-            returnPercent,
-            latestNav,
-            dayChangeValue,
-            dayChangePercent,
-          },
-        });
-
-        console.log(`✅ Retry success: ${fund.fundCode}`);
-      } catch (err) {
-        console.error(`❌ Retry failed: ${fund.fundCode}`, {
-          error: err.message,
-          timestamp: new Date().toLocaleString("en-IN", {
-            timeZone: "Asia/Kolkata",
-          }),
-        });
-      }
-    }
+    await retryFailFunds();
   }
 
   console.log("✅ MF Portfolio Updater Finished.");
 };
+
+// ====================================================================================
+
+async function updateFund(fund) {
+  const { latestNav, prevNav, latestNavDate } = await fetchNAVData(fund.fundCode);
+
+  const units = fund.units.toNumber();
+  const invested = fund.invested;
+
+  const current = units * latestNav;
+  const pnl = current - invested;
+  const returnPercent = (pnl / invested) * 100;
+  const dayChangeValue = units * (latestNav - prevNav);
+  const dayChangePercent = ((latestNav - prevNav) / prevNav) * 100;
+
+  await db.mfPortfolio.update({
+    where: { id: fund.id },
+    data: {
+      current,
+      pnl,
+      returnPercent,
+      latestNav,
+      latestNavDate: new Date(latestNavDate),
+      dayChangeValue,
+      dayChangePercent,
+    },
+  });
+}
+
+async function retryFailFunds() {
+  console.log(`🔁 Retrying ${failedFunds.length} failed fund updates...`);
+  for (const fund of failedFunds) {
+    try {
+      await updateFund(fund);
+      console.log(`Retry success: ${fund.fundCode}`);
+    } catch (err) {
+      console.error(`Retry failed: ${fund.fundCode}`, { error: err.message });
+    }
+  }
+}

@@ -7,7 +7,7 @@ class PortfolioRepository extends CrudRepository {
   }
 
   async getPortfolioSummary(userId) {
-    const result = await db.mfPortfolio.aggregate({
+    return await db.mfPortfolio.aggregate({
       where: { userId },
       _sum: {
         current: true,
@@ -18,10 +18,6 @@ class PortfolioRepository extends CrudRepository {
         dayChangePercent: true,
       },
     });
-
-    console.log(result); // for testing in prod (will be removed later)
-
-    return result;
   }
 }
 

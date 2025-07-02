@@ -67,11 +67,12 @@ model MfPortfolio {
   id               String   @id @default(uuid())
   userId           String
   user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  latestNav        Decimal  @db.Decimal(10, 4) // stores latest nav (it also needs to updates every day )
   fundCode         String
   fundName         String
   shortName        String
   fundType         FundType
+  latestNav        Decimal  @db.Decimal(10, 4) // stores latest nav (it also needs to updates every day )
+  latestNavDate    DateTime @db.Date
   logoCode         String // it's need to get fund logo
   units            Decimal  @db.Decimal(10, 4)
   invested         Decimal  @db.Decimal(10, 2)

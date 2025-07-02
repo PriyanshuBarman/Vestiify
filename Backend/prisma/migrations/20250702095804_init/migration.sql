@@ -15,21 +15,6 @@ CREATE TABLE `user` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `user_portfolio` (
-    `id` VARCHAR(191) NOT NULL,
-    `userId` VARCHAR(191) NOT NULL,
-    `portfolioType` ENUM('MF', 'STOCK', 'GOLD') NOT NULL,
-    `invested` DECIMAL(10, 2) NOT NULL,
-    `current` DECIMAL(10, 2) NOT NULL,
-    `pnl` DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
-    `returnPercent` DECIMAL(8, 2) NOT NULL DEFAULT 0.00,
-    `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-
-    UNIQUE INDEX `user_portfolio_userId_portfolioType_key`(`userId`, `portfolioType`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `transaction` (
     `id` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
@@ -49,11 +34,12 @@ CREATE TABLE `transaction` (
 CREATE TABLE `mf_portfolio` (
     `id` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
-    `latestNav` DECIMAL(10, 4) NOT NULL,
     `fundCode` VARCHAR(191) NOT NULL,
     `fundName` VARCHAR(191) NOT NULL,
     `shortName` VARCHAR(191) NOT NULL,
     `fundType` ENUM('EQUITY', 'DEBT', 'HYBRID', 'OTHER') NOT NULL,
+    `latestNav` DECIMAL(10, 4) NOT NULL,
+    `latestNavDate` DATE NOT NULL,
     `logoCode` VARCHAR(191) NOT NULL,
     `units` DECIMAL(10, 4) NOT NULL,
     `invested` DECIMAL(10, 2) NOT NULL,
@@ -140,9 +126,6 @@ CREATE TABLE `stock_watchlist` (
     UNIQUE INDEX `stock_watchlist_userId_symbol_key`(`userId`, `symbol`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- AddForeignKey
-ALTER TABLE `user_portfolio` ADD CONSTRAINT `user_portfolio_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `transaction` ADD CONSTRAINT `transaction_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

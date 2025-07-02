@@ -7,10 +7,13 @@ export const validateInvestment = (req, res, next) => {
     "investmentAmt",
     "fundCode",
     "fundName",
-    "purchaseNav",
+    "latestNav",
+    "latestNavDate",
     "fundType",
     "logoCode",
     "shortName",
+    "latestNav",
+    "latestNavDate",
   ];
 
   for (const field of requiredFields) {
@@ -19,12 +22,7 @@ export const validateInvestment = (req, res, next) => {
     }
   }
 
-  if (
-    !investmentAmt ||
-    investmentAmt <= 0 ||
-    typeof investmentAmt !== "number" ||
-    isNaN(investmentAmt)
-  )
+  if (!investmentAmt || investmentAmt <= 0 || typeof investmentAmt !== "number" || isNaN(investmentAmt))
     throw new ApiError(400, "Invalid investmentAmt");
 
   next();

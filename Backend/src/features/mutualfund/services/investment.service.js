@@ -5,13 +5,12 @@ import { calculateUpdatedPortfolio } from "../utils/investment.utils.js";
 
 // Main Handler
 export const processInvestment = async (data) => {
-  const { userId, investmentAmt, fundCode, fundName, purchaseNav, fundType, logoCode, shortName } =
-    data;
+  const { userId, investmentAmt, fundCode, fundName, latestNav, latestNavDate, fundType, logoCode, shortName } = data;
 
   const balance = await walletRepo.checkBalance(userId);
   if (investmentAmt > balance) throw new ApiError(400, "Insufficient wallet balance");
 
-  const purchaseUnits = investmentAmt / purchaseNav;
+  const purchaseUnits = investmentAmt / latestNav;
 
   const prevInv = await portfolioRepo.findUnique({
     userId_fundCode: { userId, fundCode },
@@ -27,13 +26,14 @@ export const processInvestment = async (data) => {
       units: purchaseUnits,
       current: investmentAmt,
       invested: investmentAmt,
-      latestNav: purchaseNav,
+      latestNav,
+      latestNavDate,
       logoCode,
       shortName,
     });
   } else {
     const updatedValues = calculateUpdatedPortfolio(prevInv, investmentAmt, purchaseUnits);
-    await portfolioRepo.update({ id: prevInv.id }, { ...updatedValues, latestNav: purchaseNav });
+    await portfolioRepo.update({ id: prevInv.id }, { ...updatedValues, latestNav, latestNavDate });
   }
   // --------------------------------------------------------------------------------------------
 
@@ -43,8 +43,8 @@ export const processInvestment = async (data) => {
     fundCode,
     fundName,
     amount: investmentAmt,
-    purchaseNav,
     units: purchaseUnits,
+    purchaseNav: latestNav,
   });
 
   await tnxRepo.create({
@@ -53,7 +53,7 @@ export const processInvestment = async (data) => {
     code: fundCode,
     name: fundName,
     quantity: purchaseUnits,
-    price: purchaseNav,
+    price: latestNav,
     assetType: "MF",
     tnxType: "BUY",
   });
