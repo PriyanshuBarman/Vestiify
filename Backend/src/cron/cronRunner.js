@@ -1,7 +1,7 @@
 import cron from "node-cron";
 import { mfPortfolioUpdater } from "./jobs/mfPortfolioUpdater.js";
 
-const MutualFundPortfolioUpdater = (scheduleTime) => {
+const scheduleMfPortfolioUpdate = (scheduleTime) => {
   return cron.schedule(
     scheduleTime,
     async () => {
@@ -18,7 +18,7 @@ const MutualFundPortfolioUpdater = (scheduleTime) => {
   );
 };
 
-MutualFundPortfolioUpdater("22 00 * * *"); // Runs every day at 10:00 PM IST
-MutualFundPortfolioUpdater("0 05 * * *"); // Runs every day at 12:05 AM IST
-MutualFundPortfolioUpdater("30 0 * * *"); // Runs every day at 12:30 AM IST
-MutualFundPortfolioUpdater("0 1 * * *"); // Runs every day at 1:00 AM IST
+scheduleMfPortfolioUpdate("0 22 * * *"); // Runs every day at 10:00 PM IST
+scheduleMfPortfolioUpdate("5 0 * * *"); // Runs every day at 12:05 AM IST
+scheduleMfPortfolioUpdate("30 0 * * *"); // Runs every day at 12:30 AM IST
+scheduleMfPortfolioUpdate("0 1 * * *"); // Runs every day at 1:00 AM IST
