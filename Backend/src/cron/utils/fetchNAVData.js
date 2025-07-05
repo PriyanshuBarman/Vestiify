@@ -1,11 +1,11 @@
+import axios from "axios";
+
 const navCache = new Map();
 
 export const fetchNAVData = async (fundCode) => {
   if (navCache.has(fundCode)) return navCache.get(fundCode);
 
-  const { data } = await axios.get(
-    `${process.env.EXTERNAL_API_BASE_URL}/mf/api/v5/fund_schemes/${fundCode}.json`
-  );
+  const { data } = await axios.get(`${process.env.EXTERNAL_API_BASE_URL}/mf/api/v5/fund_schemes/${fundCode}.json`);
 
   console.log("Latest Nav: ", data[0].nav); // Testing (will be removed)
 
