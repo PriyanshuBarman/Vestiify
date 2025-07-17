@@ -10,10 +10,10 @@ function CardLG({ code, logoCode, shortName, threeYearReturn }) {
           <FundLogo logoCode={logoCode} />
         </CardHeader>
 
-        <CardTitle className="text-[0.85rem] font-semibold">{shortName}</CardTitle>
+        <CardTitle className="text-sm font-semibold">{shortName}</CardTitle>
 
         <CardDescription className="content-center space-x-4 font-medium sm:font-semibold">
-          <span className="text-foreground text-base">{threeYearReturn.toFixed(1)}%</span>
+          <span className="text-foreground text-base">{threeYearReturn ? threeYearReturn.toFixed(1) + "%" : "NA"}</span>
           <span className="text-sm">3Y</span>
         </CardDescription>
       </Card>

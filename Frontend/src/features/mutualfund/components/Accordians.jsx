@@ -1,15 +1,13 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Avatar } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { User } from "lucide-react";
 import { useState } from "react";
-import { useGetExitLoad } from "../hooks/queries/externalQueries";
-import SimilarFundsTable from "./SimilarFundsTable";
-import ReturnCalculator from "./ReturnCalculator";
 import FundLogo from "./FundLogo";
+import ReturnCalculator from "./ReturnCalculator";
+import SimilarFundsTable from "./SimilarFundsTable";
 
-function Accordians({ fund, code }) {
-  const { data: exitLoad } = useGetExitLoad(code);
+function Accordians({ fund = {} }) {
   const [textClamp, setTextClamp] = useState(true);
 
   return (
@@ -17,7 +15,7 @@ function Accordians({ fund, code }) {
       <AccordionItem value="item-1" className="px-4 py-3 sm:border-transparent sm:px-0 sm:py-4">
         <AccordionTrigger className="text-base sm:text-xl">Return Calculator</AccordionTrigger>
         <AccordionContent className="py-4">
-          <ReturnCalculator returns={fund?.returns} />
+          <ReturnCalculator fund={fund} />
         </AccordionContent>
       </AccordionItem>
 
@@ -27,19 +25,21 @@ function Accordians({ fund, code }) {
           <ul className="mt-2 list-disc space-y-5 pl-4">
             <li>
               <h5 className="text-sm font-medium sm:text-base sm:font-semibold">
-                Expense ratio : {fund?.expense_ratio}%
+                Expense ratio : {fund.expense_ratio}%
               </h5>
               <p className="text-muted-foreground sm:text-foreground mt-1 sm:mt-2 sm:text-base">Inclusive of GST</p>
             </li>
             <li>
               <h5 className="text-sm font-medium sm:text-base sm:font-semibold">Portfolio turnover</h5>
               <p className="text-muted-foreground sm:text-foreground mt-1 sm:mt-2 sm:text-base">
-                {parseFloat(fund?.portfolio_turnover).toFixed(2) || "Nill"}%
+                {parseFloat(fund.portfolio_turnover).toFixed(2) || "Nill"}%
               </p>
             </li>
             <li>
               <h5 className="text-sm font-medium sm:text-base sm:font-semibold">Exit load</h5>
-              <p className="text-muted-foreground sm:text-foreground mt-1 sm:mt-2 sm:text-base">{exitLoad || "Nill"}</p>
+              <p className="text-muted-foreground sm:text-foreground mt-1 sm:mt-2 sm:text-base">
+                {fund.exit_load || "Nill"}
+              </p>
             </li>
             <li>
               <h5 className="text-sm font-medium sm:text-base sm:font-semibold">Tax implications</h5>
@@ -62,7 +62,7 @@ function Accordians({ fund, code }) {
       <AccordionItem value="item-5" className="px-4 py-3 sm:border-transparent sm:px-0 sm:py-4">
         <AccordionTrigger className="text-base sm:text-xl">Fund managers</AccordionTrigger>
         <AccordionContent className="space-y-6">
-          {fund?.fund_manager?.split(";")?.map((manager, index) => (
+          {fund.fund_manager?.split(";").map((manager, index) => (
             <div key={index} className="mt-2 ml-2 flex items-center gap-2">
               <Avatar className="border sm:size-10">
                 <User className="m-auto size-full p-1.5 sm:p-2" />
@@ -77,8 +77,8 @@ function Accordians({ fund, code }) {
         <AccordionTrigger className="text-base sm:text-xl">Fund house & investment objective</AccordionTrigger>
         <AccordionContent className="space-y-8">
           <div className="mt-4 flex items-center gap-2">
-            <FundLogo logoCode={fund?.short_code} />
-            <h2 className="ml-2 text-sm sm:text-base sm:font-medium">{fund?.fund_name}</h2>
+            <FundLogo logoCode={fund.short_code} />
+            <h2 className="ml-2 text-sm sm:text-base sm:font-medium">{fund.fund_name}</h2>
           </div>
 
           <div className="AUM Details relative space-y-6 sm:flex sm:flex-wrap sm:justify-between sm:gap-y-6 sm:text-base">
@@ -105,7 +105,7 @@ function Accordians({ fund, code }) {
               onClick={() => setTextClamp(!textClamp)}
               className={`text-muted-foreground sm:text-foreground mt-4 text-sm/4.5 sm:mt-2 sm:text-base ${textClamp ? "line-clamp-3" : ""}`}
             >
-              {fund?.investment_objective}
+              {fund.investment_objective}
             </p>
           </div>
         </AccordionContent>

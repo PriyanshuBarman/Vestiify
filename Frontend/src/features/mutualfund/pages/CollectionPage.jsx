@@ -8,10 +8,11 @@ import FundLogo from "../components/FundLogo";
 import { useGetCategoryFundList } from "../hooks/queries/externalQueries";
 import { columnKeys, columnLabels, getNewOrder, getNextColumn, sortPeersBy, unit } from "../utils/collectionsHelper";
 import { collectionConfig } from "../constants/collection";
+import FundRating from "@/components/FundRating";
 
 function CollectionPage() {
   const [peers, setPeers] = useState();
-  const [activeColumn, setActiveColumn] = useState("one_year_return"); // active column (key)
+  const [activeColumn, setActiveColumn] = useState("return_1y"); // active column (key)
   const [sortOrder, setSortOrder] = useState("desc");
   const isMobile = useIsMobile();
   const { name } = useParams();
@@ -67,28 +68,24 @@ function MobileTable({ peers, setPeers, activeColumn, setActiveColumn }) {
 
       <TableBody>
         {peers?.map((item) => (
-          <TableRow key={item.unique_fund_code}>
+          <TableRow key={item.code}>
             <TableCell className="flex items-center gap-4 py-4 pl-4">
               <FundLogo logoCode={item.short_code} className="size-8.5" />
               <div>
-                <Link to={`/mutual-funds/${item.unique_fund_code}`}>
+                <Link to={`/mutual-funds/${item.code}`}>
                   <h4 className="text-foreground overflow-hidden font-[430] text-wrap">{item.short_name}</h4>
                 </Link>
                 <div className="text-muted-foreground mt-1.5 flex flex-wrap text-xs">
                   <p>
-                    {item.category} {item.sub_category}
+                    {item.category} {item.fund_category}
                   </p>
-                  {item.rating && (
-                    <span className="ml-1 flex items-center">
-                      • {item.rating} <StarIcon className="fill-muted-foreground text-muted-foreground ml-1 size-3" />
-                    </span>
-                  )}
+                  <FundRating rating={item.fund_rating} />
                 </div>
               </div>
             </TableCell>
 
             <TableCell className="pr-4 text-right font-[450]">
-              {item[activeColumn].toFixed(2)} {activeColumn !== "aum" ? "%" : "Cr"}
+              {item[activeColumn] ? `${item[activeColumn]} ${activeColumn === "aum" ? "Cr" : "%"}` : "NA"}
             </TableCell>
           </TableRow>
         ))}
@@ -134,19 +131,17 @@ function DesktopTable({ peers, setPeers, activeColumn, setActiveColumn, sortOrde
         </TableHeader>
 
         <TableBody>
-          {peers?.map((item) => (
-            <TableRow key={item.unique_fund_code}>
+          {peers?.map((f) => (
+            <TableRow key={f.code}>
               <TableCell className="flex items-center gap-8 py-4 pl-8">
-                <FundLogo logoCode={item.short_code} />
+                <FundLogo logoCode={f.short_code} />
                 <div>
-                  <Link to={`/mutual-funds/${item.unique_fund_code}`}>
-                    <h4 className="text-base text-wrap">{item.name}</h4>
+                  <Link to={`/mutual-funds/${f.code}`}>
+                    <h4 className="text-base text-wrap">{f.name}</h4>
                   </Link>
                   <p className="text-muted-foreground mt-2 flex text-xs">
-                    {item.category} {item.sub_category}
-                    <span className="ml-1 flex items-center whitespace-pre">
-                      • 5 <StarIcon className="fill-muted-foreground text-muted-foreground size-2.5" />
-                    </span>
+                    {f.category} {f.fund_category}
+                    <FundRating rating={f.fund_rating} />
                   </p>
                 </div>
               </TableCell>
@@ -156,7 +151,7 @@ function DesktopTable({ peers, setPeers, activeColumn, setActiveColumn, sortOrde
                   key={key}
                   className={` ${activeColumn === key && "text-primary font-semibold"} text-center text-[0.92rem] font-medium`}
                 >
-                  {item[key].toFixed(1)} {unit[key] || ""}
+                  {f[key] ? `${f[key]?.toFixed(1)} ${unit[key]}` : "NA"}
                 </TableCell>
               ))}
             </TableRow>

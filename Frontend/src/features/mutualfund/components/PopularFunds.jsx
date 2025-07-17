@@ -16,14 +16,14 @@ function PopularFunds() {
         <div className="flex justify-between gap-4 px-4 sm:m-1 sm:gap-3 sm:px-0">
           {funds?.map((fund) =>
             isMobile ? (
-              <CardSM key={fund.unique_fund_code} fund={fund} />
+              <CardSM key={fund.code} fund={fund} />
             ) : (
               <CardLG
-                key={fund.unique_fund_code}
-                code={fund.unique_fund_code}
+                key={fund.code}
+                code={fund.code}
                 logoCode={fund.short_code}
                 shortName={fund.short_name}
-                threeYearReturn={fund.three_year_return}
+                threeYearReturn={fund.return_3y}
               />
             ),
           )}

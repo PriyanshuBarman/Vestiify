@@ -13,9 +13,9 @@ const calculateAbsoluteReturn = (annualizedReturn, years) => {
   return absoluteReturnPercentage.toFixed(2);
 };
 
-function ReturnCalculator({ returns }) {
+function ReturnCalculator({ fund }) {
   const [amount, setAmount] = useState(20000);
-  const [percentage, setPercentage] = useState(returns.year_1);
+  const [percentage, setPercentage] = useState(fund?.return_1y);
   const debouncedValue = useDebounce(amount, 900);
 
   const value = Math.round(debouncedValue + (debouncedValue * percentage) / 100);
@@ -58,22 +58,22 @@ function ReturnCalculator({ returns }) {
         <div className="ml-6 flex gap-2">
           <Badge
             variant="ghost"
-            onClick={() => updatePercentage(returns.year_1, 1)}
-            className={`sm:bg-transparent sm:text-base ${percentage === returns.year_1 && "bg-primary/10 text-primary"}`}
+            onClick={() => updatePercentage(fund?.return_1y, 1)}
+            className={`sm:bg-transparent sm:text-base ${percentage === fund?.return_1y && "bg-primary/10 text-primary"}`}
           >
             1 years
           </Badge>
           <Badge
             variant="ghost"
-            onClick={() => updatePercentage(returns.year_3, 3)}
-            className={`sm:bg-transparent sm:text-base ${percentage === returns.year_3 && "bg-primary/10 text-primary"}`}
+            onClick={() => updatePercentage(fund?.return_3y, 3)}
+            className={`sm:bg-transparent sm:text-base ${percentage === fund?.return_3y && "bg-primary/10 text-primary"}`}
           >
             3 years
           </Badge>
           <Badge
             variant="ghost"
-            onClick={() => updatePercentage(returns.year_5, 5)}
-            className={`sm:bg-transparent sm:text-base ${percentage === returns.year_5 && "bg-primary/10 text-primary"}`}
+            onClick={() => updatePercentage(fund?.return_5y, 5)}
+            className={`sm:bg-transparent sm:text-base ${percentage === fund?.return_5y && "bg-primary/10 text-primary"}`}
           >
             5 years
           </Badge>

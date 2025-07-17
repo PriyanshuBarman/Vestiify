@@ -1,14 +1,14 @@
 export const columnLabels = {
-  return_1y: { fullName: "1Y Returns", shortName: "1Y" },
-  return_3y: { fullName: "3Y Returns", shortName: "3Y" },
-  return_5y: { fullName: "5Y Returns", shortName: "5Y" },
+  year_1: { fullName: "1Y Returns", shortName: "1Y" },
+  year_3: { fullName: "3Y Returns", shortName: "3Y" },
+  year_5: { fullName: "5Y Returns", shortName: "5Y" },
 };
 
 export const columnKeys = Object.keys(columnLabels);
 export const unit = {
-  return_1y: "%",
-  return_3y: "%",
-  return_5y: "%",
+  year_1: "%",
+  year_3: "%",
+  year_5: "%",
 };
 
 export const getNewOrder = (clicked, activeColumn, sortOrder) => {

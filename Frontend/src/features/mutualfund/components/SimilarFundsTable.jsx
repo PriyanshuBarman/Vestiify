@@ -6,7 +6,7 @@ import { Link } from "react-router";
 import { columnKeys, columnLabels, getNewOrder, getNextColumn, sortPeersBy } from "../utils/similarFundsTable";
 
 function SimilarFundsTable({ fund }) {
-  const [activeColumn, setActiveColumn] = useState("1y");
+  const [activeColumn, setActiveColumn] = useState("return_1y");
   const [sortOrder, setSortOrder] = useState("desc");
   const [peers, setPeers] = useState(fund?.comparison);
 
@@ -51,7 +51,7 @@ function SimilarFundsTable({ fund }) {
                     {item.short_name}
                   </TableCell>
                   <TableCell className="py-4 pr-4 text-right font-semibold">
-                    {item[activeColumn]} {activeColumn !== "aum" ? "%" : "Cr"}
+                    {item[activeColumn] ? `${item[activeColumn]} ${activeColumn !== "aum" ? "%" : "Cr"}` : "NA"}
                   </TableCell>
                 </TableRow>
               ))}
@@ -89,17 +89,18 @@ function SimilarFundsTable({ fund }) {
                 ))}
               </TableRow>
             </TableHeader>
+
             <TableBody className="sm:font-medium">
               {peers?.map((item) => (
                 <TableRow key={item.code}>
-                  <TableCell className={`${item.name === fund?.name && "sm:text-primary font-semibold"} py-4 pl-4`}>
+                  <TableCell className={`${item.name === fund?.name && "sm:text-primary"} py-4 pl-4`}>
                     <Link to={`/mutual-funds/${item.unique_fund_code} `} className="hover:text-primary">
                       {item.short_name}
                     </Link>
                   </TableCell>
                   {columnKeys.map((key) => (
-                    <TableCell key={key} className={`py-4 ${activeColumn === key && "text-primary font-semibold"}`}>
-                      {item[key]} {key === "aum" ? "Cr" : "%"}
+                    <TableCell key={key} className={`py-4 ${activeColumn === key && "text-primary"}`}>
+                      {item[key] ? `${item[key]} ${key === "aum" ? "Cr" : "%"}` : "NA"}
                     </TableCell>
                   ))}
                 </TableRow>

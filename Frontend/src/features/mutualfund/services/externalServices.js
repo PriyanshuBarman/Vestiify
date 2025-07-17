@@ -1,33 +1,32 @@
 import axios from "axios";
 
-const baseURL = import.meta.env.VITE_EXTERNAL_MF_API_URL;
+const chartApiUrl = import.meta.env.VITE_MF_CHART_API_URL;
+const baseURL = import.meta.env.VITE_MF_API_URL;
 
 export const fetchFund = async (kuvera_id) => {
-  const { data } = await axios.get(`${baseURL}/mf/api/v5/fund_schemes/${kuvera_id}.json`);
-  return data[0];
+  const { data } = await axios.get(`${baseURL}/funds/code/${kuvera_id}`);
+  return data.fund;
+};
+
+export const fetchIndexFunds = async () => {
+  const { data } = await axios.get(`${baseURL}/funds?plan=GROWTH&fund_category=index funds&limit=4`);
+  return data.funds;
 };
 
 export const fetchPopularFunds = async () => {
   const { data } = await axios.get(
-    `${baseURL}/insight/api/v1/mutual_fund_search.json?limit=4&sort_by=three_year_return&order_by=desc&scheme_plan=GROWTH&category=Equity&rating=4,5`,
+    `${baseURL}/funds?plan=GROWTH&limit=4&sort_by=return_3y&category=Equity&fund_rating_gte=4`,
   );
-  return data.data.funds;
+  return data.funds;
 };
 
-export const fetchIndexFunds = async () => {
-  const { data } = await axios.get(
-    `${baseURL}/insight/api/v1/mutual_fund_search.json?limit=4&sort_by=rating&order_by=desc&scheme_plan=GROWTH&category=Others&sub_category=Index%20Funds`,
-  );
-  return data.data.funds;
-};
-
-export const fetchExitLoad = async (fundCode) => {
-  const { data } = await axios.get(`${baseURL}/mf/api/v5/fund_exit_loads/${fundCode}.json`);
-  return data[0].exit_load[0];
+export const fetchCategoryFundList = async (url) => {
+  const { data } = await axios.get(url);
+  return data.funds;
 };
 
 export const fetchChartData = async (fundCode) => {
-  const { data } = await axios.get(`${baseURL}/mf/api/v6/fund_navs/${fundCode}.json`);
+  const { data } = await axios.get(`${chartApiUrl}/mf/api/v6/fund_navs/${fundCode}.json`);
 
   const fullChartData = data.map((item) => {
     const timestamp = item[0];
@@ -40,9 +39,4 @@ export const fetchChartData = async (fundCode) => {
   });
 
   return fullChartData;
-};
-
-export const fetchCategoryFundList = async (url) => {
-  const { data } = await axios.get(url);
-  return data.data.funds;
 };

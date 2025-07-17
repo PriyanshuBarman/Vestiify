@@ -7,11 +7,12 @@ import { useNavigate } from "react-router";
 import { useRecentlyViewedFunds } from "../hooks/useRecentlyViewedFunds";
 import CardLG from "./CardLG";
 import FundLogo from "./FundLogo";
+import FundRating from "@/components/FundRating";
 
 const labelArr = [
-  { key: "year_1", label: "1Y Returns" },
-  { key: "year_3", label: "3Y Returns" },
-  { key: "year_5", label: "5Y Returns" },
+  { key: "return_1y", label: "1Y Returns" },
+  { key: "return_3y", label: "3Y Returns" },
+  { key: "return_5y", label: "5Y Returns" },
   { key: "expense_ratio", label: "Expense Ratio" },
 ];
 
@@ -50,7 +51,7 @@ function RecentlyViewed() {
                 code={fund.code}
                 logoCode={fund.short_code}
                 shortName={fund.short_name + " Fund"}
-                threeYearReturn={fund.returns.year_3}
+                threeYearReturn={fund.return_3y}
               />
             ),
           )}
@@ -72,7 +73,7 @@ function Row({ fund, activeLabelIdx }) {
   };
 
   const key = labelArr[activeLabelIdx].key;
-  let value = key === "expense_ratio" ? fund.expense_ratio : fund.returns[key].toFixed(2);
+  let value = fund[key] ? fund[key] + "%" : "NA";
 
   return (
     <div onClick={handleClick} className="flex min-w-full items-center border-b pb-4 sm:hidden">
@@ -83,15 +84,11 @@ function Row({ fund, activeLabelIdx }) {
         <p className="text-muted-foreground flex items-center text-xs">
           {fund.fund_category}
 
-          {fund.fund_rating && (
-            <span className="ml-1 flex items-center">
-              • {fund.fund_rating} <StarIcon className="fill-muted-foreground text-muted-foreground ml-1 size-3" />
-            </span>
-          )}
+       <FundRating rating={fund.fund_rating} />
         </p>
       </div>
       <div className="ml-auto">
-        <span className="text-sm font-medium">{value}%</span>
+        <span className="text-sm font-medium">{value}</span>
       </div>
     </div>
   );

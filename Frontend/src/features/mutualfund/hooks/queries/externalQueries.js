@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import {
   fetchCategoryFundList,
   fetchChartData,
-  fetchExitLoad,
   fetchFund,
   fetchIndexFunds,
   fetchPopularFunds,
@@ -30,13 +29,6 @@ export const useGetChart = (code) => {
   return useQuery({
     queryKey: ["chartData", code],
     queryFn: () => fetchChartData(code),
-  });
-};
-
-export const useGetExitLoad = (code) => {
-  return useQuery({
-    queryKey: ["exitload", code],
-    queryFn: () => fetchExitLoad(code),
   });
 };
 

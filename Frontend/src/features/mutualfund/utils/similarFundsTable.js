@@ -1,13 +1,12 @@
 export const columnLabels = {
-  "1y": { fullName: "1Y Returns", shortName: "1Y" },
-  "3y": { fullName: "3Y Returns", shortName: "3Y" },
-  "5y": { fullName: "5Y Returns", shortName: "5Y" },
+  return_1y: { fullName: "1Y Returns", shortName: "1Y" },
+  return_3y: { fullName: "3Y Returns", shortName: "3Y" },
+  return_5y: { fullName: "5Y Returns", shortName: "5Y" },
   aum: { fullName: "Fund Size", shortName: "AUM" },
   expense_ratio: { fullName: "Expense Ratio", shortName: "TER" },
 };
 
 export const columnKeys = Object.keys(columnLabels);
-// ["1y", "3y", "5y", "aum", "expense_ratio"];
 
 export const getNewOrder = (clicked, activeColumn, sortOrder) => {
   if (activeColumn === clicked) {
