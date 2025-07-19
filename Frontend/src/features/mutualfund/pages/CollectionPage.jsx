@@ -1,14 +1,14 @@
+import FundRating from "@/components/FundRating";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { ChevronDownIcon, ChevronsLeftRight, StarIcon } from "lucide-react";
+import { ChevronDownIcon, ChevronsLeftRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 import FundLogo from "../components/FundLogo";
+import { collectionConfig } from "../constants/collection";
 import { useGetCategoryFundList } from "../hooks/queries/externalQueries";
 import { columnKeys, columnLabels, getNewOrder, getNextColumn, sortPeersBy, unit } from "../utils/collectionsHelper";
-import { collectionConfig } from "../constants/collection";
-import FundRating from "@/components/FundRating";
 
 function CollectionPage() {
   const [peers, setPeers] = useState();

@@ -1,4 +1,4 @@
-const baseURL = import.meta.env.VITE_HELPER_MF_API_BASE_URL;
+const baseURL = import.meta.env.VITE_MF_API_URL;
 
 export const collectionConfig = {
   "High Returns": {

@@ -25,10 +25,11 @@ export const useIndexFunds = () => {
   });
 };
 
-export const useGetChart = (code) => {
+export const useGetChart = (shceme_code) => {
   return useQuery({
-    queryKey: ["chartData", code],
-    queryFn: () => fetchChartData(code),
+    queryKey: ["chartData", shceme_code],
+    queryFn: () => fetchChartData(shceme_code),
+    enabled: !!shceme_code
   });
 };
 

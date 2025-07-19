@@ -1,7 +1,8 @@
 function CustomTooltipContent({ active, payload, label, coordinate, viewBox }) {
   if (!active || !payload?.length || !coordinate) return null;
 
-  const nav = payload[0].value;
+  // const nav = payload[0].payload.nav;
+  const nav = payload[0].payload.nav.toFixed(2);
 
   const tooltipWidth = 140;
   const padding = 10;
@@ -26,7 +27,7 @@ function CustomTooltipContent({ active, payload, label, coordinate, viewBox }) {
         pointerEvents: "none",
       }}
     >
-      <span className="">NAV: ₹{nav?.toFixed(2)}</span>
+      <span className="">NAV: ₹ {nav}</span>
       <span className="mx-1">|</span>
       <span>{label}</span>
     </div>

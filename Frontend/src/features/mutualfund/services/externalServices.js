@@ -25,18 +25,19 @@ export const fetchCategoryFundList = async (url) => {
   return data.funds;
 };
 
-export const fetchChartData = async (fundCode) => {
-  const { data } = await axios.get(`${chartApiUrl}/mf/api/v6/fund_navs/${fundCode}.json`);
+export const fetchChartData = async (scheme_code) => {
+  const { data } = await axios.get(`${chartApiUrl}/${scheme_code}`);
 
-  const fullChartData = data.map((item) => {
-    const timestamp = item[0];
-    const dateObj = new Date(timestamp * 1000);
-    const date = dateObj.toLocaleDateString("en-GB", {
+  const fullChartData = data.data?.map((entry) => {
+    const [day, month, year] = entry.date.split("-");
+    const d = new Date(`${year}-${month}-${day}`);
+    const dd = d.toLocaleDateString("en-GB", {
       dateStyle: "medium",
       timeZone: "UTC",
     });
-    return { timestamp, date: date, nav: item[1] };
+
+    return { date: dd, nav: Number(entry.nav) };
   });
 
-  return fullChartData;
+  return fullChartData.reverse();
 };
