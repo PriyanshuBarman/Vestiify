@@ -20,7 +20,7 @@ function ChartLegend({ selectedRange, fund }) {
         >
           <CountUp
             end={returnPercent}
-            decimals={1}
+            decimals={2}
             duration={0.7}
             useEasing={true}
             prefix={returnPercent > 0 ? "+" : ""}

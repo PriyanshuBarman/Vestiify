@@ -1,35 +1,34 @@
 import { db } from "../../config/db.config.js";
-import { clearNavCache, fetchNAVData } from "../utils/fetchNAVData.js";
-
-const failedFunds = [];
+import { fetchNAVData, navCache } from "../utils/fetchNAVData.js";
+import { parseDDMMYYYY } from "../utils/parseDDMMYYYY.js";
+import { getYesterdayISTDateObj } from "../utils/getYesterdayISTDateObj.js";
 
 export const mfPortfolioUpdater = async () => {
   console.log("⏳ MF Portfolio Updater Started...");
-  clearNavCache();
+  navCache.clear();
 
-  const yesterdayStr = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+  const yesterday = getYesterdayISTDateObj();
   const portfolios = await db.mfPortfolio.findMany({
     where: {
       latestNavDate: {
-        lt: new Date(yesterdayStr),
+        lt: yesterday,
       },
     },
   });
 
-  console.log(portfolios);
+  const batchSize = 50;
+  for (let i = 0; i < portfolios.length; i += batchSize) {
+    const batch = portfolios.slice(i, i + batchSize);
 
-  for (const fund of portfolios) {
-    try {
-      await updateFund(fund);
-    } catch (err) {
-      failedFunds.push(fund);
-      console.error(` Failed: ${fund.fundCode}`, { error: err.message });
-    }
-  }
-
-  // Retry failed ones once
-  if (failedFunds.length) {
-    await retryFailFunds();
+    await Promise.allSettled(
+      batch.map(async (fund) => {
+        try {
+          await updateFund(fund);
+        } catch (err) {
+          console.error(`❌ Failed: ${fund.schemeCode}`, { error: err.message });
+        }
+      })
+    );
   }
 
   console.log("✅ MF Portfolio Updater Finished.");
@@ -38,16 +37,27 @@ export const mfPortfolioUpdater = async () => {
 // ====================================================================================
 
 async function updateFund(fund) {
-  const { latestNav, prevNav, latestNavDate } = await fetchNAVData(fund.fundCode);
+  // 1. Fetch latest NAV from API
+  const navInfo = await fetchNAVData(fund.schemeCode);
 
+  const apiNavDate = parseDDMMYYYY(navInfo.latestNavDate);
+  const prevNav = fund.latestNav.toNumber();
+
+  // 2. Get stored NAV date from DB (assume fund.latestNavDate is ISO string)
+  const dbNavDate = new Date(fund.latestNavDate);
+
+  // 3. If NavDate not changed(i.e. no new NAV), skip update
+  if (apiNavDate <= dbNavDate) return;
+
+  // 4. Proceed with update logic...
   const units = fund.units.toNumber();
   const invested = fund.invested;
 
-  const current = units * latestNav;
+  const current = units * navInfo.latestNav;
   const pnl = current - invested;
   const returnPercent = (pnl / invested) * 100;
-  const dayChangeValue = units * (latestNav - prevNav);
-  const dayChangePercent = ((latestNav - prevNav) / prevNav) * 100;
+  const dayChangeValue = units * (navInfo.latestNav - prevNav);
+  const dayChangePercent = ((navInfo.latestNav - prevNav) / prevNav) * 100;
 
   await db.mfPortfolio.update({
     where: { id: fund.id },
@@ -55,22 +65,10 @@ async function updateFund(fund) {
       current,
       pnl,
       returnPercent,
-      latestNav,
-      latestNavDate: new Date(latestNavDate),
+      latestNav: navInfo.latestNav,
+      latestNavDate: apiNavDate,
       dayChangeValue,
       dayChangePercent,
     },
   });
-}
-
-async function retryFailFunds() {
-  console.log(`🔁 Retrying ${failedFunds.length} failed fund updates...`);
-  for (const fund of failedFunds) {
-    try {
-      await updateFund(fund);
-      console.log(`Retry success: ${fund.fundCode}`);
-    } catch (err) {
-      console.error(`Retry failed: ${fund.fundCode}`, { error: err.message });
-    }
-  }
 }

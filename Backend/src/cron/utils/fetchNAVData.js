@@ -1,27 +1,22 @@
 import axios from "axios";
-import { EXTERNAL_API_BASE_URL } from "../../config/env.config.js";
 
-const navCache = new Map();
+export const navCache = new Map();
 
-export const fetchNAVData = async (fundCode) => {
-  if (navCache.has(fundCode)) return navCache.get(fundCode);
+export const fetchNAVData = async (schemeCode) => {
+  if (navCache.has(schemeCode)) return navCache.get(schemeCode);
 
-  const { data } = await axios.get(
-    `${EXTERNAL_API_BASE_URL}/mf/api/v5/fund_schemes/${fundCode}.json`
-  );
+  try {
+    const { data } = await axios.get(`https://api.mfapi.in/mf/${schemeCode}/latest`);
 
-  console.log("Latest Nav: ", data[0].nav); // Testing (will be removed)
+    const latestEntry = data.data[0];
+    const latestNav = parseFloat(latestEntry.nav);
+    const latestNavDate = latestEntry.date;
 
-  const latestNav = data[0].nav.nav;
-  const prevNav = data[0].last_nav.nav;
-  const latestNavDate = data[0].nav.date;
+    const navInfo = { latestNav, latestNavDate };
+    navCache.set(schemeCode, navInfo);
 
-  const navInfo = { latestNav, prevNav, latestNavDate };
-  navCache.set(fundCode, navInfo);
-
-  return navInfo;
-};
-
-export const clearNavCache = () => {
-  navCache.clear();
+    return navInfo;
+  } catch (error) {
+    throw new Error(`Error at fetchNAVData: ${error.message}`);
+  }
 };

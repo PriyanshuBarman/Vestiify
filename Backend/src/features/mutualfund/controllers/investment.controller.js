@@ -20,7 +20,7 @@ export const handleInvest = asyncHandler(async (req, res) => {
     schemeCode,
     fundName,
     latestNav,
-    latestNavDate: new Date(latestNavDate),
+    latestNavDate: latestNavDate,
     fundType: fundType.toUpperCase(),
     logoCode,
     shortName,
