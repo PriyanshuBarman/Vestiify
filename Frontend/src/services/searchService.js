@@ -1,8 +1,7 @@
 import axios from "axios";
-
-const searchApi = import.meta.env.VITE_SEARCH_API_URL;
+import { VITE_SEARCH_API_BASE_URL } from "@/config/env";
 
 export const fetchSearchResults = async (query) => {
-  const { data } = await axios.get(`${searchApi}query=${query}`);
+  const { data } = await axios.get(`${VITE_SEARCH_API_BASE_URL}query=${query}`);
   return data.data.funds;
 };

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
+import { VITE_BACKEND_BASE_URL } from "@/config/env";
 
 export const useGoogleAuth = () => {
   const navigate = useNavigate();
@@ -9,7 +10,7 @@ export const useGoogleAuth = () => {
   const fnc = useGoogleLogin({
     onSuccess: async ({ code }) => {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/auth/google`,
+        `${VITE_BACKEND_BASE_URL}/auth/google`,
         { code },
         { withCredentials: true },
       );

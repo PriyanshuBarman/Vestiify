@@ -10,10 +10,11 @@ import { userRoutes } from "./src/features/user/routes/user.routes.js";
 import { walletRoutes } from "./src/features/wallet/routes/index.routes.js";
 import { errorHandler } from "./src/shared/middlewares/errorHandler.js";
 import { notFoundHandler } from "./src/shared/middlewares/notFoundHandler.js";
+import { FRONTEND_URL } from "./src/config/env.config.js";
 
 const app = express();
 
-app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
+app.use(cors({ origin: FRONTEND_URL, credentials: true }));
 
 app.use(cookieParser());
 app.use(express.json());
@@ -32,6 +33,8 @@ app.use("/ping", (req, res) => {
 app.all("*", notFoundHandler);
 app.use(errorHandler);
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log("Server is running");
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

@@ -1,10 +1,9 @@
 import axios from "axios";
-
-const baseURL = import.meta.env.VITE_BACKEND_URL;
+import { VITE_BACKEND_BASE_URL } from "@/config/env";
 
 export const processInvestment = async (amount, fund) => {
   const { data } = await axios.post(
-    `${baseURL}/mutual-funds/invest`,
+    `${VITE_BACKEND_BASE_URL}/mutual-funds/invest`,
     {
       investmentAmt: Number(amount),
       schemeCode: fund.scheme_code,
@@ -22,16 +21,22 @@ export const processInvestment = async (amount, fund) => {
 };
 
 export const fetchPortfolio = async () => {
-  const { data } = await axios.get(`${baseURL}/mutual-funds/portfolio`, {
-    withCredentials: true,
-  });
+  const { data } = await axios.get(
+    `${VITE_BACKEND_BASE_URL}/mutual-funds/portfolio`,
+    {
+      withCredentials: true,
+    },
+  );
 
   return data.portfolio;
 };
 
 export const fetchPortfolioSummary = async () => {
-  const { data } = await axios.get(`${baseURL}/mutual-funds/portfolio/summary`, {
-    withCredentials: true,
-  });
+  const { data } = await axios.get(
+    `${VITE_BACKEND_BASE_URL}/mutual-funds/portfolio/summary`,
+    {
+      withCredentials: true,
+    },
+  );
   return data.portfolioSummary;
 };

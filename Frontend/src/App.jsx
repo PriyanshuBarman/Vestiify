@@ -7,6 +7,7 @@ import { RouterProvider } from "react-router";
 import { Toaster } from "sonner";
 import { routes } from "./routes";
 import { selectTheme } from "./store/slices/themeSlice";
+import { VITE_GOOGLE_CLIENT_ID } from "@/config/env";
 
 function App() {
   const queryClient = useQueryClient();
@@ -25,7 +26,7 @@ function App() {
   const theme = useSelector(selectTheme);
 
   return (
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+    <GoogleOAuthProvider clientId={VITE_GOOGLE_CLIENT_ID}>
       <RouterProvider router={routes} />
       <Toaster theme={theme} position="top-right" richColors />
       <ReactQueryDevtools />

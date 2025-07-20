@@ -2,8 +2,8 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { ApiError } from "../../../shared/utils/apiError.utils.js";
 import { userRepo } from "../../user/repositories/user.repository.js";
+import { JWT_SECRET } from "../../../config/env.config.js";
 
-const JWT_SECRET = process.env.JWT_SECRET;
 const TOKEN_EXPIRY = "7d";
 
 export const signupUser = async (name, email, password) => {

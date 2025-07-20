@@ -1,12 +1,15 @@
 import axios from "axios";
-
-const baseUrl = import.meta.env.VITE_BACKEND_URL;
+import { VITE_BACKEND_BASE_URL } from "@/config/env";
 
 export const loginUser = async (previousState, formData) => {
   const email = formData.get("email");
   const password = formData.get("password");
   try {
-    const { data } = await axios.post(`${baseUrl}/auth/login`, { email, password }, { withCredentials: true });
+    const { data } = await axios.post(
+      `${VITE_BACKEND_BASE_URL}/auth/login`,
+      { email, password },
+      { withCredentials: true },
+    );
 
     if (data.success) return data;
   } catch (error) {
@@ -22,7 +25,11 @@ export const signupUser = async (previousState, formData) => {
   const password = formData.get("password");
 
   try {
-    const { data } = await axios.post(`${baseUrl}/auth/signup`, { name, email, password }, { withCredentials: true });
+    const { data } = await axios.post(
+      `${VITE_BACKEND_BASE_URL}/auth/signup`,
+      { name, email, password },
+      { withCredentials: true },
+    );
 
     if (data.success) return data;
   } catch (error) {
@@ -35,7 +42,7 @@ export const signupUser = async (previousState, formData) => {
 
 export const logoutUser = async () => {
   try {
-    const { data } = await axios.get(`${baseUrl}/auth/logout`, {
+    const { data } = await axios.get(`${VITE_BACKEND_BASE_URL}/auth/logout`, {
       withCredentials: true,
     });
     if (data.success) return data;

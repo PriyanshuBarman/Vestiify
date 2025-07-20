@@ -1,10 +1,11 @@
 import { asyncHandler } from "../../../shared/utils/asyncHandler.utils.js";
 import * as authService from "../services/auth.service.js";
+import { NODE_ENV } from "../../../config/env.config.js";
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+  secure: NODE_ENV === "production",
+  sameSite: NODE_ENV === "production" ? "none" : "strict",
   maxAge: 7 * 24 * 60 * 60 * 1000,
 };
 
@@ -34,8 +35,8 @@ export const logout = (req, res) => {
   return res
     .clearCookie("token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+      secure: NODE_ENV === "production",
+      sameSite: NODE_ENV === "production" ? "none" : "strict",
     })
     .status(200)
     .json({ success: true, message: "User Logged Out Successfully" });
