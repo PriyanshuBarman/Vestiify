@@ -67,7 +67,7 @@ model MfPortfolio {
   id               String   @id @default(uuid())
   userId           String
   user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  fundCode         String
+  schemeCode       Int
   fundName         String
   shortName        String
   fundType         FundType
@@ -84,7 +84,7 @@ model MfPortfolio {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @default(now()) @updatedAt
 
-  @@unique([userId, fundCode])
+  @@unique([userId, schemeCode])
   @@map("mf_portfolio")
 }
 
@@ -101,7 +101,7 @@ model MfHolding {
   id           String   @id @default(uuid())
   userId       String
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  fundCode     String
+  schemeCode   Int
   fundName     String
   purchaseNav  Decimal  @db.Decimal(10, 4)
   units        Decimal  @db.Decimal(10, 4)
@@ -115,14 +115,14 @@ model MfHolding {
 // ======== MfWatchlist =======
 
 model MfWatchlist {
-  id        String   @id @default(uuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  fundCode  String
-  fundName  String
-  createdAt DateTime @default(now())
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  schemeCode Int
+  fundName   String
+  createdAt  DateTime @default(now())
 
-  @@unique([userId, fundCode])
+  @@unique([userId, schemeCode])
   @@map("mf_watchlist")
 }
 

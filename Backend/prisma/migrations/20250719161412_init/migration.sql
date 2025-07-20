@@ -34,7 +34,7 @@ CREATE TABLE `transaction` (
 CREATE TABLE `mf_portfolio` (
     `id` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
-    `fundCode` VARCHAR(191) NOT NULL,
+    `schemeCode` INTEGER NOT NULL,
     `fundName` VARCHAR(191) NOT NULL,
     `shortName` VARCHAR(191) NOT NULL,
     `fundType` ENUM('EQUITY', 'DEBT', 'HYBRID', 'OTHER') NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE `mf_portfolio` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `mf_portfolio_userId_fundCode_key`(`userId`, `fundCode`),
+    UNIQUE INDEX `mf_portfolio_userId_schemeCode_key`(`userId`, `schemeCode`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -59,7 +59,7 @@ CREATE TABLE `mf_portfolio` (
 CREATE TABLE `mf_holding` (
     `id` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
-    `fundCode` VARCHAR(191) NOT NULL,
+    `schemeCode` INTEGER NOT NULL,
     `fundName` VARCHAR(191) NOT NULL,
     `purchaseNav` DECIMAL(10, 4) NOT NULL,
     `units` DECIMAL(10, 4) NOT NULL,
@@ -74,11 +74,11 @@ CREATE TABLE `mf_holding` (
 CREATE TABLE `mf_watchlist` (
     `id` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
-    `fundCode` VARCHAR(191) NOT NULL,
+    `schemeCode` INTEGER NOT NULL,
     `fundName` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `mf_watchlist_userId_fundCode_key`(`userId`, `fundCode`),
+    UNIQUE INDEX `mf_watchlist_userId_schemeCode_key`(`userId`, `schemeCode`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

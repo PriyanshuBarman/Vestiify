@@ -1,7 +1,7 @@
 import { holdingRepo } from "../repositories/index.repository.js";
 
-export const fifoRedemption = async (userId, fundCode, redemptionUnits) => {
-  const holdings = await holdingRepo.findMany({ userId, fundCode });
+export const fifoRedemption = async (userId, schemeCode, redemptionUnits) => {
+  const holdings = await holdingRepo.findMany({ userId, schemeCode });
 
   let remainingUnits = redemptionUnits;
   let costBasis = 0;

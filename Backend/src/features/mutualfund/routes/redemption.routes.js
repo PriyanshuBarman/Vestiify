@@ -9,14 +9,14 @@ import {
 export const redemptionRoutes = Router();
 
 redemptionRoutes.delete(
-  "/:fundCode?",
+  "/:schemeCode?",
   isAuthenticated,
   validateFullRedemption,
   redemptionController.fullRedemption
 );
 
 redemptionRoutes.put(
-  "/:fundCode?",
+  "/:schemeCode?",
   isAuthenticated,
   validatePartialRedemption,
   redemptionController.partialRedemption

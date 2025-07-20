@@ -5,7 +5,8 @@ export const validateInvestment = (req, res, next) => {
 
   const requiredFields = [
     "investmentAmt",
-    "fundCode",
+    "schemeCode",
+    "schemeCode",
     "fundName",
     "latestNav",
     "latestNavDate",

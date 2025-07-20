@@ -4,9 +4,9 @@ import { walletRepo, tnxRepo } from "../../../shared/repositories/index.reposito
 import { holdingRepo, portfolioRepo } from "../repositories/index.repository.js";
 import { calculateUpdatedPortfolio } from "../utils/redemption.utils.js";
 
-export const fullRedemption = async (userId, fundCode) => {
+export const fullRedemption = async (userId, schemeCode) => {
   const fund = await portfolioRepo.findUnique({
-    userId_fundCode: { userId, fundCode },
+    userId_schemeCode: { userId, schemeCode },
   });
 
   if (!fund) throw new ApiError(400, "Not invested in this fund");
@@ -16,14 +16,14 @@ export const fullRedemption = async (userId, fundCode) => {
 
   await portfolioRepo.delete({ id: fund.id });
 
-  await holdingRepo.deleteMany({ userId, fundCode });
+  await holdingRepo.deleteMany({ userId, schemeCode });
 
   await postRedemptionOperations(userId, fund, redemptionAmt, redemptionUnits); // helper
 };
 
-export const partialRedemption = async (userId, fundCode, redemptionAmt) => {
+export const partialRedemption = async (userId, schemeCode, redemptionAmt) => {
   const fund = await portfolioRepo.findUnique({
-    userId_fundCode: { userId, fundCode },
+    userId_schemeCode: { userId, schemeCode },
   });
 
   // ------------------------------------------------------------------------------ Validations
@@ -31,14 +31,14 @@ export const partialRedemption = async (userId, fundCode, redemptionAmt) => {
 
   if (redemptionAmt > fund.current.toNumber()) throw new ApiError(400, "Insufficient fund balance");
 
-  if (redemptionAmt === fund.current.toNumber()) return fullRedemption(userId, fundCode);
+  if (redemptionAmt === fund.current.toNumber()) return fullRedemption(userId, schemeCode);
   // ------------------------------------------------------------------------------// Validations
 
   const redemptionUnits = redemptionAmt / fund.latestNav.toNumber();
-  const costBasis = await fifoRedemption(userId, fundCode, redemptionUnits);
+  const costBasis = await fifoRedemption(userId, schemeCode, redemptionUnits);
 
   await portfolioRepo.update(
-    { userId_fundCode: { userId, fundCode } },
+    { userId_schemeCode: { userId, schemeCode } },
     calculateUpdatedPortfolio(fund, costBasis, redemptionAmt, redemptionUnits)
   );
 
@@ -50,7 +50,7 @@ const postRedemptionOperations = async (userId, fund, redemptionAmt, redemptionU
   await tnxRepo.create({
     userId,
     amount: redemptionAmt,
-    code: fund.fundCode,
+    code: fund.schemeCode.toString(),
     name: fund.fundName,
     quantity: redemptionUnits,
     price: fund.latestNav.toNumber(),

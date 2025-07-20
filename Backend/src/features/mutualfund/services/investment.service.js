@@ -5,7 +5,17 @@ import { calculateUpdatedPortfolio } from "../utils/investment.utils.js";
 
 // Main Handler
 export const processInvestment = async (data) => {
-  const { userId, investmentAmt, fundCode, fundName, latestNav, latestNavDate, fundType, logoCode, shortName } = data;
+  const {
+    userId,
+    investmentAmt,
+    schemeCode,
+    fundName,
+    latestNav,
+    latestNavDate,
+    fundType,
+    logoCode,
+    shortName,
+  } = data;
 
   const balance = await walletRepo.checkBalance(userId);
   if (investmentAmt > balance) throw new ApiError(400, "Insufficient wallet balance");
@@ -13,14 +23,14 @@ export const processInvestment = async (data) => {
   const purchaseUnits = investmentAmt / latestNav;
 
   const prevInv = await portfolioRepo.findUnique({
-    userId_fundCode: { userId, fundCode },
+    userId_schemeCode: { userId, schemeCode },
   });
 
   // ------------------------------------------------------- Checking it's Fresh or Re investment
   if (!prevInv) {
     await portfolioRepo.create({
       userId,
-      fundCode,
+      schemeCode,
       fundName,
       fundType,
       units: purchaseUnits,
@@ -36,11 +46,10 @@ export const processInvestment = async (data) => {
     await portfolioRepo.update({ id: prevInv.id }, { ...updatedValues, latestNav, latestNavDate });
   }
   // --------------------------------------------------------------------------------------------
-
   // Below are the Common Post-investment operations for both (Fresh or Re investment)
   await holdingRepo.create({
     userId,
-    fundCode,
+    schemeCode,
     fundName,
     amount: investmentAmt,
     units: purchaseUnits,
@@ -50,7 +59,7 @@ export const processInvestment = async (data) => {
   await tnxRepo.create({
     userId,
     amount: investmentAmt,
-    code: fundCode,
+    code: schemeCode.toString(),
     name: fundName,
     quantity: purchaseUnits,
     price: latestNav,

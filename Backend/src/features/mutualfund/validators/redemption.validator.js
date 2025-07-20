@@ -1,10 +1,11 @@
 import { ApiError } from "../../../shared/utils/apiError.utils.js";
 
 export const validatePartialRedemption = (req, res, next) => {
-  const { fundCode } = req.params;
+  const { schemeCode } = req.params;
   const { redemptionAmt } = req.body;
 
-  if (!fundCode) throw new ApiError(400, "fundCode required");
+  if (!schemeCode) throw new ApiError(400, "schemeCode required");
+  if (isNaN(schemeCode)) throw new ApiError(400, "invalid schemeCode");
 
   if (!redemptionAmt) throw new ApiError(400, "redemptionAmt required");
 
@@ -14,9 +15,9 @@ export const validatePartialRedemption = (req, res, next) => {
 };
 
 export const validateFullRedemption = (req, res, next) => {
-  const { fundCode } = req.params;
+  const { schemeCode } = req.params;
 
-  if (!fundCode) throw new ApiError(400, "fundCode required");
-
+  if (!schemeCode) throw new ApiError(400, "schemeCode required");
+  if (isNaN(schemeCode)) throw new ApiError(400, "invalid schemeCode");
   next();
 };
