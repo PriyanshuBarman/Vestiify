@@ -7,7 +7,7 @@ export const processInvestment = async (amount, fund) => {
     `${baseURL}/mutual-funds/invest`,
     {
       investmentAmt: Number(amount),
-      fundCode: fund.code,
+      schemeCode: fund.scheme_code,
       fundName: fund.name,
       fundType: fund.category,
       logoCode: fund.short_code,
