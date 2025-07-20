@@ -51,7 +51,7 @@ function MobileTable({ portfolio, sortBy, setSortBy, order, setOrder }) {
 
         <TableBody>
           {portfolio?.map((item) => (
-            <TableRow key={item.fundCode}>
+            <TableRow key={item.schemeCode}>
               <TableCell className="flex items-center gap-4 py-4 pl-4">
                 <FundLogo logoCode={item.logoCode} />
 

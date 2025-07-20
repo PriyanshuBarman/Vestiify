@@ -33,8 +33,14 @@ function RecentlyViewed() {
       <h2 className="pl-4 font-medium sm:pl-0 sm:text-xl">Recently Viewed</h2>
 
       <div className="mt-6 flex items-center justify-between pl-4 sm:px-0">
-        <h4 className="text-muted-foreground text-[0.8rem] font-medium sm:text-base">Fund Name</h4>
-        <Button onClick={handleClick} variant="ghost" className="flex gap-1 text-[0.8rem] sm:hidden">
+        <h4 className="text-muted-foreground text-[0.8rem] font-medium sm:text-base">
+          Fund Name
+        </h4>
+        <Button
+          onClick={handleClick}
+          variant="ghost"
+          className="flex gap-1 text-[0.8rem] sm:hidden"
+        >
           <ChevronsUpDown strokeWidth={2.5} />
           {labelArr[activeLabelIdx].label}
         </Button>
@@ -44,15 +50,13 @@ function RecentlyViewed() {
         <div className="mt-4 w-full gap-4 space-y-5 px-4 sm:my-4 sm:flex sm:space-y-0 sm:px-0">
           {recentlyViewedFunds?.map((fund) =>
             isMobile ? (
-              <Row key={fund.code} fund={fund} activeLabelIdx={activeLabelIdx} />
-            ) : (
-              <CardLG
-                key={fund.code}
-                code={fund.code}
-                logoCode={fund.short_code}
-                shortName={fund.short_name + " Fund"}
-                threeYearReturn={fund.return_3y}
+              <Row
+                key={fund.id}
+                fund={fund}
+                activeLabelIdx={activeLabelIdx}
               />
+            ) : (
+              <CardLG key={fund.id} fund={fund} />
             ),
           )}
         </div>
@@ -68,7 +72,7 @@ export default RecentlyViewed;
 function Row({ fund, activeLabelIdx }) {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate(`/mutual-funds/${fund?.code}`);
+    navigate(`/mutual-funds/${fund?.scheme_code}`);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -76,7 +80,10 @@ function Row({ fund, activeLabelIdx }) {
   let value = fund[key] ? fund[key] + "%" : "NA";
 
   return (
-    <div onClick={handleClick} className="flex min-w-full items-center border-b pb-4 sm:hidden">
+    <div
+      onClick={handleClick}
+      className="flex min-w-full items-center border-b pb-4 sm:hidden"
+    >
       <FundLogo logoCode={fund.short_code} />
 
       <div className="ml-4">
@@ -84,7 +91,7 @@ function Row({ fund, activeLabelIdx }) {
         <p className="text-muted-foreground flex items-center text-xs">
           {fund.fund_category}
 
-       <FundRating rating={fund.fund_rating} />
+          <FundRating rating={fund.fund_rating} />
         </p>
       </div>
       <div className="ml-auto">

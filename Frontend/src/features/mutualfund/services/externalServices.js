@@ -3,13 +3,17 @@ import axios from "axios";
 const chartApiUrl = import.meta.env.VITE_MF_CHART_API_URL;
 const baseURL = import.meta.env.VITE_MF_API_URL;
 
-export const fetchFund = async (kuvera_id) => {
-  const { data } = await axios.get(`${baseURL}/funds/code/${kuvera_id}`);
+export const fetchFund = async (schemeCode) => {
+  const { data } = await axios.get(
+    `${baseURL}/funds/scheme_code/${schemeCode}`,
+  );
   return data.fund;
 };
 
 export const fetchIndexFunds = async () => {
-  const { data } = await axios.get(`${baseURL}/funds?plan=GROWTH&fund_category=index funds&limit=4`);
+  const { data } = await axios.get(
+    `${baseURL}/funds?plan=GROWTH&fund_category=index funds&limit=4`,
+  );
   return data.funds;
 };
 

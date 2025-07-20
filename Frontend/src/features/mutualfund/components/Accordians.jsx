@@ -6,13 +6,16 @@ import {
 } from "@/components/ui/accordion";
 import { Avatar } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { User } from "lucide-react";
 import { useState } from "react";
 import FundLogo from "./FundLogo";
 import ReturnCalculator from "./ReturnCalculator";
-import SimilarFundsTable from "./SimilarFundsTable";
+import SimilarFundsTableDesktop from "./SimilarFundsTableDesktop";
+import SimilarFundsTableMobile from "./SimilarFundsTableMobile";
 
-function Accordians({ fund = {} }) {
+function Accordians({ fund }) {
+  const isMobile = useIsMobile();
   const [textClamp, setTextClamp] = useState(true);
 
   return (
@@ -51,7 +54,7 @@ function Accordians({ fund = {} }) {
                 Portfolio turnover
               </h5>
               <p className="text-muted-foreground sm:text-foreground mt-1 sm:mt-2 sm:text-base">
-                {parseFloat(fund.portfolio_turnover).toFixed(2) || "Nill"}%
+                {parseFloat(fund.portfolio_turnover).toFixed(2) || "NA"}%
               </p>
             </li>
             <li>
@@ -59,7 +62,7 @@ function Accordians({ fund = {} }) {
                 Exit load
               </h5>
               <p className="text-muted-foreground sm:text-foreground mt-1 sm:mt-2 sm:text-base">
-                {fund.exit_load || "Nill"}
+                {fund.exit_load || "NA"}
               </p>
             </li>
             <li>
@@ -84,7 +87,11 @@ function Accordians({ fund = {} }) {
           Similar funds
         </AccordionTrigger>
         <AccordionContent className="py-4">
-          <SimilarFundsTable fund={fund} />
+          {isMobile ? (
+            <SimilarFundsTableMobile fund={fund} />
+          ) : (
+            <SimilarFundsTableDesktop fund={fund} />
+          )}
         </AccordionContent>
       </AccordionItem>
 

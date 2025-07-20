@@ -11,8 +11,8 @@ export const mutualFundRoutes = {
   element: <MutualFundLayout />,
   children: [
     { index: true, element: <HomePage /> },
-    { path: ":kuvera_id", element: <FundPage /> },
+    { path: ":scheme_code", element: <FundPage /> },
     { path: "collections/:name", element: <CollectionPage /> },
-    { path: "one-time/:fundCode", element: <OneTimeInvestPage /> },
+    { path: "one-time/:scheme_code", element: <OneTimeInvestPage /> },
   ],
 };

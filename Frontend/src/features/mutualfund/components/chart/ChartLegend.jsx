@@ -10,7 +10,7 @@ const returnMapping = {
   All: "return_since_inception",
 };
 
-function ChartLegend({ selectedRange, fund = {} }) {
+function ChartLegend({ selectedRange, fund }) {
   const returnPercent = fund[returnMapping[selectedRange]]; // return-percent for the selected range
   return (
     <CardHeader className="gap-0 pl-4">

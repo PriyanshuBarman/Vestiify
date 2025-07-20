@@ -19,7 +19,7 @@ function DesktopTable({ portfolio }) {
 
         <TableBody>
           {portfolio?.map((item) => (
-            <TableRow onClick={() => navigate(`/mutual-funds/${item.fundCode}`)} key={item.fundCode}>
+            <TableRow onClick={() => navigate(`/mutual-funds/${item.schemeCode}`)} key={item.schemeCode}>
               <TableCell className="flex items-center gap-8 py-4 pl-8">
                 <FundLogo logoCode={item.logoCode} />
                 <div>

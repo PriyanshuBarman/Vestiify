@@ -1,5 +1,11 @@
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardFooter, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardTitle,
+} from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useState } from "react";
@@ -7,7 +13,8 @@ import CountUp from "react-countup";
 
 const calculateAbsoluteReturn = (annualizedReturn, years) => {
   const annualizedReturnDecimal = annualizedReturn / 100;
-  const absoluteReturnDecimal = Math.pow(1 + annualizedReturnDecimal, years) - 1;
+  const absoluteReturnDecimal =
+    Math.pow(1 + annualizedReturnDecimal, years) - 1;
 
   const absoluteReturnPercentage = absoluteReturnDecimal * 100;
   return absoluteReturnPercentage.toFixed(2);
@@ -15,10 +22,12 @@ const calculateAbsoluteReturn = (annualizedReturn, years) => {
 
 function ReturnCalculator({ fund }) {
   const [amount, setAmount] = useState(20000);
-  const [percentage, setPercentage] = useState(fund?.return_1y);
+  const [percentage, setPercentage] = useState(fund.return_1y);
   const debouncedValue = useDebounce(amount, 900);
 
-  const value = Math.round(debouncedValue + (debouncedValue * percentage) / 100);
+  const value = Math.round(
+    debouncedValue + (debouncedValue * percentage) / 100,
+  );
 
   const updatePercentage = (percentage, n) => {
     const absoluteReturn = calculateAbsoluteReturn(percentage, n);
@@ -40,8 +49,12 @@ function ReturnCalculator({ fund }) {
       </CardTitle>
 
       <CardContent>
-        <span className="text-primary align-middle text-lg font-medium">${amount}</span>
-        <span className="ml-4 align-middle sm:ml-2 sm:text-lg sm:font-medium">one-time</span>
+        <span className="text-primary align-middle text-lg font-medium">
+          ${amount}
+        </span>
+        <span className="ml-4 align-middle sm:ml-2 sm:text-lg sm:font-medium">
+          one-time
+        </span>
       </CardContent>
 
       <Slider
@@ -58,22 +71,22 @@ function ReturnCalculator({ fund }) {
         <div className="ml-6 flex gap-2">
           <Badge
             variant="ghost"
-            onClick={() => updatePercentage(fund?.return_1y, 1)}
-            className={`sm:bg-transparent sm:text-base ${percentage === fund?.return_1y && "bg-primary/10 text-primary"}`}
+            onClick={() => updatePercentage(fund.return_1y, 1)}
+            className={`sm:bg-transparent sm:text-base ${percentage === fund.return_1y && "bg-primary/10 text-primary"}`}
           >
             1 years
           </Badge>
           <Badge
             variant="ghost"
-            onClick={() => updatePercentage(fund?.return_3y, 3)}
-            className={`sm:bg-transparent sm:text-base ${percentage === fund?.return_3y && "bg-primary/10 text-primary"}`}
+            onClick={() => updatePercentage(fund.return_3y, 3)}
+            className={`sm:bg-transparent sm:text-base ${percentage === fund.return_3y && "bg-primary/10 text-primary"}`}
           >
             3 years
           </Badge>
           <Badge
             variant="ghost"
-            onClick={() => updatePercentage(fund?.return_5y, 5)}
-            className={`sm:bg-transparent sm:text-base ${percentage === fund?.return_5y && "bg-primary/10 text-primary"}`}
+            onClick={() => updatePercentage(fund.return_5y, 5)}
+            className={`sm:bg-transparent sm:text-base ${percentage === fund.return_5y && "bg-primary/10 text-primary"}`}
           >
             5 years
           </Badge>

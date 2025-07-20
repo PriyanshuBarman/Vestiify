@@ -3,7 +3,10 @@ import { trendingStocks } from "@/constants/search";
 import { useCtrlKSearchToggle } from "@/hooks/useCtrlKSearchToggle";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useSearchResults } from "@/hooks/useSearchResults";
-import { addToSearchHistory, setIsSearchOpen } from "@/store/slices/searchSlice";
+import {
+  addToSearchHistory,
+  setIsSearchOpen,
+} from "@/store/slices/searchSlice";
 import { Loader2Icon, SearchIcon, XIcon } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -101,7 +104,7 @@ const SearchDesktop = () => {
             onFocus={() => dispatch(setIsSearchOpen(true))}
             // onKeyDown={handleKeyDown}
             placeholder="Search "
-            className={`!bg-background min-w-full text-foreground rounded-lg border px-12 py-2 outline-none ${isSearchOpen && "rounded-b-none border"}`}
+            className={`!bg-background text-foreground min-w-full rounded-lg border px-12 py-2 outline-none ${isSearchOpen && "rounded-b-none border"}`}
           />
           <button
             disabled={isLoading}
@@ -112,10 +115,18 @@ const SearchDesktop = () => {
               searchBarRef.current.focus();
             }}
           >
-            {isLoading ? <Loader2Icon className="text-primary animate-spin" /> : <XIcon size={18} />}
+            {isLoading ? (
+              <Loader2Icon className="text-primary animate-spin" />
+            ) : (
+              <XIcon size={18} />
+            )}
           </button>
 
-          <p className={`${displayQuery?.length && "hidden"} absolute right-6 text-xs`}>Ctrl+K</p>
+          <p
+            className={`${displayQuery?.length && "hidden"} absolute right-6 text-xs`}
+          >
+            Ctrl+K
+          </p>
         </div>
 
         {/* ============================// SearchBar ============================ */}
@@ -128,9 +139,20 @@ const SearchDesktop = () => {
               <LoadingSkeleton isLoading={isLoading} />
 
               {searchResult && !isLoading && (
-                <SearchResult {...{ searchResult, handleResultClick, activeIdx, searchCategory }} />
+                <SearchResult
+                  {...{
+                    searchResult,
+                    handleResultClick,
+                    activeIdx,
+                    searchCategory,
+                  }}
+                />
               )}
-              {!searchResult && !isLoading && <SearchHistory {...{ handleResultClick, activeIdx, searchCategory }} />}
+              {!searchResult && !isLoading && (
+                <SearchHistory
+                  {...{ handleResultClick, activeIdx, searchCategory }}
+                />
+              )}
               {!searchResult?.length && !searchHistory.length && !isLoading && (
                 <TrendingSearches activeIdx={activeIdx} />
               )}

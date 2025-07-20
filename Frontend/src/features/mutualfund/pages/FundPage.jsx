@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { setIsSearchOpen } from "@/store/slices/searchSlice";
-import { Bookmark, Search } from "lucide-react";
+import { Bookmark, LockKeyholeIcon, Search } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import Accordians from "../components/Accordians";
@@ -14,8 +14,8 @@ import RecentlyViewed from "../components/RecentlyViewed";
 import { useGetFundData } from "../hooks/queries/externalQueries";
 
 function FundPage() {
-  const { kuvera_id } = useParams();
-  const { data: fund } = useGetFundData(kuvera_id);
+  const { scheme_code } = useParams();
+  const { data: fund = {} } = useGetFundData(scheme_code);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -30,28 +30,38 @@ function FundPage() {
       <div className="h-full w-full space-y-4 text-inherit sm:space-y-6 lg:w-[67%]">
         <div className="px-4">
           <div className="flex justify-between">
-            <FundLogo logoCode={fund?.short_code} className="border sm:size-13" />
+            <FundLogo
+              logoCode={fund.short_code}
+              className="border sm:size-13"
+            />
             <div className="icons flex items-center gap-8">
               <Search onClick={handleSearchClick} />
               <Bookmark />
             </div>
           </div>
 
-          <h2 className="Fund-name mt-4 min-h-[1.5rem] text-lg font-medium sm:text-2xl">{fund?.name}</h2>
+          <h2 className="Fund-name mt-4 min-h-[1.5rem] text-lg font-medium sm:text-2xl">
+            {fund.name}
+          </h2>
 
           {/* Fund Category, Risk Level Badges */}
           <div className="text-muted-foreground/90 sm:text-foreground flex items-center sm:mt-4 sm:space-x-3">
             <Badge variant="mutualFund" className="pl-0">
-              {fund?.fund_type}
+              {fund.fund_type}
             </Badge>
-            <Badge variant="mutualFund">{fund?.fund_category}</Badge>
-            <Badge variant="mutualFund">{fund?.crisil_rating}</Badge>
-            {fund?.lock_in_period > 0 && (
-              <Badge variant="mutualFund" className="text-primary border-primary">
+            <Badge variant="mutualFund">{fund.fund_category}</Badge>
+            <Badge variant="mutualFund">{fund.crisil_rating}</Badge>
+            {fund.lock_in_period > 0 && (
+              <Badge
+                variant="mutualFund"
+                className="text-primary border-primary"
+              >
                 <div>
                   <LockKeyholeIcon className="size-5" />
                 </div>
-                <span className="ml-1.5 text-sm leading-0">{fund?.lock_in_period}Y Lock in</span>
+                <span className="ml-1.5 text-sm leading-0">
+                  {fund.lock_in_period}Y Lock in
+                </span>
               </Badge>
             )}
           </div>
@@ -59,7 +69,7 @@ function FundPage() {
 
         <Chart fund={fund} />
         <FundDescription fund={fund} />
-        <Accordians fund={fund} code={kuvera_id} />
+        <Accordians fund={fund} />
         <RecentlyViewed />
         {isMobile && <PurchaseBtns fund={fund} />}
       </div>

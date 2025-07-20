@@ -1,0 +1,76 @@
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { ChevronsUpDown } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router";
+import {
+  columnLabels,
+  getNextColumn,
+  sortPeersBy,
+} from "../utils/similarFundsTable";
+
+function SimilarFundsTableMobile({ fund }) {
+  const [activeColumn, setActiveColumn] = useState("return_1y");
+  const [peers, setPeers] = useState(fund.comparison || []);
+
+  useEffect(() => setPeers(fund.comparison || []), [fund.comparison]);
+
+  function handleSortClick() {
+    const next = getNextColumn(activeColumn);
+    setActiveColumn(next);
+    let order = next === "expense_ratio" ? "asc" : "desc";
+    setPeers((prevPeers) => sortPeersBy(prevPeers, next, order));
+  }
+
+  return (
+    <div className="pl-4">
+      <Table>
+        <TableHeader>
+          <TableRow className="border-transparent">
+            <TableHead className="text-muted-foreground p-0">
+              Fund name
+            </TableHead>
+            <TableHead onClick={handleSortClick} className="text-primary">
+              <div className="flex items-center justify-end gap-1">
+                <span>{columnLabels[activeColumn].fullName}</span>
+                <ChevronsUpDown className="fill-primary size-3" />
+              </div>
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {peers.map((item) => (
+            <TableRow key={item.scheme_code}>
+              <TableCell
+                className={`${item.name === fund.name && "font-semibold"} py-4 pl-0 whitespace-pre-wrap`}
+              >
+                <Link
+                  to={`/mutual-funds/${item.scheme_code}`}
+                  className="hover:text-primary"
+                >
+                  {item.short_name}
+                </Link>
+              </TableCell>
+              <TableCell
+                onClick={handleSortClick}
+                className="py-4 pr-4 text-right"
+              >
+                {item[activeColumn]
+                  ? `${item[activeColumn]} ${columnLabels[activeColumn].unit}`
+                  : "NA"}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
+
+export default SimilarFundsTableMobile;

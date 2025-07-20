@@ -1,7 +1,7 @@
 import { Separator } from "@/components/ui/separator";
 
 function FundDescription({ fund }) {
-  let d = new Date(fund?.nav.date);
+  let d = new Date(fund.nav?.date);
   let date = d.toLocaleDateString("en-GB", { dateStyle: "medium" });
 
   return (
@@ -9,18 +9,25 @@ function FundDescription({ fund }) {
       <section className="Left flex w-1/2 flex-col gap-6 text-xs sm:text-base">
         <div className="row-1 flex flex-col gap-2 sm:flex-row sm:justify-between">
           <p className="text-muted-foreground">NAV: {date}</p>
-          <p className="font-medium max-sm:text-sm">₹ {fund?.nav?.nav}</p>
+          <p className="font-medium max-sm:text-sm">
+            ₹ {parseFloat(fund.nav?.nav).toFixed(2)}
+          </p>
         </div>
 
         <div className="row-2 flex flex-col gap-2 sm:flex-row sm:justify-between">
           <p className="text-muted-foreground">Min Investment Amt.</p>
           <div className="flex gap-1.5 max-sm:text-sm">
             <p>
-              <span className="text-xs">SIP </span> <span className="font-medium">₹{fund?.sip_min} </span>
+              <span className="text-xs">SIP </span>{" "}
+              <span className="font-medium">₹{fund.sip_min} </span>
             </p>
-            <Separator orientation="vertical" className="bg-muted-foreground rotate-15" />
+            <Separator
+              orientation="vertical"
+              className="bg-muted-foreground rotate-15"
+            />
             <p>
-              <span className="text-xs">Lum.</span> <span className="font-medium">₹{fund?.lump_min}</span>
+              <span className="text-xs">Lum.</span>{" "}
+              <span className="font-medium">₹{fund.lump_min}</span>
             </p>
           </div>
         </div>
@@ -30,12 +37,15 @@ function FundDescription({ fund }) {
         <div className="row-1 flex flex-col gap-2 sm:flex-row sm:justify-between">
           <p className="text-muted-foreground">Rating</p>
           <p className="flex items-center font-medium max-sm:text-sm">
-            {fund?.fund_rating || "NA"} <span className="ml-2 text-lg leading-none"> {fund?.fund_rating && "★"}</span>
+            {fund.fund_rating || "NA"}
+            <span className="ml-2 text-lg leading-none">
+              {fund.fund_rating && "★"}
+            </span>
           </p>
         </div>
         <div className="row-1 flex flex-col gap-2 sm:flex-row sm:justify-between">
           <p className="text-muted-foreground">Fund Size</p>
-          <p className="font-medium max-sm:text-sm">₹ {fund?.aum}Cr</p>
+          <p className="font-medium max-sm:text-sm">₹ {fund.aum}Cr</p>
         </div>
       </section>
 

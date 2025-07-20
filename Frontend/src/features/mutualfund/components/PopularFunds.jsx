@@ -11,20 +11,17 @@ function PopularFunds() {
 
   return (
     <section className="swiper-no-swiping">
-      <SectionHeading heading={"Popular Funds"} subHeading={"All Mutual Funds"} />
+      <SectionHeading
+        heading={"Popular Funds"}
+        subHeading={"All Mutual Funds"}
+      />
       <ScrollArea>
         <div className="flex justify-between gap-4 px-4 sm:m-1 sm:gap-3 sm:px-0">
           {funds?.map((fund) =>
             isMobile ? (
-              <CardSM key={fund.code} fund={fund} />
+              <CardSM key={fund.id} fund={fund} />
             ) : (
-              <CardLG
-                key={fund.code}
-                code={fund.code}
-                logoCode={fund.short_code}
-                shortName={fund.short_name}
-                threeYearReturn={fund.return_3y}
-              />
+              <CardLG key={fund.id} fund={fund} />
             ),
           )}
         </div>

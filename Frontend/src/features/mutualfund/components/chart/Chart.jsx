@@ -9,7 +9,7 @@ import CustomTooltipContent from "./CustomTooltipContent";
 import TimeRangeBtns from "./TimeRangeBtns";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
-function Chart({ fund = {} }) {
+function Chart({ fund }) {
   const isMobile = useIsMobile();
   const { data: fullChartData = [], isLoading } = useGetChart(fund.scheme_code);
   const [selectedRange, setSelectedRange] = useState("1Y");
@@ -45,7 +45,7 @@ function Chart({ fund = {} }) {
           <LineChart accessibilityLayer data={selectedChartData}>
             <XAxis dataKey="date" hide />
 
-            {fullChartData?.length && (
+            {fullChartData.length && (
               <YAxis
                 domain={[
                   (dataMin) => dataMin - dataMin * 0.05,

@@ -1,14 +1,28 @@
 import FundRating from "@/components/FundRating";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { ChevronDownIcon, ChevronsLeftRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 import FundLogo from "../components/FundLogo";
-import { collectionConfig } from "../constants/collection";
+import { collectionConfig } from "../constants/collectionConstants";
 import { useGetCategoryFundList } from "../hooks/queries/externalQueries";
-import { columnKeys, columnLabels, getNewOrder, getNextColumn, sortPeersBy, unit } from "../utils/collectionsHelper";
+import {
+  columnKeys,
+  columnLabels,
+  getNewOrder,
+  getNextColumn,
+  sortPeersBy,
+  unit,
+} from "../utils/collectionsHelper";
 
 function CollectionPage() {
   const [peers, setPeers] = useState();
@@ -26,7 +40,9 @@ function CollectionPage() {
       <header className="bg-background flex items-center gap-8 px-4">
         <div className="space-y-2 sm:space-y-4">
           <h2 className="text-lg font-semibold sm:text-2xl">{name} </h2>
-          <p className="text-muted-foreground text-sm">{collectionConfig[name].description || ""}</p>
+          <p className="text-muted-foreground text-sm">
+            {collectionConfig[name].description || ""}
+          </p>
         </div>
         <Avatar className="size-18 rounded-lg border p-2 sm:h-24 sm:w-34 dark:mix-blend-hard-light">
           <AvatarImage src={`/${name}.svg`} />
@@ -38,7 +54,16 @@ function CollectionPage() {
         <MobileTable {...{ peers, setPeers, activeColumn, setActiveColumn }} />
       ) : (
         // ----------- LARGE SCREEN TABLE -----------
-        <DesktopTable {...{ peers, setPeers, activeColumn, setActiveColumn, sortOrder, setSortOrder }} />
+        <DesktopTable
+          {...{
+            peers,
+            setPeers,
+            activeColumn,
+            setActiveColumn,
+            sortOrder,
+            setSortOrder,
+          }}
+        />
       )}
     </div>
   );
@@ -59,7 +84,10 @@ function MobileTable({ peers, setPeers, activeColumn, setActiveColumn }) {
       <TableHeader>
         <TableRow className="text-xs">
           <TableHead className="pl-4">Mutual funds</TableHead>
-          <TableHead onClick={handleMobileClick} className="flex items-center justify-end gap-1 pr-3 text-right">
+          <TableHead
+            onClick={handleMobileClick}
+            className="flex items-center justify-end gap-1 pr-3 text-right"
+          >
             <ChevronsLeftRight className="size-4" />
             {columnLabels[activeColumn].fullName}
           </TableHead>
@@ -68,12 +96,14 @@ function MobileTable({ peers, setPeers, activeColumn, setActiveColumn }) {
 
       <TableBody>
         {peers?.map((item) => (
-          <TableRow key={item.code}>
+          <TableRow key={item.scheme_code}>
             <TableCell className="flex items-center gap-4 py-4 pl-4">
               <FundLogo logoCode={item.short_code} className="size-8.5" />
               <div>
-                <Link to={`/mutual-funds/${item.code}`}>
-                  <h4 className="text-foreground overflow-hidden font-[430] text-wrap">{item.short_name}</h4>
+                <Link to={`/mutual-funds/${item.scheme_code}`}>
+                  <h4 className="text-foreground overflow-hidden font-[430] text-wrap">
+                    {item.short_name}
+                  </h4>
                 </Link>
                 <div className="text-muted-foreground mt-1.5 flex flex-wrap text-xs">
                   <p>
@@ -85,7 +115,9 @@ function MobileTable({ peers, setPeers, activeColumn, setActiveColumn }) {
             </TableCell>
 
             <TableCell className="pr-4 text-right font-[450]">
-              {item[activeColumn] ? `${item[activeColumn]} ${activeColumn === "aum" ? "Cr" : "%"}` : "NA"}
+              {item[activeColumn]
+                ? `${item[activeColumn]} ${activeColumn === "aum" ? "Cr" : "%"}`
+                : "NA"}
             </TableCell>
           </TableRow>
         ))}
@@ -94,7 +126,14 @@ function MobileTable({ peers, setPeers, activeColumn, setActiveColumn }) {
   );
 }
 
-function DesktopTable({ peers, setPeers, activeColumn, setActiveColumn, sortOrder, setSortOrder }) {
+function DesktopTable({
+  peers,
+  setPeers,
+  activeColumn,
+  setActiveColumn,
+  sortOrder,
+  setSortOrder,
+}) {
   const handleDesktopClick = (clicked) => {
     const newOrder = getNewOrder(clicked, activeColumn, sortOrder);
     setPeers((prevPeers) => sortPeersBy(prevPeers, clicked, newOrder));
@@ -107,7 +146,9 @@ function DesktopTable({ peers, setPeers, activeColumn, setActiveColumn, sortOrde
       <Table>
         <TableHeader className="bg-accent">
           <TableRow>
-            <TableHead className="text-muted-foreground px-8 py-6 sm:font-medium">Fund name</TableHead>
+            <TableHead className="text-muted-foreground px-8 py-6 sm:font-medium">
+              Fund name
+            </TableHead>
             {columnKeys.map((key) => (
               <TableHead key={key}>
                 <div
@@ -132,11 +173,11 @@ function DesktopTable({ peers, setPeers, activeColumn, setActiveColumn, sortOrde
 
         <TableBody>
           {peers?.map((f) => (
-            <TableRow key={f.code}>
+            <TableRow key={f.scheme_code}>
               <TableCell className="flex items-center gap-8 py-4 pl-8">
                 <FundLogo logoCode={f.short_code} />
                 <div>
-                  <Link to={`/mutual-funds/${f.code}`}>
+                  <Link to={`/mutual-funds/${f.scheme_code}`}>
                     <h4 className="text-base text-wrap">{f.name}</h4>
                   </Link>
                   <p className="text-muted-foreground mt-2 flex text-xs">

@@ -8,7 +8,7 @@ function PurchaseBtns({ fund }) {
     <div className="bg-background fixed bottom-0 flex w-full justify-evenly py-4">
       <Button
         size="lg"
-        onClick={() => navigate(`/mutual-funds/one-time/${fund?.code}`)}
+        onClick={() => navigate(`/mutual-funds/one-time/${fund.scheme_code}`)}
         className="text-primary bg-primary/15 w-[42%]"
       >
         ONE-TIME

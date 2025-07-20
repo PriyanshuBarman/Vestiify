@@ -7,10 +7,10 @@ import {
   fetchPopularFunds,
 } from "../../services/externalServices";
 
-export const useGetFundData = (kuvera_id) => {
+export const useGetFundData = (schemeCode) => {
   return useQuery({
-    queryKey: ["fund", kuvera_id],
-    queryFn: () => fetchFund(kuvera_id),
+    queryKey: ["fund", schemeCode],
+    queryFn: () => fetchFund(schemeCode),
   });
 };
 
@@ -25,11 +25,10 @@ export const useIndexFunds = () => {
   });
 };
 
-export const useGetChart = (shceme_code) => {
+export const useGetChart = (schemeCode) => {
   return useQuery({
-    queryKey: ["chartData", shceme_code],
-    queryFn: () => fetchChartData(shceme_code),
-    enabled: !!shceme_code
+    queryKey: ["chartData", schemeCode],
+    queryFn: () => fetchChartData(schemeCode),
   });
 };
 
