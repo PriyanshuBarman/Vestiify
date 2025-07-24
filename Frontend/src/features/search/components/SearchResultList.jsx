@@ -2,7 +2,7 @@ import { memo } from "react";
 import CompanyLogo from "./CompanyLogo";
 import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 
-function SearchResult({ searchResult, handleClick, activeIdx, searchType }) {
+function SearchResultList({ searchResult, handleClick, activeIdx, searchType }) {
   if (!searchResult?.length) return null;
 
   return (
@@ -45,4 +45,4 @@ function SearchResult({ searchResult, handleClick, activeIdx, searchType }) {
   );
 }
 
-export default memo(SearchResult);
+export default memo(SearchResultList);

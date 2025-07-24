@@ -4,7 +4,7 @@ import { authRoutes } from "./features/auth/routes";
 import { mutualFundRoutes } from "./features/mutualfund/routes";
 import Home from "./HomePage";
 import Layout from "./layouts/Layout";
-import MobileSearchPage from "./layouts/search/MobileSearchPage";
+import MobileSearchPage from "./features/search/MobileSearchPage";
 
 export const routes = createBrowserRouter([
   authRoutes,

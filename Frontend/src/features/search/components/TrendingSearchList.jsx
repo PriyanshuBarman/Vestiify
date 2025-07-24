@@ -1,12 +1,12 @@
 import { useGetPopularFunds } from "@/features/mutualfund/hooks/queries/externalQueries";
 import { TrendingUpIcon } from "lucide-react";
 
-function TrendingSearches({ activeIdx, handleClick }) {
+function TrendingSearchList({ activeIdx, handleClick }) {
   const { data: popularFunds } = useGetPopularFunds();
 
   return (
-    <div className="px-2">
-      <h6 className="text-sm">Trending searches</h6>
+    <div className="mt-2 px-2">
+      <h6 className="text-sm">Popular Funds</h6>
 
       <ul className="mt-4 flex flex-wrap justify-between gap-4 sm:gap-6">
         {popularFunds?.map((item, index) => (
@@ -27,4 +27,4 @@ function TrendingSearches({ activeIdx, handleClick }) {
   );
 }
 
-export default TrendingSearches;
+export default TrendingSearchList;

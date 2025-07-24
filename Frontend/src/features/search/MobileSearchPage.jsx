@@ -1,16 +1,16 @@
 import GoBackBtn from "@/components/GoBackBtn";
 import { useDebounce } from "@/hooks/useDebounce";
-import { useKeyboardDismiss } from "@/hooks/useKeyboardDismis";
-import { useSearchResults } from "@/hooks/useSearchResults";
+import { useKeyboardDismiss } from "@/features/search/hooks/useKeyboardDismis";
+import { useGetSearchResults } from "@/features/search/hooks/queries/useGetSearchResults";
 import { addToSearchHistory } from "@/store/slices/searchSlice";
 import { Loader2Icon, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import FilterTabs from "./FilterTabs";
-import SearchHistory from "./SearchHistory";
-import SearchResult from "./SearchResult";
-import TrendingSearches from "./TrendingSearches";
+import FilterTabs from "./components/FilterTabs";
+import SearchHistoryList from "./components/SearchHistoryList";
+import SearchResultList from "./components/SearchResultList";
+import TrendingSearchList from "./components/TrendingSearchList";
 
 function MobileSearchPage() {
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ function MobileSearchPage() {
   const inputRef = useRef(null);
   useKeyboardDismiss(inputRef);
 
-  const { data: searchResult, isLoading } = useSearchResults(
+  const { data: searchResult, isLoading } = useGetSearchResults(
     debouncedQuery,
     searchType,
   );
@@ -72,13 +72,13 @@ function MobileSearchPage() {
       <FilterTabs searchType={searchType} setSearchType={setSearchType} />
 
       <div className="Lists space-y-4 px-2">
-        <SearchResult
+        <SearchResultList
           searchResult={searchResult}
           searchType={searchType}
           handleClick={handleClick}
         />
         {!searchResult && !isLoading && (
-          <SearchHistory
+          <SearchHistoryList
             searchHistory={searchHistory}
             searchType={searchType}
             handleClick={handleClick}
@@ -86,7 +86,7 @@ function MobileSearchPage() {
         )}
 
         {!searchResult && !searchHistory[searchType]?.length && !isLoading && (
-          <TrendingSearches handleClick={handleClick} />
+          <TrendingSearchList handleClick={handleClick} />
         )}
       </div>
     </div>

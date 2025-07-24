@@ -1,8 +1,8 @@
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useGetPopularFunds } from "@/features/mutualfund/hooks/queries/externalQueries";
-import { useCtrlKSearchToggle } from "@/hooks/useCtrlKSearchToggle";
+import { useCtrlKSearchToggle } from "@/features/search/hooks/useCtrlKSearchToggle";
 import { useDebounce } from "@/hooks/useDebounce";
-import { useSearchResults } from "@/hooks/useSearchResults";
+import { useGetSearchResults } from "@/features/search/hooks/queries/useGetSearchResults";
 import {
   addToSearchHistory,
   setIsSearchOpen,
@@ -10,14 +10,14 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import FilterTabs from "./FilterTabs";
-import LoadingSkeleton from "./LoadingSkeleton";
-import SearchBar from "./SearchBar";
-import SearchHistory from "./SearchHistory";
-import SearchResult from "./SearchResult";
-import TrendingSearches from "./TrendingSearches";
+import FilterTabs from "./components/FilterTabs";
+import LoadingSkeleton from "./components/LoadingSkeleton";
+import SearchBar from "./components/SearchBar";
+import TrendingSearchList from "./components/TrendingSearchList";
+import SearchHistoryList from "./components/SearchHistoryList";
+import SearchResultList from "./components/SearchResultList";
 
-const SearchDesktop = () => {
+const Desktopsearch = () => {
   const { data: popularFunds } = useGetPopularFunds();
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
@@ -30,7 +30,7 @@ const SearchDesktop = () => {
   useCtrlKSearchToggle();
 
   const debouncedValue = useDebounce(query.trim());
-  const { data: searchResult, isLoading } = useSearchResults(
+  const { data: searchResult, isLoading } = useGetSearchResults(
     debouncedValue,
     searchType,
   );
@@ -114,7 +114,7 @@ const SearchDesktop = () => {
             <ScrollArea className="h-[60vh]">
               <LoadingSkeleton isLoading={isLoading} />
 
-              <SearchResult
+              <SearchResultList
                 searchResult={searchResult}
                 handleClick={handleClick}
                 activeIdx={activeIdx}
@@ -122,7 +122,7 @@ const SearchDesktop = () => {
               />
 
               {!searchResult && !isLoading && (
-                <SearchHistory
+                <SearchHistoryList
                   handleClick={handleClick}
                   activeIdx={activeIdx}
                   searchType={searchType}
@@ -132,7 +132,7 @@ const SearchDesktop = () => {
               {!searchResult &&
                 !searchHistory[searchType]?.length &&
                 !isLoading && (
-                  <TrendingSearches
+                  <TrendingSearchList
                     activeIdx={activeIdx}
                     handleClick={handleClick}
                   />
@@ -155,4 +155,4 @@ const SearchDesktop = () => {
   );
 };
 
-export default SearchDesktop;
+export default Desktopsearch;

@@ -7,7 +7,7 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 import { SearchIcon, ShoppingCart } from "lucide-react";
 import MediaQuery from "react-responsive";
 import { NavLink, useLocation, useNavigate } from "react-router";
-import Desktopsearch from "./search/DesktopSearch";
+import Desktopsearch from "../features/search/DesktopSearch";
 
 const allowedRoutes = new Set(["/mutual-funds", "/stocks", "/gold"]);
 

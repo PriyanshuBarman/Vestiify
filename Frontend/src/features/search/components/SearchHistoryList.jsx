@@ -2,7 +2,7 @@ import { HistoryIcon } from "lucide-react";
 import { memo } from "react";
 import { useSelector } from "react-redux";
 
-function SearchHistory({ handleClick, activeIdx, searchType }) {
+function SearchHistoryList({ handleClick, activeIdx, searchType }) {
   const searchHistory = useSelector((state) => state.search.searchHistory);
 
   return (
@@ -23,4 +23,4 @@ function SearchHistory({ handleClick, activeIdx, searchType }) {
   );
 }
 
-export default memo(SearchHistory);
+export default memo(SearchHistoryList);
