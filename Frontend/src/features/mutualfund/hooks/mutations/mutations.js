@@ -13,8 +13,8 @@ export const useMakeInvestment = () => {
     onSuccess: (data) => {
       toast.success(data.message);
       navigate("/mutual-funds/#investments");
-      queryClient.invalidateQueries({ queryKey: ["mf-portfolio-summary"] });
-      queryClient.invalidateQueries({ queryKey: ["mf-portfolio"] });
+      queryClient.invalidateQueries({ queryKey: ["mfPortfolioSummary"] });
+      queryClient.invalidateQueries({ queryKey: ["mfPortfolio"] });
       queryClient.invalidateQueries({ queryKey: ["balance"] });
     },
 

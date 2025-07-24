@@ -59,16 +59,16 @@ function SimilarFundsTableDesktop({ fund }) {
         </TableHeader>
 
         <TableBody className="sm:font-medium">
-          {peers.map((item) => (
-            <TableRow key={item.scheme_code}>
+          {peers.map((peer) => (
+            <TableRow key={peer.scheme_code}>
               <TableCell
-                className={`${item.name === fund.name && "font-bold"} py-4 pl-4`}
+                className={`${peer.name === fund.name && "font-bold"} py-4 pl-4`}
               >
                 <Link
-                  to={`/mutual-funds/${item.scheme_code}`}
+                  to={`/mutual-funds/${peer.scheme_code}`}
                   className="hover:text-primary"
                 >
-                  {item.short_name}
+                  {peer.short_name}
                 </Link>
               </TableCell>
               {columnKeys.map((key) => (
@@ -77,7 +77,7 @@ function SimilarFundsTableDesktop({ fund }) {
                   onClick={() => handleSortClick(key)}
                   className={`py-4 ${activeColumn === key && "font-bold"} `}
                 >
-                  {item[key] ? `${item[key]} ${columnLabels[key].unit}` : "NA"}
+                  {peer[key] ? `${peer[key]} ${columnLabels[key].unit}` : "NA"}
                 </TableCell>
               ))}
             </TableRow>

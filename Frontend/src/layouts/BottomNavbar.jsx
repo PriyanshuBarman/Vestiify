@@ -1,10 +1,22 @@
 import { ChartNoAxesCombined, HandCoins, PieChartIcon } from "lucide-react";
 import { NavLink, useLocation } from "react-router";
 
-const tabs = [
-  { name: "MF", icon: <PieChartIcon className="max-sm:size-5" />, link: "/mutual-funds#explore" },
-  { name: "Stock", icon: <ChartNoAxesCombined className="max-sm:size-5" />, link: "/stocks" },
-  { name: "Gold", icon: <HandCoins className="max-sm:size-5" />, link: "/gold" },
+const tabsMapping = [
+  {
+    name: "MF",
+    icon: <PieChartIcon className="max-sm:size-5" />,
+    link: "/mutual-funds#explore",
+  },
+  {
+    name: "Stock",
+    icon: <ChartNoAxesCombined className="max-sm:size-5" />,
+    link: "/stocks",
+  },
+  {
+    name: "Gold",
+    icon: <HandCoins className="max-sm:size-5" />,
+    link: "/gold",
+  },
 ];
 const allowedRoutes = ["/mutual-funds", "/stocks", "/gold"];
 
@@ -14,10 +26,10 @@ function BottomNavbar() {
 
   if (!allowedRoutes.includes(currentPath)) return;
 
-  const activeTabIndex = tabs.findIndex((tab) => currentPath === tab.link);
+  const activeTabIndex = tabsMapping.findIndex((tab) => currentPath === tab.link);
   const activeTab = activeTabIndex !== -1 ? activeTabIndex : 0;
 
-  const tabCount = tabs.length;
+  const tabCount = tabsMapping.length;
   const tabWidth = 100 / tabCount;
 
   return (
@@ -32,16 +44,16 @@ function BottomNavbar() {
             }}
           ></div>
 
-          {tabs.map((item, idx) => (
+          {tabsMapping.map((tab, idx) => (
             <NavLink
-              to={`${item.link === "/mutual-funds" ? item.link : "/coming-soon"}`}
+              to={`${tab.link === "/mutual-funds" ? tab.link : "/coming-soon"}`}
               key={idx}
               className={({ isActive }) =>
                 `relative z-10 flex cursor-pointer flex-col items-center gap-1.5 rounded-2xl px-4 pt-2.5 pb-1.5 text-[0.65rem] transition-all duration-200 hover:scale-105 sm:text-xs ${isActive ? "text-primary dark:text-white" : "text-zinc-500 dark:text-zinc-400"}`
               }
             >
-              {item.icon}
-              {item.name}
+              {tab.icon}
+              {tab.name}
             </NavLink>
           ))}
         </div>

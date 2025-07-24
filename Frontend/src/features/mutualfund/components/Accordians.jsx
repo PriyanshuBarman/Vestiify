@@ -103,8 +103,8 @@ function Accordians({ fund }) {
           Fund managers
         </AccordionTrigger>
         <AccordionContent className="space-y-6">
-          {fund.fund_manager?.split(";").map((manager, index) => (
-            <div key={index} className="mt-2 ml-2 flex items-center gap-2">
+          {fund.fund_manager?.split(";").map((manager, idx) => (
+            <div key={idx} className="mt-2 ml-2 flex items-center gap-2">
               <Avatar className="border sm:size-10">
                 <User className="m-auto size-full p-1.5 sm:p-2" />
               </Avatar>

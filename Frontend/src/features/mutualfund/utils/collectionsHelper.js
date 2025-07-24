@@ -11,18 +11,20 @@ export const unit = {
   return_5y: "%",
 };
 
-export const getNewOrder = (clicked, activeColumn, sortOrder) => {
+export function getNewOrder(clicked, activeColumn, sortOrder) {
   if (activeColumn === clicked) {
     return sortOrder === "desc" ? "asc" : "desc";
   }
   return clicked === "ter" ? "asc" : "desc";
-};
+}
 
-export const sortPeersBy = (peers, activeColumn, order) => {
+export function sortPeersBy(peers, activeColumn, order) {
   return [...peers].sort((a, b) =>
-    order === "asc" ? a[activeColumn] - b[activeColumn] : b[activeColumn] - a[activeColumn],
+    order === "asc"
+      ? a[activeColumn] - b[activeColumn]
+      : b[activeColumn] - a[activeColumn],
   );
-};
+}
 
 // For Mobile (Loop)
 export function getNextColumn(activeColumn) {

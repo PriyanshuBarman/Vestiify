@@ -45,24 +45,24 @@ function SimilarFundsTableMobile({ fund }) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {peers.map((item) => (
-            <TableRow key={item.scheme_code}>
+          {peers.map((peer) => (
+            <TableRow key={peer.scheme_code}>
               <TableCell
-                className={`${item.name === fund.name && "font-semibold"} py-4 pl-0 whitespace-pre-wrap`}
+                className={`${peer.name === fund.name && "font-semibold"} py-4 pl-0 whitespace-pre-wrap`}
               >
                 <Link
-                  to={`/mutual-funds/${item.scheme_code}`}
+                  to={`/mutual-funds/${peer.scheme_code}`}
                   className="hover:text-primary"
                 >
-                  {item.short_name}
+                  {peer.short_name}
                 </Link>
               </TableCell>
               <TableCell
                 onClick={handleSortClick}
                 className="py-4 pr-4 text-right"
               >
-                {item[activeColumn]
-                  ? `${item[activeColumn]} ${columnLabels[activeColumn].unit}`
+                {peer[activeColumn]
+                  ? `${peer[activeColumn]} ${columnLabels[activeColumn].unit}`
                   : "NA"}
               </TableCell>
             </TableRow>

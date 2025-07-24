@@ -87,9 +87,9 @@ function OneTimeInvestPage() {
       {/*=============== Keypad & Bottom Buttons =============== */}
       <div>
         <div className="KeyPad grid grid-cols-3 gap-6">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((num, index) => (
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((num, idx) => (
             <Button
-              key={index}
+              key={idx}
               variant="ghost"
               className="active:bg-input text-2xl font-normal"
               onClick={() => handleNumberClick(num)}

@@ -1,6 +1,13 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { useGetBalance } from "@/hooks/queries/internalQueries";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useSheetHistory } from "@/hooks/useSheetHistory";
@@ -19,7 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Separator } from "./ui/separator";
 import { useNavigate } from "react-router";
 
-const themeMaping = [
+const themeMapping = [
   { name: "system", icon: SlidersHorizontal },
   { name: "dark", icon: MoonIcon },
   { name: "light", icon: SunIcon },
@@ -37,7 +44,10 @@ function ProfileSheet({ children }) {
   return (
     <Sheet modal={!isMobile} open={isOpen} onOpenChange={handleOpenChange}>
       <SheetTrigger asChild>{children}</SheetTrigger>
-      <SheetContent side="right" className="h-lvh w-full pb-18 sm:min-w-md sm:pb-0 sm:pl-6">
+      <SheetContent
+        side="right"
+        className="h-lvh w-full pb-18 sm:min-w-md sm:pb-0 sm:pl-6"
+      >
         <SheetHeader>
           <SheetTitle>Profile</SheetTitle>
         </SheetHeader>
@@ -86,7 +96,7 @@ function ProfileSheet({ children }) {
 
           {/*  ============== Theme Btns ============== */}
           <div className="Theme-Btns mt-auto flex justify-around sm:font-medium">
-            {themeMaping.map((theme) => (
+            {themeMapping.map((theme) => (
               <div key={theme.name}>
                 <Button
                   onClick={() => dispatch(setTheme(theme.name))}
@@ -96,14 +106,20 @@ function ProfileSheet({ children }) {
                 >
                   <theme.icon className="size-5" />
                 </Button>
-                <p className="mt-2 text-center text-sm capitalize">{theme.name}</p>
+                <p className="mt-2 text-center text-sm capitalize">
+                  {theme.name}
+                </p>
               </div>
             ))}
           </div>
         </div>
 
         <SheetFooter>
-          <Button onClick={() => navigate("/auth/logout")} variant="outline" className="w-full gap-3">
+          <Button
+            onClick={() => navigate("/auth/logout")}
+            variant="outline"
+            className="w-full gap-3"
+          >
             <LogOut className="size-4" />
             Logout
           </Button>

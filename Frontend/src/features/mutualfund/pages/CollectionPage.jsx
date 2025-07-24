@@ -95,28 +95,28 @@ function MobileTable({ peers, setPeers, activeColumn, setActiveColumn }) {
       </TableHeader>
 
       <TableBody>
-        {peers?.map((item) => (
-          <TableRow key={item.scheme_code}>
+        {peers?.map((peer) => (
+          <TableRow key={peer.scheme_code}>
             <TableCell className="flex items-center gap-4 py-4 pl-4">
-              <FundLogo logoCode={item.short_code} className="size-8.5" />
+              <FundLogo logoCode={peer.short_code} className="size-8.5" />
               <div>
-                <Link to={`/mutual-funds/${item.scheme_code}`}>
+                <Link to={`/mutual-funds/${peer.scheme_code}`}>
                   <h4 className="text-foreground overflow-hidden font-[430] text-wrap">
-                    {item.short_name}
+                    {peer.short_name}
                   </h4>
                 </Link>
                 <div className="text-muted-foreground mt-1.5 flex flex-wrap text-xs">
                   <p>
-                    {item.category} {item.fund_category}
+                    {peer.category} {peer.fund_category}
                   </p>
-                  <FundRating rating={item.fund_rating} />
+                  <FundRating rating={peer.fund_rating} />
                 </div>
               </div>
             </TableCell>
 
             <TableCell className="pr-4 text-right font-[450]">
-              {item[activeColumn]
-                ? `${item[activeColumn]} ${activeColumn === "aum" ? "Cr" : "%"}`
+              {peer[activeColumn]
+                ? `${peer[activeColumn]} ${activeColumn === "aum" ? "Cr" : "%"}`
                 : "NA"}
             </TableCell>
           </TableRow>
@@ -172,17 +172,17 @@ function DesktopTable({
         </TableHeader>
 
         <TableBody>
-          {peers?.map((f) => (
-            <TableRow key={f.scheme_code}>
+          {peers?.map((peer) => (
+            <TableRow key={peer.scheme_code}>
               <TableCell className="flex items-center gap-8 py-4 pl-8">
-                <FundLogo logoCode={f.short_code} />
+                <FundLogo logoCode={peer.short_code} />
                 <div>
-                  <Link to={`/mutual-funds/${f.scheme_code}`}>
-                    <h4 className="text-base text-wrap">{f.name}</h4>
+                  <Link to={`/mutual-funds/${peer.scheme_code}`}>
+                    <h4 className="text-base text-wrap">{peer.name}</h4>
                   </Link>
                   <p className="text-muted-foreground mt-2 flex text-xs">
-                    {f.category} {f.fund_category}
-                    <FundRating rating={f.fund_rating} />
+                    {peer.category} {peer.fund_category}
+                    <FundRating rating={peer.fund_rating} />
                   </p>
                 </div>
               </TableCell>
@@ -192,7 +192,7 @@ function DesktopTable({
                   key={key}
                   className={` ${activeColumn === key && "text-primary font-semibold"} text-center text-[0.92rem] font-medium`}
                 >
-                  {f[key] ? `${f[key]?.toFixed(1)} ${unit[key]}` : "NA"}
+                  {peer[key] ? `${peer[key]?.toFixed(1)} ${unit[key]}` : "NA"}
                 </TableCell>
               ))}
             </TableRow>

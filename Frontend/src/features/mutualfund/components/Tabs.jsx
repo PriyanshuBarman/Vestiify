@@ -17,11 +17,11 @@ function Tabs() {
 
   return (
     <div className="Tabs mb-8 space-x-2 border-b py-2 pl-4 text-[0.9rem] font-medium sm:space-x-4 sm:pl-0 sm:text-base">
-      {tabs.map((tab, index) => (
+      {tabs.map((tab, idx) => (
         <a
           key={tab.name}
           href={tab.hash}
-          className={` ${activeTabIndex === index ? "text-foreground border-foreground border-b-2 font-semibold sm:border-b-3" : "text-muted-foreground"} p-2 transition-all ease-in-out duration-200`}
+          className={` ${activeTabIndex === idx ? "text-foreground border-foreground border-b-2 font-semibold sm:border-b-3" : "text-muted-foreground"} p-2 transition-all duration-200 ease-in-out`}
         >
           {tab.name}
         </a>
