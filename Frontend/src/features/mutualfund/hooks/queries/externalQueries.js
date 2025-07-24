@@ -21,7 +21,7 @@ export const useGetPopularFunds = () => {
 export const useIndexFunds = () => {
   return useQuery({
     queryKey: ["index-funds"],
-    queryFn: () => fetchIndexFunds(),
+    queryFn: fetchIndexFunds,
   });
 };
 

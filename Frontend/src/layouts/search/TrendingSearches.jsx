@@ -1,22 +1,29 @@
+import { useGetPopularFunds } from "@/features/mutualfund/hooks/queries/externalQueries";
 import { TrendingUpIcon } from "lucide-react";
-import { trendingStocks } from "@/constants/search";
 
-function TrendingSearches({ activeIdx }) {
+function TrendingSearches({ activeIdx, handleClick }) {
+  const { data: popularFunds } = useGetPopularFunds();
+
   return (
-    <>
-      <h2 className="ml-2 font-medium">Trending Searches</h2>
-      <ul className="mt-2">
-        {trendingStocks.map((item, idx) => (
+    <div className="px-2">
+      <h6 className="text-sm">Trending searches</h6>
+
+      <ul className="mt-4 flex flex-wrap justify-between gap-4 sm:gap-6">
+        {popularFunds?.map((item, index) => (
           <li
-            key={idx}
-            className={`${activeIdx === idx && "bg-input"} hover:bg-input flex cursor-pointer place-items-center gap-4 rounded-md px-4 py-4`}
+            key={index}
+            onClick={() => handleClick(item)}
+            className={`${activeIdx === index && "bg-accent"} hover:bg-accent flex w-full items-center justify-start gap-2 rounded-md border px-4 py-2 text-xs sm:text-sm`}
           >
-            <TrendingUpIcon size={16} className="text-muted-foreground" />
-            {item.name}
+            <TrendingUpIcon
+              size={16}
+              className="text-muted-foreground shrink-0"
+            />
+            <p className="truncate">{item.short_name || item.name}</p>
           </li>
         ))}
       </ul>
-    </>
+    </div>
   );
 }
 

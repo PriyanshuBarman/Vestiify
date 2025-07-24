@@ -7,7 +7,7 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 import { SearchIcon, ShoppingCart } from "lucide-react";
 import MediaQuery from "react-responsive";
 import { NavLink, useLocation, useNavigate } from "react-router";
-import SearchDesktop from "./search/SearchDesktop";
+import Desktopsearch from "./search/DesktopSearch";
 
 const allowedRoutes = new Set(["/mutual-funds", "/stocks", "/gold"]);
 
@@ -26,7 +26,7 @@ function Navbar() {
       </div>
 
       <MediaQuery minWidth={1100}>
-        <SearchDesktop />
+        <Desktopsearch />
       </MediaQuery>
 
       {/* ========= Right side buttons ============ */}

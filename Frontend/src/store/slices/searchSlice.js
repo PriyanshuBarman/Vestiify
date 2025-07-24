@@ -1,7 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  searchHistory: [],
+  searchHistory: {
+    mutualFunds: [],
+    indianStocks: [],
+  },
   isSearchOpen: false,
 };
 
@@ -10,13 +13,16 @@ const searchSlice = createSlice({
   initialState,
   reducers: {
     addToSearchHistory: (state, action) => {
-      const newItem = action.payload;
-      const filtered = state.searchHistory.filter((item) => item.unique_fund_code !== newItem.unique_fund_code);
+      const { item, type } = action.payload;
+      const filtered = (state.searchHistory[type] || []).filter(
+        (i) => i.name !== item.name,
+      );
 
-      state.searchHistory = [newItem, ...filtered].slice(0, 8);
+      state.searchHistory[type] = [item, ...filtered].slice(0, 6);
     },
-    clearSearchHistory: (state) => {
-      state.searchHistory = [];
+    clearSearchHistory: (state, action) => {
+      const { type } = action.payload;
+      state.searchHistory[type] = [];
     },
     setIsSearchOpen: (state, action) => {
       state.isSearchOpen = action.payload;
@@ -24,6 +30,7 @@ const searchSlice = createSlice({
   },
 });
 
-export const { addToSearchHistory, clearSearchHistory, setIsSearchOpen } = searchSlice.actions;
+export const { addToSearchHistory, clearSearchHistory, setIsSearchOpen } =
+  searchSlice.actions;
 
 export default searchSlice.reducer;

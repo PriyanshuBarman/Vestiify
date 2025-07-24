@@ -1,5 +1,5 @@
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { trendingStocks } from "@/constants/search";
+import { useGetPopularFunds } from "@/features/mutualfund/hooks/queries/externalQueries";
 import { useCtrlKSearchToggle } from "@/hooks/useCtrlKSearchToggle";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useSearchResults } from "@/hooks/useSearchResults";
@@ -7,21 +7,22 @@ import {
   addToSearchHistory,
   setIsSearchOpen,
 } from "@/store/slices/searchSlice";
-import { Loader2Icon, SearchIcon, XIcon } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import FilterTabs from "./FilterTabs";
 import LoadingSkeleton from "./LoadingSkeleton";
+import SearchBar from "./SearchBar";
 import SearchHistory from "./SearchHistory";
 import SearchResult from "./SearchResult";
 import TrendingSearches from "./TrendingSearches";
 
 const SearchDesktop = () => {
+  const { data: popularFunds } = useGetPopularFunds();
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [displayQuery, setDisplayQuery] = useState("");
-  const [searchCategory, setSearchCategory] = useState("mutual_funds");
+  const [searchType, setSearchType] = useState("mutualFunds");
   const [activeIdx, setActiveIdx] = useState(-1);
   const { searchHistory, isSearchOpen } = useSelector((state) => state.search);
   const dispatch = useDispatch();
@@ -29,8 +30,10 @@ const SearchDesktop = () => {
   useCtrlKSearchToggle();
 
   const debouncedValue = useDebounce(query.trim());
-  const { data, isLoading } = useSearchResults(debouncedValue);
-  const searchResult = data?.[searchCategory] || null;
+  const { data: searchResult, isLoading } = useSearchResults(
+    debouncedValue,
+    searchType,
+  );
 
   // Open / Close Search Based on isSearchOpen state
   useEffect(() => {
@@ -49,34 +52,36 @@ const SearchDesktop = () => {
   let list;
   if (searchResult) {
     list = searchResult;
-  } else if (searchHistory.length) {
-    list = searchHistory.filter((i) => i.asset_class_name === searchCategory);
+  } else if (searchHistory[searchType]?.length) {
+    list = searchHistory[searchType];
   } else {
-    list = trendingStocks;
+    list = popularFunds;
   }
 
   const handleKeyDown = (e) => {
     if (e.key == "ArrowDown") {
       setActiveIdx(activeIdx === list?.length - 1 ? 0 : activeIdx + 1);
     } else if (e.key === "ArrowUp") {
-      setActiveIdx(activeIdx === 0 ? list?.length - 1 : activeIdx - 1);
+      if (activeIdx === -1) {
+        setActiveIdx(list.length - 1);
+      } else {
+        setActiveIdx(activeIdx - 1);
+      }
     } else if (e.key === "Escape") {
       dispatch(setIsSearchOpen(false));
     } else if (e.key === "Enter") {
       if (activeIdx < 0 || !list) return;
-      navigate(`/mutual-funds/${list[activeIdx].unique_fund_code}`);
-      dispatch(addToSearchHistory(list[activeIdx]));
-      dispatch(setIsSearchOpen(false));
+      handleClick(list[activeIdx]);
     }
   };
 
-  const handleResultClick = useCallback(
-    (clickIdx) => {
-      navigate(`/mutual-funds/${list[clickIdx].unique_fund_code}`);
-      dispatch(addToSearchHistory(list[clickIdx]));
+  const handleClick = useCallback(
+    (item) => {
+      navigate(`/mutual-funds/${item.scheme_code}`);
+      dispatch(addToSearchHistory({ item, type: searchType }));
       dispatch(setIsSearchOpen(false));
     },
-    [list, navigate, dispatch],
+    [navigate, dispatch, searchType],
   );
 
   const handleChange = (e) => {
@@ -93,69 +98,45 @@ const SearchDesktop = () => {
   return (
     <>
       <div onKeyDown={handleKeyDown} className="relative z-20 w-xl">
-        {/* ============================ SearchBar ============================ */}
-        <div className="SearchBar text-muted-foreground relative flex w-full items-center">
-          <SearchIcon size={20} className="absolute left-4" />
-          <input
-            ref={searchBarRef}
-            type="text"
-            value={displayQuery}
-            onChange={handleChange}
-            onFocus={() => dispatch(setIsSearchOpen(true))}
-            // onKeyDown={handleKeyDown}
-            placeholder="Search "
-            className={`!bg-background text-foreground min-w-full rounded-lg border px-12 py-2 outline-none ${isSearchOpen && "rounded-b-none border"}`}
-          />
-          <button
-            disabled={isLoading}
-            className={`Clear-Btn absolute right-4 ${!displayQuery?.length && "hidden"}`}
-            onClick={() => {
-              setQuery("");
-              setDisplayQuery("");
-              searchBarRef.current.focus();
-            }}
-          >
-            {isLoading ? (
-              <Loader2Icon className="text-primary animate-spin" />
-            ) : (
-              <XIcon size={18} />
-            )}
-          </button>
-
-          <p
-            className={`${displayQuery?.length && "hidden"} absolute right-6 text-xs`}
-          >
-            Ctrl+K
-          </p>
-        </div>
-
-        {/* ============================// SearchBar ============================ */}
+        <SearchBar
+          displayQuery={displayQuery}
+          onChange={handleChange}
+          isLoading={isLoading}
+          setQuery={setQuery}
+          setDisplayQuery={setDisplayQuery}
+          searchBarRef={searchBarRef}
+        />
 
         {isSearchOpen && (
-          <div className="Search-Popover bg-background absolute z-10 w-full space-y-6 rounded-b-lg border border-t-0 px-6 py-6">
-            <FilterTabs {...{ searchCategory, setSearchCategory }} />
+          <div className="Search-Popover bg-background absolute z-10 w-full space-y-4 rounded-b-lg border border-t-0 px-6 py-4">
+            <FilterTabs searchType={searchType} setSearchType={setSearchType} />
 
             <ScrollArea className="h-[60vh]">
               <LoadingSkeleton isLoading={isLoading} />
 
-              {searchResult && !isLoading && (
-                <SearchResult
-                  {...{
-                    searchResult,
-                    handleResultClick,
-                    activeIdx,
-                    searchCategory,
-                  }}
-                />
-              )}
+              <SearchResult
+                searchResult={searchResult}
+                handleClick={handleClick}
+                activeIdx={activeIdx}
+                searchType={searchType}
+              />
+
               {!searchResult && !isLoading && (
                 <SearchHistory
-                  {...{ handleResultClick, activeIdx, searchCategory }}
+                  handleClick={handleClick}
+                  activeIdx={activeIdx}
+                  searchType={searchType}
                 />
               )}
-              {!searchResult?.length && !searchHistory.length && !isLoading && (
-                <TrendingSearches activeIdx={activeIdx} />
-              )}
+
+              {!searchResult &&
+                !searchHistory[searchType]?.length &&
+                !isLoading && (
+                  <TrendingSearches
+                    activeIdx={activeIdx}
+                    handleClick={handleClick}
+                  />
+                )}
 
               <ScrollBar orientation="vertical" />
             </ScrollArea>

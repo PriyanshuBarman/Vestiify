@@ -2,23 +2,23 @@ import { HistoryIcon } from "lucide-react";
 import { memo } from "react";
 import { useSelector } from "react-redux";
 
-function SearchHistory({ handleResultClick, activeIdx, searchCategory }) {
+function SearchHistory({ handleClick, activeIdx, searchType }) {
   const searchHistory = useSelector((state) => state.search.searchHistory);
 
   return (
-    <ul className="History space-y-4">
-      {searchHistory
-        ?.filter((item) => searchCategory === "all" || item.asset_class_name === searchCategory)
-        .map((item, idx) => (
-          <li
-            key={item.unique_fund_code}
-            onClick={() => handleResultClick(idx)}
-            className={`${activeIdx === idx && "bg-input"} hover:bg-input flex cursor-pointer place-items-center gap-4 rounded px-4 py-4`}
-          >
-            <HistoryIcon size={18} className="text-muted-foreground" />
-            {item.name}
-          </li>
-        ))}
+    <ul>
+      {searchHistory[searchType]?.map((item, idx) => (
+        <li
+          key={item.scheme_code}
+          onClick={() => handleClick(item)}
+          className={`${activeIdx === idx && "bg-accent"} hover:bg-accent flex cursor-pointer place-items-center gap-4 rounded-xl px-4 py-4 sm:py-5`}
+        >
+          <HistoryIcon size={18} className="text-muted-foreground" />
+          <p className="Fund-Name max-w-[28ch] truncate text-sm sm:max-w-[30ch] sm:text-[0.95rem]">
+            {item.short_name || item.name}
+          </p>
+        </li>
+      ))}
     </ul>
   );
 }

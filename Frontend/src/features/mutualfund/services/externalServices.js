@@ -3,21 +3,21 @@ import { VITE_MF_API_BASE_URL, VITE_MF_CHART_API_BASE_URL } from "@/config/env";
 
 export const fetchFund = async (schemeCode) => {
   const { data } = await axios.get(
-    `${VITE_MF_API_BASE_URL}/funds/scheme_code/${schemeCode}`,
+    `${VITE_MF_API_BASE_URL}/scheme_code/${schemeCode}`,
   );
   return data.fund;
 };
 
 export const fetchIndexFunds = async () => {
   const { data } = await axios.get(
-    `${VITE_MF_API_BASE_URL}/funds?plan=GROWTH&fund_category=index funds&limit=4`,
+    `${VITE_MF_API_BASE_URL}?plan=GROWTH&fund_category=index funds&limit=4`,
   );
   return data.funds;
 };
 
 export const fetchPopularFunds = async () => {
   const { data } = await axios.get(
-    `${VITE_MF_API_BASE_URL}/funds?plan=GROWTH&limit=4&sort_by=return_3y&category=Equity&fund_rating_gte=4`,
+    `${VITE_MF_API_BASE_URL}?plan=GROWTH&limit=4&sort_by=return_3y&category=Equity&fund_rating_gte=4`,
   );
   return data.funds;
 };
