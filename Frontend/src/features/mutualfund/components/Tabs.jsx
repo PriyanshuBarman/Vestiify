@@ -2,7 +2,7 @@ import { selectActiveTabIndex } from "@/store/slices/mutualFundSlice";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 
-const tabs = [
+const TABS = [
   { name: "Explore", hash: "#explore" },
   { name: "Investments", hash: "#investments" },
   { name: "SIPs", hash: "#sip" },
@@ -17,7 +17,7 @@ function Tabs() {
 
   return (
     <div className="Tabs mb-8 space-x-2 border-b py-2 pl-4 text-[0.9rem] font-medium sm:space-x-4 sm:pl-0 sm:text-base">
-      {tabs.map((tab, idx) => (
+      {TABS.map((tab, idx) => (
         <a
           key={tab.name}
           href={tab.hash}

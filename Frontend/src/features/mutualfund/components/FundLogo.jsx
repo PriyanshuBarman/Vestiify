@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 function FundLogo({ logoCode, className }) {
   return (
-    <Avatar className={cn("rounded-md sm:size-10", className)}>
+    <Avatar className={cn("rounded-md size-9 sm:size-10", className)}>
       <AvatarImage
         src={`https://assets-netstorage.groww.in/mf-assets/logos/${logoCode === "parag" ? "ppfas" : logoCode}_groww.png`}
         className="object-contain"

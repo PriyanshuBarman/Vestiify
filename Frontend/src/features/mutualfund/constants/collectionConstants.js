@@ -2,14 +2,14 @@ import { VITE_MF_API_BASE_URL } from "@/config/env";
 
 export const collectionConfig = {
   "High Returns": {
-    url: `${VITE_MF_API_BASE_URL}?plan=Growth&sort_by=return_1y&category=Equity`,
+    url: `${VITE_MF_API_BASE_URL}?plan=Growth&limit=20&sort_by=return_1y&category=Equity`,
     description: "Funds with highest returns in the last 1 years.",
   },
   "Gold Funds": {
-    url: `${VITE_MF_API_BASE_URL}?plan=Growth&sort_by=return_1y&category=debt`,
+    url: `${VITE_MF_API_BASE_URL}?plan=Growth&limit=20&sort_by=return_1y&category=debt`,
   },
   "5 Star Funds": {
-    url: `${VITE_MF_API_BASE_URL}?plan=Growth&sort_by=return_1y&fund_rating=5`,
+    url: `${VITE_MF_API_BASE_URL}?plan=Growth&limit=20&sort_by=return_1y&fund_rating=5`,
     description: "Funds rated 5 stars by Value Research.",
   },
   "Large Cap": {
@@ -25,3 +25,11 @@ export const collectionConfig = {
     description: "Funds with majority investments in small cap companies.",
   },
 };
+
+export const DEFAULT_COLUMNS = [
+  "return_1y",
+  "return_3y",
+  "return_5y",
+  "return_since_inception",
+  "aum",
+];

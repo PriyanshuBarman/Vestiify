@@ -11,8 +11,8 @@ import { User } from "lucide-react";
 import { useState } from "react";
 import FundLogo from "./FundLogo";
 import ReturnCalculator from "./ReturnCalculator";
-import SimilarFundsTableDesktop from "./SimilarFundsTableDesktop";
-import SimilarFundsTableMobile from "./SimilarFundsTableMobile";
+import SimilarFundsTableDesktop from "./tables/SimilarFundsTableDesktop";
+import SimilarFundsTableMobile from "./tables/SimilarFundsTableMobile";
 
 function Accordians({ fund }) {
   const isMobile = useIsMobile();

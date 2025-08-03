@@ -10,6 +10,7 @@ import { Slider } from "@/components/ui/slider";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useState } from "react";
 import CountUp from "react-countup";
+import { formatToINR } from "../utils/formaters";
 
 const calculateAbsoluteReturn = (annualizedReturn, years) => {
   const annualizedReturnDecimal = annualizedReturn / 100;
@@ -50,7 +51,7 @@ function ReturnCalculator({ fund }) {
 
       <CardContent>
         <span className="text-primary align-middle text-lg font-medium">
-          ${amount}
+          {formatToINR(amount)}
         </span>
         <span className="ml-4 align-middle sm:ml-2 sm:text-lg sm:font-medium">
           one-time
@@ -93,12 +94,16 @@ function ReturnCalculator({ fund }) {
         </div>
       </CardDescription>
 
-      <CardFooter className="flex flex-col items-start border-t">
-        <p className="text-xs sm:text-base">Total investment of ${amount}</p>
-        <p className="text-foreground text-base font-medium sm:text-lg">
-          Would have become $
-          <CountUp end={value} duration={0.5} separator="," />
-          <span className="text-primary">(+{percentage}%)</span>
+      <CardFooter className="flex flex-col items-start gap-2 border-t">
+        <p className="text-xs sm:text-base">
+          Total investment of {formatToINR(amount)}
+        </p>
+        <p className="text-foreground space-x-2 text-base font-medium sm:text-lg">
+          <span>Would have become</span>
+          <CountUp end={value} duration={0.5} separator="," prefix="₹" />
+          <span className={percentage > 0 ? "text-green-500" : "text-red-500"}>
+            ({percentage}%)
+          </span>
         </p>
       </CardFooter>
     </Card>

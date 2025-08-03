@@ -12,6 +12,8 @@ import InvestFormDesktop from "../components/InvestFormDesktop";
 import PurchaseBtns from "../components/PurchaseBtns";
 import RecentlyViewed from "../components/RecentlyViewed";
 import { useGetFundData } from "../hooks/queries/externalQueries";
+import GoBackBar from "@/components/GoBackBar";
+import { formatFundCategory } from "../utils/formaters";
 
 function FundPage() {
   const { scheme_code } = useParams();
@@ -27,6 +29,7 @@ function FundPage() {
 
   return (
     <div className="sm:flex sm:gap-6">
+      <GoBackBar />
       <div className="h-full w-full space-y-4 text-inherit sm:space-y-6 lg:w-[67%]">
         <div className="px-4">
           <div className="flex justify-between">
@@ -45,11 +48,13 @@ function FundPage() {
           </h2>
 
           {/* Fund Category, Risk Level Badges */}
-          <div className="text-muted-foreground/90 sm:text-foreground flex items-center sm:mt-4 sm:space-x-3">
+          <div className="text-muted-foreground/90 sm:text-foreground flex items-center sm:mt-4 sm:space-x-2">
             <Badge variant="mutualFund" className="pl-0">
               {fund.fund_type}
             </Badge>
-            <Badge variant="mutualFund">{fund.fund_category}</Badge>
+            <Badge variant="mutualFund">
+              {formatFundCategory(fund.fund_category)}
+            </Badge>
             <Badge variant="mutualFund">{fund.crisil_rating}</Badge>
             {fund.lock_in_period > 0 && (
               <Badge

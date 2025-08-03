@@ -10,16 +10,18 @@ import { ChevronsUpDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import {
-  columnLabels,
+  columnsConfig,
   getNextColumn,
   sortPeersBy,
-} from "../utils/similarFundsTable";
+} from "../../utils/similarFundsTable";
 
 function SimilarFundsTableMobile({ fund }) {
   const [activeColumn, setActiveColumn] = useState("return_1y");
   const [peers, setPeers] = useState(fund.comparison || []);
 
-  useEffect(() => setPeers(fund.comparison || []), [fund.comparison]);
+  useEffect(() => {
+    if (fund.comparison) setPeers(fund.comparison);
+  }, [fund.comparison]);
 
   function handleSortClick() {
     const next = getNextColumn(activeColumn);
@@ -38,7 +40,7 @@ function SimilarFundsTableMobile({ fund }) {
             </TableHead>
             <TableHead onClick={handleSortClick} className="text-primary">
               <div className="flex items-center justify-end gap-1">
-                <span>{columnLabels[activeColumn].fullName}</span>
+                <span>{columnsConfig[activeColumn].fullName}</span>
                 <ChevronsUpDown className="fill-primary size-3" />
               </div>
             </TableHead>
@@ -62,7 +64,7 @@ function SimilarFundsTableMobile({ fund }) {
                 className="py-4 pr-4 text-right"
               >
                 {peer[activeColumn]
-                  ? `${peer[activeColumn]} ${columnLabels[activeColumn].unit}`
+                  ? `${peer[activeColumn]} ${columnsConfig[activeColumn].unit}`
                   : "NA"}
               </TableCell>
             </TableRow>

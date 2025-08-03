@@ -1,3 +1,4 @@
+import AllFunds from "./AllFunds";
 import Collections from "./Collections";
 import IndexFunds from "./IndexFunds";
 import PopularFunds from "./PopularFunds";
@@ -14,6 +15,7 @@ function ExploreTab() {
         <Collections />
         <IndexFunds />
         <QuickAccess />
+        <AllFunds />
       </div>
       <YourInvestments />
     </div>

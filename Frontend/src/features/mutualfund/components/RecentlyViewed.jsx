@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
 import { useRecentlyViewedFunds } from "../hooks/useRecentlyViewedFunds";
 import CardLG from "./CardLG";
 import FundLogo from "./FundLogo";
-import FundRating from "@/components/FundRating";
+import FundRating from "@/features/mutualfund/components/FundRating";
 
 const labelArr = [
   { key: "return_1y", label: "1Y Returns" },
@@ -39,7 +39,7 @@ function RecentlyViewed() {
         <Button
           onClick={handleClick}
           variant="ghost"
-          className="flex gap-1 text-[0.8rem] sm:hidden"
+          className="flex gap-1 text-[0.8rem] text-foreground-secondary sm:hidden"
         >
           <ChevronsUpDown strokeWidth={2.5} />
           {labelArr[activeLabelIdx].label}
@@ -50,11 +50,7 @@ function RecentlyViewed() {
         <div className="mt-4 w-full gap-4 space-y-5 px-4 sm:my-4 sm:flex sm:space-y-0 sm:px-0">
           {recentlyViewedFunds?.map((fund) =>
             isMobile ? (
-              <Row
-                key={fund.id}
-                fund={fund}
-                activeLabelIdx={activeLabelIdx}
-              />
+              <Row key={fund.id} fund={fund} activeLabelIdx={activeLabelIdx} />
             ) : (
               <CardLG key={fund.id} fund={fund} />
             ),
@@ -77,7 +73,7 @@ function Row({ fund, activeLabelIdx }) {
   };
 
   const key = labelArr[activeLabelIdx].key;
-  let value = fund[key] ? fund[key] + "%" : "NA";
+  const value = fund[key] ? fund[key] + "%" : "NA";
 
   return (
     <div
@@ -87,15 +83,14 @@ function Row({ fund, activeLabelIdx }) {
       <FundLogo logoCode={fund.short_code} />
 
       <div className="ml-4">
-        <span className="text-sm">{fund.short_name} Fund</span>
-        <p className="text-muted-foreground flex items-center text-xs">
-          {fund.fund_category}
-
+        <h3 className="text-sm">{fund.short_name}</h3>
+        <div className="text-muted-foreground flex items-center gap-2 text-xs">
+          <span className="capitalize">{fund.fund_category}</span>
           <FundRating rating={fund.fund_rating} />
-        </p>
+        </div>
       </div>
       <div className="ml-auto">
-        <span className="text-sm font-medium">{value}</span>
+        <span className="text-sm font-medium text-foreground-secondary">{value}</span>
       </div>
     </div>
   );

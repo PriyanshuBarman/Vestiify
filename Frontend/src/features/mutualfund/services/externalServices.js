@@ -45,3 +45,45 @@ export const fetchChartData = async (scheme_code) => {
 
   return fullChartData.reverse();
 };
+
+export const fetchAllFunds = async () => {
+  const { data } = await axios.get(
+    `${VITE_MF_API_BASE_URL}?plan=GROWTH&sort_by=return_3y&category=Equity&fund_rating_gte=4`,
+  );
+  return data.funds;
+};
+
+export const fetchAMCs = async () => {
+  const { data } = await axios.get(`${VITE_MF_API_BASE_URL}/amcs`);
+  return data.amcs;
+};
+
+export const fetchFilteredFunds = async ({ pageParam = 0, filters, LIMIT }) => {
+  const params = [];
+
+  for (const [key, value] of Object.entries(filters)) {
+    if (!value || (Array.isArray(value) && value.length === 0)) continue;
+
+    if (Array.isArray(value)) {
+      params.push(`${key}=${value.join(",")}`);
+    } else {
+      params.push(`${key}=${encodeURIComponent(value)}`);
+    }
+  }
+
+  params.push(`limit=${LIMIT}`);
+  params.push(`offset=${pageParam}`);
+
+  const queryString = `?${params.join("&")}`;
+  const { data } = await axios.get(`${VITE_MF_API_BASE_URL}${queryString}`);
+
+  return data;
+};
+
+// Fetch categories and subcategories
+export const fetchCategories = async () => {
+  const { data } = await axios.get(
+    "https://envest-helper.vercel.app/api/v1/mutual-funds/categories",
+  );
+  return data.result;
+};

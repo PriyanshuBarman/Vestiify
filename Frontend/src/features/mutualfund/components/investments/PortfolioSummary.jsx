@@ -5,6 +5,7 @@ import {
   TrendingUpIcon,
 } from "lucide-react";
 import { useGetPortfolioSummary } from "../../hooks/queries/internalQueries";
+import { formatToINR } from "../../utils/formaters";
 
 function SectionCards() {
   const { data = {} } = useGetPortfolioSummary();
@@ -16,7 +17,7 @@ function SectionCards() {
         <div>
           <h5 className="text-muted-foreground text-xs sm:text-sm">Current</h5>
           <p className="mt-1 text-sm font-medium sm:text-xl md:text-xl">
-            ₹ {data.current}
+            {formatToINR(data.current)}
           </p>
         </div>
         <PieChartIcon className="text-primary hidden size-8 sm:block" />
@@ -31,7 +32,7 @@ function SectionCards() {
           <p
             className={`mt-1 text-sm font-medium sm:text-xl md:text-xl ${data.pnl >= 0 ? "text-green-600" : "text-red-500"}`}
           >
-            ₹ {data.pnl} ({data.returnPercent}%)
+            {formatToINR(data.pnl)} ({data.returnPercent}%)
           </p>
         </div>
         <TrendingUpIcon className="hidden size-8 text-green-600 sm:block" />
@@ -45,7 +46,7 @@ function SectionCards() {
             Invested
           </h5>
           <p className="mt-1 text-sm font-medium sm:text-xl md:text-xl">
-            ₹ {data.invested}
+            {formatToINR(data.invested)}
           </p>
         </div>
         <BriefcaseBusinessIcon className="hidden size-8 text-blue-600 sm:block" />
@@ -58,7 +59,7 @@ function SectionCards() {
             1 Day Change
           </h5>
           <p className="mt-1 text-sm font-medium text-red-500 sm:text-xl md:text-xl">
-            ₹ {data.dayChangeValue} ({data.dayChangePercent}%)
+            {formatToINR(data.dayChangeValue)} ({data.dayChangePercent}%)
           </p>
         </div>
         <TrendingDownIcon className="hidden size-8 text-red-600 sm:block" />

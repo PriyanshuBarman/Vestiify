@@ -18,7 +18,7 @@ function CustomTooltipContent({ active, payload, label, coordinate, viewBox }) {
 
   return (
     <div
-      className="absolute -top-4 left-0 z-50 rounded px-4 py-1 text-xs whitespace-nowrap"
+      className="absolute -top-4 left-0 rounded px-4 py-1 text-xs whitespace-nowrap"
       style={{
         left: `${x}px`,
         transform: "translateX(-50%)",

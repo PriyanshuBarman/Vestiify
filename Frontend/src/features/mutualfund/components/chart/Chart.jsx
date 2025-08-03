@@ -9,6 +9,15 @@ import CustomTooltipContent from "./CustomTooltipContent";
 import TimeRangeBtns from "./TimeRangeBtns";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
+const returnMapping = {
+  "1M": "return_1m",
+  "6M": "return_6m",
+  "1Y": "return_1y",
+  "3Y": "return_3y",
+  "5Y": "return_5y",
+  All: "return_since_inception",
+};
+
 function Chart({ fund }) {
   const isMobile = useIsMobile();
   const { data: fullChartData = [], isLoading } = useGetChart(fund.scheme_code);
@@ -21,6 +30,7 @@ function Chart({ fund }) {
   }, [fullChartData]);
 
   const selectedChartData = getSelectedRangeData(fullChartData, selectedRange);
+  const returnPercent = fund[returnMapping[selectedRange]]; // return-percent for the selected range
 
   return (
     <div className="relative overflow-x-hidden">
@@ -32,7 +42,11 @@ function Chart({ fund }) {
         />
       )}
 
-      <ChartLegend selectedRange={selectedRange} fund={fund} />
+      <ChartLegend
+        selectedRange={selectedRange}
+        fund={fund}
+        returnPercent={returnPercent}
+      />
 
       <CardContent className="mt-6">
         <ChartContainer
@@ -57,8 +71,11 @@ function Chart({ fund }) {
             <ChartTooltip content={<CustomTooltipContent />} />
             <Line
               dataKey="nav"
-              type="natural"
-              stroke={1 > 0 ? "var(--primary)" : "#FF6467"}
+              type="monotone"
+              stroke={
+                returnPercent >= 0 ? "var(--positive)" : "var(--negative)"
+              }
+              color="#FFFFFF"
               strokeWidth={isMobile ? 1.5 : 2}
               dot={false}
             />

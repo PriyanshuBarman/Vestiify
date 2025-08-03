@@ -1,5 +1,10 @@
-import FundRating from "@/components/FundRating";
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import FundRating from "@/features/mutualfund/components/FundRating";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Link } from "react-router";
 import FundLogo from "./FundLogo";
 
@@ -17,11 +22,12 @@ function CardSM({ fund }) {
         </CardTitle>
 
         <CardDescription className="mt-0.5 flex items-center justify-between pr-2 text-xs">
-          <p className="flex text-xs">
-            {fund.category} {fund.fund_category}
+          <div className="flex gap-2 text-xs">
+            <span>{fund.category}</span>
+            <span>{fund.fund_category}</span>
             <FundRating rating={fund.fund_rating} />
-          </p>
-          <p>3Y</p>
+          </div>
+          <span>3Y</span>
         </CardDescription>
       </Card>
     </Link>

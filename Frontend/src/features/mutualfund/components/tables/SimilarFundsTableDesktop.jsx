@@ -10,11 +10,17 @@ import { ChevronDownIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import {
-  columnKeys,
-  columnLabels,
+  columnsConfig,
   getNewOrder,
   sortPeersBy,
-} from "../utils/similarFundsTable";
+} from "../../utils/similarFundsTable";
+
+const DEFAULT_COLUMNS = [
+  "return_1y",
+  "return_3y",
+  "return_5y",
+  "return_since_inception",
+];
 
 function SimilarFundsTableDesktop({ fund }) {
   const [activeColumn, setActiveColumn] = useState("return_1y");
@@ -35,16 +41,16 @@ function SimilarFundsTableDesktop({ fund }) {
       <Table>
         <TableHeader>
           <TableRow className="bg-accent">
-            <TableHead className="py-4 pl-6 text-base">Fund name</TableHead>
-            {columnKeys.map((key) => (
+            <TableHead className="py-5 pl-6">Fund name</TableHead>
+            {DEFAULT_COLUMNS.map((key) => (
               <TableHead key={key}>
                 <div
                   onClick={() => handleSortClick(key)}
                   className={`flex h-full cursor-pointer items-center gap-2 py-4 ${
-                    activeColumn === key && "fill-foreground font-bold"
+                    activeColumn === key && "fill-foreground font-semibold"
                   }`}
                 >
-                  {columnLabels[key].shortName}
+                  {columnsConfig[key].shortName}
                   {activeColumn === key ? (
                     <ChevronDownIcon
                       className={`size-4 fill-inherit transition-all duration-200 ease-in ${sortOrder === "desc" && "rotate-180"}`}
@@ -58,11 +64,11 @@ function SimilarFundsTableDesktop({ fund }) {
           </TableRow>
         </TableHeader>
 
-        <TableBody className="sm:font-medium">
+        <TableBody className="text-md">
           {peers.map((peer) => (
             <TableRow key={peer.scheme_code}>
               <TableCell
-                className={`${peer.name === fund.name && "font-bold"} py-4 pl-4`}
+                className={`${peer.name === fund.name && "font-semibold"} py-5 pl-6`}
               >
                 <Link
                   to={`/mutual-funds/${peer.scheme_code}`}
@@ -71,13 +77,15 @@ function SimilarFundsTableDesktop({ fund }) {
                   {peer.short_name}
                 </Link>
               </TableCell>
-              {columnKeys.map((key) => (
+              {DEFAULT_COLUMNS.map((key) => (
                 <TableCell
                   key={key}
                   onClick={() => handleSortClick(key)}
-                  className={`py-4 ${activeColumn === key && "font-bold"} `}
+                  className={`py-4 ${activeColumn === key && "font-semibold"} `}
                 >
-                  {peer[key] ? `${peer[key]} ${columnLabels[key].unit}` : "NA"}
+                  {peer[key]
+                    ? `${columnsConfig[key].prefix || ""} ${peer[key]}${columnsConfig[key].suffix || ""}`
+                    : "NA"}
                 </TableCell>
               ))}
             </TableRow>

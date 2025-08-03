@@ -1,32 +1,18 @@
 import { CardHeader } from "@/components/ui/card";
 import CountUp from "react-countup";
 
-const returnMapping = {
-  "1M": "return_1m",
-  "6M": "return_6m",
-  "1Y": "return_1y",
-  "3Y": "return_3y",
-  "5Y": "return_5y",
-  All: "return_since_inception",
-};
-
-function ChartLegend({ selectedRange, fund }) {
-  const returnPercent = fund[returnMapping[selectedRange]]; // return-percent for the selected range
+function ChartLegend({ selectedRange, fund, returnPercent }) {
   return (
     <CardHeader className="gap-0 pl-4">
       <div className="flex items-end gap-2">
-        <span
-          className={`text-2xl font-medium sm:text-3xl sm:font-medium ${returnPercent >= 0 ? "text-primary" : "text-red-400"}`}
-        >
-          <CountUp
-            end={returnPercent}
-            decimals={2}
-            duration={0.7}
-            useEasing={true}
-            prefix={returnPercent > 0 ? "+" : ""}
-            suffix="%"
-          />
-        </span>
+        <CountUp
+          end={returnPercent}
+          decimals={2}
+          duration={0.7}
+          useEasing={true}
+          suffix="%"
+          className={`text-2xl font-medium sm:text-[1.65rem] sm:font-semibold ${returnPercent >= 0 ? "text-positive" : "text-negative"}`}
+        />
         <span className="text-muted-foreground/90 text-xs font-medium sm:text-sm sm:font-semibold">
           {selectedRange}
           {selectedRange.includes("Y") && selectedRange !== "1Y"
@@ -35,9 +21,9 @@ function ChartLegend({ selectedRange, fund }) {
         </span>
       </div>
 
-      <div className="space-x-1 text-xs font-medium sm:text-sm">
+      <div className="text-xs font-medium tabular-nums sm:text-sm sm:font-semibold">
         <span
-          className={`${fund.day_change_percent >= 0 ? "text-primary" : "text-red-400"}`}
+          className={`${fund.day_change_percent >= 0 ? "text-positive" : "text-negative"}`}
         >
           {fund.day_change_percent > 0 ? "+" : ""} {fund.day_change_percent}%
         </span>
