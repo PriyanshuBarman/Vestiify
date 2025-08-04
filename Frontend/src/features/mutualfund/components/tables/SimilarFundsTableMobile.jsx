@@ -14,6 +14,7 @@ import {
   getNextColumn,
   sortPeersBy,
 } from "../../utils/similarFundsTable";
+import { formatToINR } from "../../utils/formaters";
 
 function SimilarFundsTableMobile({ fund }) {
   const [activeColumn, setActiveColumn] = useState("return_1y");
@@ -41,7 +42,7 @@ function SimilarFundsTableMobile({ fund }) {
             <TableHead onClick={handleSortClick} className="text-primary">
               <div className="flex items-center justify-end gap-1">
                 <span>{columnsConfig[activeColumn].fullName}</span>
-                <ChevronsUpDown className="fill-primary size-3" />
+                <ChevronsUpDown className="fill-primary size-3.5" />
               </div>
             </TableHead>
           </TableRow>
@@ -64,7 +65,9 @@ function SimilarFundsTableMobile({ fund }) {
                 className="py-4 pr-4 text-right"
               >
                 {peer[activeColumn]
-                  ? `${peer[activeColumn]} ${columnsConfig[activeColumn].unit}`
+                  ? activeColumn === "aum"
+                    ? `${formatToINR(peer[activeColumn] / 10, 1)}Cr`
+                    : `${columnsConfig[activeColumn].prefix}  ${peer[activeColumn]} ${columnsConfig[activeColumn].suffix}`
                   : "NA"}
               </TableCell>
             </TableRow>

@@ -9,6 +9,7 @@ import {
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
+import FilterBtns from "../components/filters/FilterBtns";
 import TableLG from "../components/tables/TableLG";
 import TableSM from "../components/tables/TableSM";
 import { DEFAULT_COLUMNS } from "../constants/collectionConstants";
@@ -18,7 +19,6 @@ import {
   getNewOrder,
   getNextColumn,
 } from "../utils/collectionsHelper";
-import FilterBtns from "../components/filters/FilterBtns";
 
 function AllFundsPage() {
   const isMobile = useIsMobile();
@@ -29,7 +29,7 @@ function AllFundsPage() {
   const orderBy = filters.order_by;
 
   // Pagination
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
     useFilteredFunds(filters);
 
   const totalCount = data?.pages[0].totalCount;
@@ -72,6 +72,7 @@ function AllFundsPage() {
           enablePagination={true}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
+          isFetching={isFetching}
           inViewRef={inViewRef}
         />
       ) : (
@@ -88,6 +89,7 @@ function AllFundsPage() {
           enablePagination={true}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
+          isFetching={isFetching}
           inViewRef={inViewRef}
         />
       )}

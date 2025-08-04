@@ -18,7 +18,7 @@ function CardSM({ fund }) {
         <CardContent className="p-0">
           <CardTitle className="flex justify-between gap-2 text-sm font-medium">
             <p className="line-clamp-1">{fund.short_name}</p>
-            <p className="text-[0.78rem]">{fund.return_3y}%</p>
+            <p className="text-[0.8rem]">{fund.return_3y}%</p>
           </CardTitle>
 
           <CardDescription className="flex items-center justify-between pr-2 text-xs">

@@ -43,13 +43,20 @@ function PortfolioTableSM({ portfolio }) {
   const getColor = (fund) => {
     switch (activeColumn.label) {
       case "Current (Invested)":
-        return fund.current >= fund.invested ? "text-primary" : "text-red-500";
+        return Number(fund.current) >= Number(fund.invested)
+          ? "text-positive"
+          : "text-negative";
 
       case "Returns (%)":
-        return fund.pnl >= 0 ? "text-primary" : "text-red-500";
+        return Number(fund.pnl) >= 0 ? "text-positive" : "text-negative";
+
+      case "Day change (%)":
+        return Number(fund.dayChangeValue) >= 0
+          ? "text-positive"
+          : "text-negative";
 
       default:
-        return "text-primary";
+        return "text-positive";
     }
   };
 
@@ -71,35 +78,35 @@ function PortfolioTableSM({ portfolio }) {
       </TableHeader>
 
       <TableBody>
-        {portfolio?.map((item) => (
-          <TableRow key={item.schemeCode}>
+        {portfolio?.map((fund) => (
+          <TableRow key={fund.schemeCode}>
             <TableCell className="flex items-center gap-4 py-4 pl-4">
-              <FundLogo logoCode={item.logoCode} />
+              <FundLogo logoCode={fund.logoCode} />
 
               <div>
-                <h4 className="font-medium text-wrap">{item.shortName} Fund</h4>
+                <h4 className="font-medium text-wrap">{fund.shortName} Fund</h4>
                 <p className="text-muted-foreground mt-1 flex items-center text-xs font-medium">
-                  {item.fundType}
+                  {fund.fundType}
                 </p>
               </div>
             </TableCell>
 
             <TableCell className="pr-4">
               <span
-                className={`flex justify-end font-medium ${getColor(item)}`}
+                className={`flex justify-end font-medium ${getColor(fund)}`}
               >
-                {formatToINR(item[activeColumn.data1])}
+                {formatToINR(fund[activeColumn.data1], 2)}
               </span>
 
               <p className="text-muted-foreground flex justify-end text-xs">
                 {activeIndex === 0 ? (
                   <>
                     ( <span> {activeColumn.unit2}</span>
-                    <span>{item[activeColumn.data2]} </span>)
+                    <span>{fund[activeColumn.data2]} </span>)
                   </>
                 ) : (
                   <>
-                    ( <span>{item[activeColumn.data2]} </span>
+                    ( <span>{fund[activeColumn.data2]} </span>
                     <span> {activeColumn.unit2}</span>)
                   </>
                 )}

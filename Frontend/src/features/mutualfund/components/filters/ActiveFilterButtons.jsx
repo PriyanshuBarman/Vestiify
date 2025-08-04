@@ -83,7 +83,7 @@ function ActiveFilterButtons() {
             <DrawerContent className="h-full">
               <div className="h-full p-4 sm:px-29">
                 <div className="mb-4 flex items-center justify-between">
-                  <h2 className="text-lg font-semibold">
+                  <h2 className="sm:text-foreground-secondary text-lg font-semibold">
                     {button.label} {button.count && `(${button.count})`}
                   </h2>
                   <Button

@@ -46,7 +46,7 @@ function ProfileSheet({ children }) {
       <SheetTrigger asChild>{children}</SheetTrigger>
       <SheetContent
         side="right"
-        className="h-lvh w-full pb-18 sm:min-w-md sm:pb-0 sm:pl-6"
+        className="h-lvh w-full sm:rounded-l-2xl pb-18 sm:min-w-md sm:pb-0 sm:pl-6"
       >
         <SheetHeader>
           <SheetTitle>Profile</SheetTitle>

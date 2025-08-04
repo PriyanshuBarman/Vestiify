@@ -21,12 +21,12 @@ const returnMapping = {
 function Chart({ fund }) {
   const isMobile = useIsMobile();
   const { data: fullChartData = [], isLoading } = useGetChart(fund.scheme_code);
-  const [selectedRange, setSelectedRange] = useState("1Y");
+  const [selectedRange, setSelectedRange] = useState("3Y");
 
   useEffect(() => {
-    isValidRange("1Y", fullChartData)
+    isValidRange("3Y", fullChartData)
       ? setSelectedRange("All")
-      : setSelectedRange("1Y");
+      : setSelectedRange("3Y");
   }, [fullChartData]);
 
   const selectedChartData = getSelectedRangeData(fullChartData, selectedRange);
@@ -48,9 +48,9 @@ function Chart({ fund }) {
         returnPercent={returnPercent}
       />
 
-      <CardContent className="mt-6">
+      <CardContent className="mt-6 px-2">
         <ChartContainer
-          className="h-55 w-full sm:h-78"
+          className="h-50 w-full sm:h-78"
           config={{
             label: "Desktop",
             color: "hsl(var(--chart-1))",

@@ -6,7 +6,7 @@ import { selectFilters, setFilters } from "@/store/slices/mutualFundSlice";
 import { SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useMemo, useState } from "react";
-import LoadingState from "@/components/ui/loading-state";
+import LoadingState from "@/components/LoadingState";
 
 function FilterFundHouseTab() {
   const filters = useSelector(selectFilters);

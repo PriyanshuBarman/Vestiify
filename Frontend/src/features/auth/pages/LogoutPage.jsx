@@ -12,6 +12,7 @@ function LogoutPage() {
     const data = await logoutUser();
     if (data?.success) {
       queryClient.clear();
+      localStorage.clear();
       toast.success(data.message);
       navigate("/auth/login");
     } else {

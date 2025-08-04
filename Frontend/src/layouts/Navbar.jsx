@@ -19,8 +19,8 @@ function Navbar() {
   if (!allowedRoutes.has(location.pathname) && isMobile) return;
 
   return (
-    <nav className="bg-background z-50 flex h-16 items-center justify-between gap-8 px-4 sm:px-12 xl:px-0">
-      <div className="flex items-center gap-0 sm:gap-8">
+    <nav className="bg-background z-50 flex items-center justify-between gap-8 px-4 pt-4 pb-2 sm:px-12 sm:py-2 xl:px-0">
+      <div className="flex items-center gap-0 sm:gap-6">
         <Logo />
         <NavLinks />
       </div>
@@ -63,11 +63,11 @@ export default Navbar;
 
 function NavLinks() {
   return (
-    <div className="flex sm:gap-2">
+    <div className="mt-2 hidden text-sm sm:mt-0 sm:flex sm:text-lg">
       <NavLink
         to="/coming-soon"
         className={({ isActive }) =>
-          `${isActive ? "sm:text-primary" : "text-muted-foreground hidden sm:inline-block"} shrink-0 rounded-md p-2 text-[0.95rem] font-semibold sm:text-sm sm:text-[1.08rem]`
+          `${isActive ? "sm:text-foreground" : "text-muted-foreground hidden sm:inline-block"} shrink-0 rounded-md p-2 font-semibold`
         }
       >
         Stocks
@@ -76,7 +76,7 @@ function NavLinks() {
       <NavLink
         to="/mutual-funds#explore"
         className={({ isActive }) =>
-          `${isActive ? "sm:text-primary" : "text-muted-foreground hidden sm:inline-block"} shrink-0 rounded-md p-2 text-[0.95rem] font-semibold sm:text-sm sm:text-[1.08rem]`
+          `${isActive ? "sm:text-foreground" : "text-muted-foreground hidden sm:inline-block"} shrink-0 rounded-md p-2 font-semibold`
         }
       >
         Mutual Funds

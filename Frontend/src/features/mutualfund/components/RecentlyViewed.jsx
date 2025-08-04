@@ -30,7 +30,9 @@ function RecentlyViewed() {
 
   return (
     <section>
-      <h2 className="pl-4 font-medium sm:pl-0 sm:text-xl">Recently Viewed</h2>
+      <h2 className="pl-4 font-medium sm:pl-0 sm:text-xl sm:font-semibold">
+        Recently Viewed
+      </h2>
 
       <div className="mt-6 flex items-center justify-between pl-4 sm:px-0">
         <h4 className="text-muted-foreground text-[0.8rem] font-medium sm:text-base">
@@ -39,7 +41,7 @@ function RecentlyViewed() {
         <Button
           onClick={handleClick}
           variant="ghost"
-          className="flex gap-1 text-[0.8rem] text-foreground-secondary sm:hidden"
+          className="text-foreground-secondary flex gap-1 text-[0.8rem] sm:hidden"
         >
           <ChevronsUpDown strokeWidth={2.5} />
           {labelArr[activeLabelIdx].label}
@@ -90,7 +92,9 @@ function Row({ fund, activeLabelIdx }) {
         </div>
       </div>
       <div className="ml-auto">
-        <span className="text-sm font-medium text-foreground-secondary">{value}</span>
+        <span className="text-foreground-secondary text-sm font-medium">
+          {value}
+        </span>
       </div>
     </div>
   );

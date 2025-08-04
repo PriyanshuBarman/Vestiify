@@ -16,7 +16,7 @@ function PopularFunds() {
         subHeading={"All Mutual Funds"}
       />
       <ScrollArea>
-        <div className="flex justify-between gap-4 px-4 sm:m-1 sm:gap-3 sm:px-0">
+        <div className="flex justify-between gap-4 px-4 sm:m-0.5 sm:gap-3 sm:px-0">
           {funds?.map((fund) =>
             isMobile ? (
               <CardSM key={fund.id} fund={fund} />

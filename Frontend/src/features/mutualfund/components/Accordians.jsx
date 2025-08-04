@@ -24,7 +24,7 @@ function Accordians({ fund }) {
         value="item-1"
         className="px-4 py-3 sm:border-transparent sm:px-0 sm:py-4"
       >
-        <AccordionTrigger className="text-base sm:text-xl">
+        <AccordionTrigger className="text-base sm:text-xl sm:font-semibold">
           Return Calculator
         </AccordionTrigger>
         <AccordionContent className="py-4">
@@ -36,7 +36,7 @@ function Accordians({ fund }) {
         value="item-2"
         className="px-4 py-3 sm:border-transparent sm:px-0 sm:py-4"
       >
-        <AccordionTrigger className="text-base sm:text-xl">
+        <AccordionTrigger className="text-base sm:text-xl sm:font-semibold">
           Expense ratio, exit load & tax
         </AccordionTrigger>
         <AccordionContent className="py-4">
@@ -83,7 +83,7 @@ function Accordians({ fund }) {
         value="item-4"
         className="py-3 sm:border-transparent sm:py-4"
       >
-        <AccordionTrigger className="px-4 text-base sm:px-0 sm:text-xl">
+        <AccordionTrigger className="px-4 text-base sm:px-0 sm:text-xl sm:font-semibold">
           Similar funds
         </AccordionTrigger>
         <AccordionContent className="py-4">
@@ -99,7 +99,7 @@ function Accordians({ fund }) {
         value="item-5"
         className="px-4 py-3 sm:border-transparent sm:px-0 sm:py-4"
       >
-        <AccordionTrigger className="text-base sm:text-xl">
+        <AccordionTrigger className="text-base sm:text-xl sm:font-semibold">
           Fund managers
         </AccordionTrigger>
         <AccordionContent className="space-y-6">
@@ -120,7 +120,7 @@ function Accordians({ fund }) {
         value="item-6"
         className="px-4 py-3 sm:border-transparent sm:px-0 sm:py-4"
       >
-        <AccordionTrigger className="text-base sm:text-xl">
+        <AccordionTrigger className="text-base sm:text-xl sm:font-semibold">
           Fund house & investment objective
         </AccordionTrigger>
         <AccordionContent className="space-y-8">

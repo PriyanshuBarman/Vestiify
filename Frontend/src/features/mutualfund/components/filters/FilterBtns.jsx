@@ -12,18 +12,18 @@ import { XIcon } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { columnsConfig } from "../../utils/collectionsHelper";
 import { getActiveFilterCount } from "../../utils/filterUtils";
-import SortByBtn from "../SortByBtn";
+import SortByBtn from "../filters/SortByButton";
 import ActiveFilterButtons from "./ActiveFilterButtons";
 import OpenFilterSheetBtn from "./OpenFilterSheetBtn";
 
 const SORT_OPTIONS = {
-  popularity: "Popular",
+  popularity: "Popularity",
   return_1y: "1Y Returns",
   return_3y: "3Y Returns",
   return_5y: "5Y Returns",
   fund_rating: "Rating",
-  expense_ratio: "Expense Ratio",
   aum: "Fund Size",
+  expense_ratio: "Expense Ratio",
   lump_min: "Min Lumpsum",
   sip_min: "Min SIP",
 };
@@ -37,7 +37,7 @@ function FilterBtns() {
   const orderBy = filters.order_by;
   let activeSortBy = filters.sort_by;
 
-  // callbacks for SortByBtn
+  // callbacks for SortByButton
   const handleSortChange = (columnKey) => {
     const orderBy = columnKey === "expense_ratio" ? "asc" : "desc";
     dispatch(setFilters({ ...filters, sort_by: columnKey, order_by: orderBy }));

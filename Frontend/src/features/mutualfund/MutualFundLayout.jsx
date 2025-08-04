@@ -3,7 +3,7 @@ import Tabs from "./components/Tabs";
 
 function MutualFundLayout() {
   return (
-    <div className="sm:pb-24 sm:mt-6 sm:px-12 xl:px-0">
+    <div className="sm:px-12 sm:pb-24 xl:px-0">
       <Tabs />
       <Outlet />
     </div>

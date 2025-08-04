@@ -1,17 +1,20 @@
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useEffect, useState } from "react";
-import { useGetPortfolio } from "../../hooks/queries/internalQueries";
-import SortByButton from "../filters/SortByButton";
-import PortfolioTableLG from "../tables/PortfolioTableLG";
-import PortfolioTableSM from "../tables/PortfolioTableSM";
+import { useGetPortfolio } from "../hooks/queries/internalQueries";
+import SortByButton from "./filters/SortByButton";
+import PortfolioTableLG from "./tables/PortfolioTableLG";
+import PortfolioTableSM from "./tables/PortfolioTableSM";
 import SectionCards from "./PortfolioSummary";
-import { sortPortfolio } from "../../utils/investmentTabHelper";
+import { sortPortfolio } from "../utils/investmentTabHelper";
+import ScrollToTop from "@/layouts/ScrollToTop";
 
 const sortOptions = {
   current: "Current",
   invested: "Invested",
   pnl: "P&L",
   returnPercent: "Return",
+  dayChangeValue: "Day Change (₹)",
+  dayChangePercent: "Day Change (%)",
 };
 
 function InvestmentsTab() {
@@ -39,6 +42,7 @@ function InvestmentsTab() {
 
   return (
     <div className="space-y-4">
+      <ScrollToTop />
       <SectionCards />
 
       <SortByButton

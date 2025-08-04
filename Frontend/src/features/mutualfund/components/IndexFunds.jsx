@@ -18,9 +18,12 @@ function IndexFunds() {
       <SectionHeading heading={"Index Funds"} subHeading={"View All"} />
 
       <ScrollArea>
-        <div className="flex justify-between gap-4 px-4 sm:m-1 sm:gap-3 sm:px-0">
+        <div className="flex justify-between gap-4 px-4 sm:m-0.5 sm:gap-3 sm:px-0">
           {funds?.map((fund) => (
-            <Link to={`/mutual-funds/${fund.scheme_code}`}>
+            <Link
+              key={fund.scheme_code}
+              to={`/mutual-funds/${fund.scheme_code}`}
+            >
               <Card className="h-35 w-39 cursor-pointer justify-between gap-2 p-4 text-inherit transition-all duration-300 hover:scale-101 sm:h-42 sm:w-47">
                 <FundLogo logoCode={fund.short_code} />
                 <CardTitle className="text-xs font-medium sm:text-sm">

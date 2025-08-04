@@ -11,7 +11,7 @@ function CardLG({ fund }) {
           {fund.short_name}
         </CardTitle>
 
-        <CardFooter className="content-center space-x-2 p-0 font-medium">
+        <CardFooter className="content-center space-x-2 p-0 font-semibold">
           <span className="text-md">
             {fund.return_3y ? fund.return_3y.toFixed(1) + "%" : "NA"}
           </span>

@@ -53,8 +53,8 @@ function SortByButton({
         </Button>
       </DrawerTrigger>
 
-      <DrawerContent className="text-foreground-secondary px-4 pb-2 sm:px-20">
-        <div className="my-2 flex items-center justify-between rounded-lg sm:px-4">
+      <DrawerContent className="px-4 pb-2 sm:px-20">
+        <div className="my-2 flex items-center justify-between sm:px-4">
           <DialogTitle className="text-base sm:text-xl">Sort by</DialogTitle>
           {onOrderChange && (
             <Button
@@ -92,15 +92,16 @@ function SortByButton({
                 <span>{sortOptions[option]}</span>
               </Label>
             ))}
-
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setShowMore(!showMore)}
-            className="mt-2 w-full"
-          >
-            {showMore ? "Show Less" : "Show More"}
-          </Button>
+          {Object.keys(sortOptions).length > 6 && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setShowMore(!showMore)}
+              className="mt-2 w-full"
+            >
+              {showMore ? "Show Less" : "Show More"}
+            </Button>
+          )}
         </RadioGroup>
       </DrawerContent>
     </Drawer>

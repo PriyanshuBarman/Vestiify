@@ -97,7 +97,7 @@ const Desktopsearch = () => {
 
   return (
     <>
-      <div onKeyDown={handleKeyDown} className="relative z-20 w-xl">
+      <div onKeyDown={handleKeyDown} className="relative z-30 w-xl">
         <SearchBar
           displayQuery={displayQuery}
           onChange={handleChange}
@@ -148,7 +148,7 @@ const Desktopsearch = () => {
       {isSearchOpen && (
         <div
           onClick={() => dispatch(setIsSearchOpen(false))}
-          className="Backdrop-Overlay fixed inset-0 z-10 bg-black/10 backdrop-blur-xs"
+          className="Backdrop-Overlay fixed inset-0 z-20 bg-black/10 backdrop-blur-xs"
         ></div>
       )}
     </>

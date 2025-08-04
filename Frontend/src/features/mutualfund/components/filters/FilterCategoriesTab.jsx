@@ -13,6 +13,7 @@ import { setFilters } from "@/store/slices/mutualFundSlice";
 import CustomCheckbox from "../CustomCheckbox";
 import { formatFundCategory } from "../../utils/formaters";
 import { Switch } from "@/components/ui/switch";
+import LoadingState from "@/components/LoadingState";
 
 function FilterCategoriesTab() {
   const filters = useSelector(selectFilters);
@@ -82,7 +83,9 @@ function FilterCategoriesTab() {
   const getSelectedFCsCount = (fundType) =>
     data[fundType].filter((fc) => selectedFundCategories.includes(fc)).length;
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return <LoadingState isLoading={isLoading} className="mt-4" />;
+  }
 
   return (
     <div className="h-full overflow-y-auto">

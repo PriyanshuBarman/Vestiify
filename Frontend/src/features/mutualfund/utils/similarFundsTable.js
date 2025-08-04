@@ -1,17 +1,57 @@
 export const columnsConfig = {
-  return_1y: { fullName: "1Y Returns", shortName: "1Y", suffix: "%" },
-  return_3y: { fullName: "3Y Returns", shortName: "3Y", suffix: "%" },
-  return_5y: { fullName: "5Y Returns", shortName: "5Y", suffix: "%" },
-  return_since_inception: { fullName: "All", shortName: "All", suffix: "%" },
-  fund_rating: { fullName: "Rating", shortName: "Rating", suffix: " ★" },
-  expense_ratio: { fullName: "Expense Ratio", shortName: "TER", suffix: "%" },
-  lump_min: { fullName: "Min Lumpsum", shortName: "Min Lump.", prefix: "₹" },
-  sip_min: { fullName: "Min SIP", shortName: "Min SIP", prefix: "₹" },
+  return_1y: {
+    fullName: "1Y Return",
+    shortName: "1Y",
+    prefix: "",
+    suffix: "%",
+  },
+  return_3y: {
+    fullName: "3Y Returns",
+    shortName: "3Y",
+    prefix: "",
+    suffix: "%",
+  },
+  return_5y: {
+    fullName: "5Y Returns",
+    shortName: "5Y",
+    prefix: "",
+    suffix: "%",
+  },
+  return_since_inception: {
+    fullName: "All",
+    shortName: "All",
+    prefix: "",
+    suffix: "%",
+  },
+  expense_ratio: {
+    fullName: "Expense Ratio",
+    shortName: "TER",
+    prefix: "",
+    suffix: "%",
+  },
   aum: {
     fullName: "Fund size",
     shortName: "Fund size",
     prefix: "₹",
     suffix: "Cr",
+  },
+  fund_rating: {
+    fullName: "Rating",
+    shortName: "Rating",
+    prefix: "",
+    suffix: " ★",
+  },
+  lump_min: {
+    fullName: "Min Lump.",
+    shortName: "Min Lump.",
+    prefix: "₹",
+    suffix: "",
+  },
+  sip_min: {
+    fullName: "Min SIP",
+    shortName: "Min SIP",
+    prefix: "₹",
+    suffix: "",
   },
 };
 

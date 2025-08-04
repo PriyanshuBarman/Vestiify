@@ -13,22 +13,26 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { getActiveFilterCount } from "../../utils/filterUtils";
 import FilterSheet from "./FilterSheet";
+import { useScrollLock } from "@/hooks/useScrollLock";
+import { useSheetHistory } from "@/hooks/useSheetHistory";
 
 const OpenFilterSheetBtn = () => {
   const isMobile = useIsMobile();
-  const [open, setOpen] = useState(false);
   const filters = useSelector(selectFilters);
   const activeFilterCount = getActiveFilterCount(filters);
+  const [isOpen, setIsOpen] = useState(false);
+
+  useScrollLock(isOpen);
 
   return (
-    <Sheet open={open} modal={!isMobile} onOpenChange={setOpen}>
+    <Sheet open={isOpen} modal={!isMobile} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
         <Button
           variant="outline"
           className="relative size-8 rounded-full sm:size-10"
           aria-label="Open filters"
           onClick={() => {
-            setOpen(true);
+            setIsOpen(true);
           }}
         >
           <SlidersHorizontalIcon className="size-3.5 sm:size-4" />
@@ -41,10 +45,10 @@ const OpenFilterSheetBtn = () => {
       </SheetTrigger>
       <SheetContent
         side={isMobile ? "bottom" : "left"}
-        className={`[&>button]:hidden ${isMobile ? "h-svh pt-4 data-[state=open]:duration-300" : "min-w-xl pt-6 pr-4"}`}
+        className={`[&>button]:hidden ${isMobile ? "fixed inset-0 data-[state=open]:duration-300" : "min-w-xl overflow-hidden rounded-r-2xl"}`}
       >
         <SheetTitle className="sr-only">Filter Sheet</SheetTitle>
-        <FilterSheet onClose={() => setOpen(false)} />
+        <FilterSheet onClose={() => setIsOpen(false)} />
       </SheetContent>
     </Sheet>
   );

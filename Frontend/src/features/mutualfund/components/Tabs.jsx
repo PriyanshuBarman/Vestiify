@@ -16,14 +16,14 @@ function Tabs() {
   if (location.pathname !== "/mutual-funds" && !location?.hash) return;
 
   return (
-    <div className="Tabs mb-8 space-x-2 border-b py-2 pl-4 text-[0.9rem] font-medium sm:space-x-4 sm:pl-0 sm:text-base">
+    <div className="Tabs text-md bg-background scrollbar-none sticky top-0 z-10 mb-8 flex space-x-2 overflow-x-auto border-b pt-2 pl-2 font-[550] sm:pl-0 sm:font-semibold">
       {TABS.map((tab, idx) => (
         <a
           key={tab.name}
           href={tab.hash}
-          className={` ${activeTabIndex === idx ? "text-foreground border-foreground border-b-2 font-semibold sm:border-b-3" : "text-muted-foreground"} p-2 transition-all duration-200 ease-in-out`}
+          className={`relative p-2.5 transition-all ease-in-out sm:p-3 ${activeTabIndex === idx ? "text-foreground after:bg-foreground after:absolute after:bottom-0 after:left-0 after:h-[3px] after:w-full after:rounded-t-2xl after:content-[''] sm:after:h-1" : "text-muted-foreground"} `}
         >
-          {tab.name}
+          <span>{tab.name}</span>
         </a>
       ))}
     </div>

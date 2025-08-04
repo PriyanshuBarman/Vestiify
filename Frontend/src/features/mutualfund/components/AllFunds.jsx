@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -14,11 +13,7 @@ import {
   setActiveColumn,
   setFilters,
 } from "@/store/slices/mutualFundSlice";
-import {
-  ChevronRightIcon,
-  ChevronsLeftRight,
-  SlidersHorizontalIcon,
-} from "lucide-react";
+import { ChevronRightIcon, ChevronsLeftRight } from "lucide-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
@@ -26,7 +21,6 @@ import { useFilteredFunds } from "../hooks/queries/externalQueries";
 import { columnsConfig, getNextColumn } from "../utils/similarFundsTable";
 import FundLogo from "./FundLogo";
 import FundRating from "./FundRating";
-import SortByBtn from "./SortByBtn";
 import FilterBtns from "./filters/FilterBtns";
 
 const sortOptions = {
@@ -41,8 +35,6 @@ const sortOptions = {
 };
 
 function AllFunds() {
-  const navigate = useNavigate();
-  const [activeSortBy, setActiveSortBy] = useState("popularity");
   const dispatch = useDispatch();
   const filters = useSelector(selectFilters);
   const activeColumn = useSelector(selectActiveColumn);
@@ -52,23 +44,9 @@ function AllFunds() {
   const funds = data?.pages[0].funds.slice(0, 7) || [];
   const totalCount = data?.pages[0].totalCount;
 
-  const orderBy = filters.order_by;
-
   // Mobile table callbacks
   const handleColumnClick = () => {
     dispatch(setActiveColumn(getNextColumn(activeColumn)));
-  };
-
-  const handleSortChange = (value) => {
-    const orderBy = value === "expense_ratio" ? "asc" : "desc";
-    dispatch(setFilters({ ...filters, sort_by: value, order_by: orderBy }));
-    setActiveSortBy(value);
-    if (value !== "popularity") dispatch(setActiveColumn(value));
-  };
-
-  const handleOrderChange = () => {
-    const newOrder = orderBy === "asc" ? "desc" : "asc";
-    dispatch(setFilters({ ...filters, order_by: newOrder }));
   };
 
   if (!isMobile) return null;
@@ -134,7 +112,7 @@ function AllFunds() {
 
       <Link
         to="/mutual-funds/all-funds"
-        className="flex items-center justify-between gap-1 border-y px-4 py-4 text-xs font-medium"
+        className="flex items-center justify-between gap-1 border-y px-4 py-4 text-sm font-medium"
       >
         <span>View all</span>
         <ChevronRightIcon size={20} />
