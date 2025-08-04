@@ -12,7 +12,7 @@ function Collections() {
         {COLLECTIONS.map((collection) => (
           <Link key={collection} to={`/mutual-funds/collections/${collection}`}>
             <div className="flex flex-col items-center justify-between">
-              <div className="Collection-Card sm:bg-accent flex h-18 w-24 items-center justify-center rounded-xl sm:h-20 sm:w-30">
+              <div className="Collection-Card sm:shadow sm:bg-accent flex h-18 w-24 items-center justify-center rounded-xl sm:h-20 sm:w-30">
                 <img
                   src={`${collection}.svg`}
                   alt={`${collection} logo`}

@@ -73,8 +73,13 @@ function TableSM({
         </TableHeader>
 
         <TableBody>
-          <LoadingState isLoading={!isFetching} className="mt-8 w-svw" />
-          {/* {!isFetching && <LoadingState className="h-svh w-svw bg-black"/>} */}
+          {isFetching && (
+            <TableRow className="border-none">
+              <TableCell colSpan={2} className="p-0">
+                <LoadingState isLoading={isFetching} className="mt-8" />
+              </TableCell>
+            </TableRow>
+          )}
           {funds?.map((fund) => (
             <TableRow key={fund.scheme_code}>
               <TableCell className="flex items-center gap-4 py-4 pl-4">

@@ -1,17 +1,17 @@
 import { Button } from "@/components/ui/button";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { resetFilters, selectFilters } from "@/store/slices/mutualFundSlice";
-import { Loader2Icon, XIcon } from "lucide-react";
+import { XIcon } from "lucide-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
+import { useFilteredFunds } from "../../hooks/queries/externalQueries";
+import { getActiveFilterCount } from "../../utils/filterUtils";
 import FilterCategoriesTab from "./FilterCategoriesTab";
 import FilterFundHouseTab from "./FilterFundHouseTab";
 import FilterRatingsTab from "./FilterRatingsTab";
 import FilterRiskLevelTab from "./FilterRiskLevelTab";
 import FilterSortByTab from "./FilterSortByTab";
-import { useFilteredFunds } from "../../hooks/queries/externalQueries";
-import { getActiveFilterCount } from "../../utils/filterUtils";
-import { useIsMobile } from "@/hooks/useIsMobile";
 import ViewFundsButton from "./ViewFundsButton";
 
 const FILTER_TABS = ["Sort by", "Categories", "Risk", "Ratings", "Fund House"];
@@ -41,7 +41,7 @@ function FilterSheet({ onClose }) {
   };
 
   return (
-    <div className="flex h-svh flex-col">
+    <div className="flex h-lvh flex-col">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <Button variant="ghost" onClick={handleClose}>

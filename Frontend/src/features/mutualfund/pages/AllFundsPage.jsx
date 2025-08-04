@@ -11,21 +11,14 @@ import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
 import TableLG from "../components/tables/TableLG";
 import TableSM from "../components/tables/TableSM";
+import { DEFAULT_COLUMNS } from "../constants/collectionConstants";
 import { useFilteredFunds } from "../hooks/queries/externalQueries";
 import {
   columnsConfig,
   getNewOrder,
   getNextColumn,
 } from "../utils/collectionsHelper";
-import FilterButtons from "../components/filters/FilterButtons";
-
-const DEFAULT_COLUMNS = [
-  "return_1y",
-  "return_3y",
-  "return_5y",
-  "return_since_inception",
-  "aum",
-];
+import FilterBtns from "../components/filters/FilterBtns";
 
 function AllFundsPage() {
   const isMobile = useIsMobile();
@@ -36,7 +29,7 @@ function AllFundsPage() {
   const orderBy = filters.order_by;
 
   // Pagination
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useFilteredFunds(filters);
 
   const totalCount = data?.pages[0].totalCount;
@@ -66,7 +59,7 @@ function AllFundsPage() {
   return (
     <section>
       <GoBackBar title="All Mutual Funds" />
-      <FilterButtons />
+      <FilterBtns />
       {isMobile ? (
         <TableSM
           show="fundCount"
@@ -79,11 +72,10 @@ function AllFundsPage() {
           enablePagination={true}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
-          isFetching={isFetching}
           inViewRef={inViewRef}
-          />
-        ) : (
-          <TableLG
+        />
+      ) : (
+        <TableLG
           funds={funds}
           totalCount={totalCount}
           visibleColumns={visibleColumns}
@@ -93,7 +85,6 @@ function AllFundsPage() {
           onClick={handleDesktopClick}
           columnsConfig={columnsConfig}
           // Pagination props
-          isFetching={isFetching}
           enablePagination={true}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}

@@ -6,7 +6,7 @@ import { selectFilters, setFilters } from "@/store/slices/mutualFundSlice";
 import { SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useMemo, useState } from "react";
-import LoadingState from "@/components/LoadingState";
+import LoadingState from "@/components/ui/loading-state";
 
 function FilterFundHouseTab() {
   const filters = useSelector(selectFilters);
@@ -60,14 +60,16 @@ function FilterFundHouseTab() {
       {amcs.map((amc) => (
         <Label
           key={amc.amc_code}
-          className="flex items-center space-x-3 border-b p-2 py-4 font-normal sm:py-6"
+          className="flex items-center space-x-3 border-b p-2 py-4 font-normal"
         >
           <Checkbox
             checked={selectedAMCs.includes(amc.amc_name)}
             onCheckedChange={() => handleChange(amc.amc_name)}
             className="data-[state=checked]:border-primary border-muted-foreground size-4.5 border-2"
           />
-          <span className="capitalize">{amc.amc_name.toLowerCase()}</span>
+          <span className="leading-normal capitalize">
+            {amc.amc_name.toLowerCase()}
+          </span>
         </Label>
       ))}
 

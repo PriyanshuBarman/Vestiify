@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { CardDescription } from "@/components/ui/card";
 import SectionHeading from "./SectionHeading";
@@ -18,28 +18,23 @@ function QuickAccess() {
       <SectionHeading heading={"Quick Access"} />
 
       <ScrollArea>
-        <div className="flex w-full justify-between gap-4 px-4 sm:my-1 sm:px-0">
+        <div className="flex justify-between gap-4 px-4 sm:m-1 sm:gap-4.5 sm:px-0">
           {cardsMapping.map(({ label, img }) => (
             <Card
               key={label}
-              className="min-w-40 cursor-pointer transition-all duration-500 hover:scale-101 max-sm:px-3 sm:w-47"
+              className="w-36 cursor-pointer gap-2 p-3 duration-500 hover:scale-101 sm:w-46 sm:min-w-40 sm:p-4 sm:transition-all"
             >
-              <div className="flex gap-8 sm:flex-col sm:gap-1">
-                <CardHeader>
-                  <img
-                    src={img}
-                    alt={label}
-                    className="min-h-6 min-w-6 sm:size-7 dark:brightness-0 dark:invert"
-                    loading="lazy"
-                  />
-                </CardHeader>
-                <CardTitle className="mt-0.5 text-[0.8rem] font-medium sm:text-base">
+              <CardContent className="flex flex-col items-start gap-1 p-0">
+                <img
+                  src={img}
+                  alt={label}
+                  className="min-h-6 min-w-6 sm:size-7 dark:brightness-0 dark:invert"
+                  loading="lazy"
+                />
+                <CardTitle className="text-[0.8rem] font-normal sm:text-base">
                   {label}
                 </CardTitle>
-              </div>
-              <CardDescription className="mt-2 text-xs sm:hidden">
-                Lorem ipsum dolor sit
-              </CardDescription>
+              </CardContent>
             </Card>
           ))}
         </div>

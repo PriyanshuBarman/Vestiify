@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -10,18 +11,38 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 import {
   selectActiveColumn,
   selectFilters,
-  setActiveColumn
+  setActiveColumn,
+  setFilters,
 } from "@/store/slices/mutualFundSlice";
-import { ChevronRightIcon, ChevronsLeftRight } from "lucide-react";
+import {
+  ChevronRightIcon,
+  ChevronsLeftRight,
+  SlidersHorizontalIcon,
+} from "lucide-react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useFilteredFunds } from "../hooks/queries/externalQueries";
 import { columnsConfig, getNextColumn } from "../utils/similarFundsTable";
 import FundLogo from "./FundLogo";
 import FundRating from "./FundRating";
-import FilterButtons from "./filters/FilterButtons";
+import SortByBtn from "./SortByBtn";
+import FilterBtns from "./filters/FilterBtns";
+
+const sortOptions = {
+  popularity: "Popularity",
+  return_1y: "1Y Returns",
+  return_3y: "3Y Returns",
+  return_5y: "5Y Returns",
+  fund_rating: "Rating",
+  expense_ratio: "Expense Ratio",
+  aum: "Fund Size",
+  lump_min: "Min Lumpsum",
+};
 
 function AllFunds() {
+  const navigate = useNavigate();
+  const [activeSortBy, setActiveSortBy] = useState("popularity");
   const dispatch = useDispatch();
   const filters = useSelector(selectFilters);
   const activeColumn = useSelector(selectActiveColumn);
@@ -31,16 +52,30 @@ function AllFunds() {
   const funds = data?.pages[0].funds.slice(0, 7) || [];
   const totalCount = data?.pages[0].totalCount;
 
+  const orderBy = filters.order_by;
+
   // Mobile table callbacks
   const handleColumnClick = () => {
     dispatch(setActiveColumn(getNextColumn(activeColumn)));
+  };
+
+  const handleSortChange = (value) => {
+    const orderBy = value === "expense_ratio" ? "asc" : "desc";
+    dispatch(setFilters({ ...filters, sort_by: value, order_by: orderBy }));
+    setActiveSortBy(value);
+    if (value !== "popularity") dispatch(setActiveColumn(value));
+  };
+
+  const handleOrderChange = () => {
+    const newOrder = orderBy === "asc" ? "desc" : "asc";
+    dispatch(setFilters({ ...filters, order_by: newOrder }));
   };
 
   if (!isMobile) return null;
 
   return (
     <section className="pb-20">
-      <FilterButtons />
+      <FilterBtns />
 
       <Table className="table-fixed">
         <TableHeader className="bg-background sticky top-0 z-10">
@@ -99,7 +134,7 @@ function AllFunds() {
 
       <Link
         to="/mutual-funds/all-funds"
-        className="flex items-center justify-between gap-1 border-y px-4 py-4 text-sm font-medium"
+        className="flex items-center justify-between gap-1 border-y px-4 py-4 text-xs font-medium"
       >
         <span>View all</span>
         <ChevronRightIcon size={20} />

@@ -4,12 +4,12 @@ import { StarIcon } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectFilters, setFilters } from "@/store/slices/mutualFundSlice";
 
-const RATING_OPTIONS = [
-  { label: "5", value: 5 },
-  { label: "4+", value: 4 },
-  { label: "3+", value: 3 },
-  { label: "2+", value: 2 },
-  { label: "1+ ", value: 1 },
+const ratingOptions = [
+  { label: "5 ", value: 5 },
+  { label: "4+ ", value: 4 },
+  { label: "3+ ", value: 3 },
+  { label: "2+ ", value: 2 },
+  { label: "1+  ", value: 1 },
 ];
 
 function FilterRatingsTab() {
@@ -27,21 +27,22 @@ function FilterRatingsTab() {
         onValueChange={handleRatingChange}
         className="gap-0"
       >
-        {RATING_OPTIONS.map((option) => (
-          <Label
+        {ratingOptions.map((option) => (
+          <div
             key={option.value}
-            className="sm:text-md flex cursor-pointer items-center gap-4 border-b px-2 py-4 font-[450] transition-colors sm:ml-2 sm:py-6"
+            className="flex cursor-pointer items-center space-x-3 border-b p-2 py-4 font-normal"
+            onClick={() => handleRatingChange(option.value)}
           >
             <RadioGroupItem
               value={option.value}
-              id={option.value}
+              id={`rating-${option.value}`}
               className="data-[state=checked]:border-primary border-muted-foreground size-4.5 border-2 [&_[data-slot=radio-group-indicator]_svg]:size-2.5"
             />
-            <div className="flex items-center gap-1">
+            <Label htmlFor={`rating-${option.value}`}>
               <span className="whitespace-pre">{option.label}</span>
               <StarIcon className="fill-foreground size-3" />
-            </div>
-          </Label>
+            </Label>
+          </div>
         ))}
       </RadioGroup>
     </div>

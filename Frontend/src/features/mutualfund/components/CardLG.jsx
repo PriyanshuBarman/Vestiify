@@ -1,25 +1,22 @@
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardFooter, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router";
 import FundLogo from "./FundLogo";
 
 function CardLG({ fund }) {
   return (
     <Link to={`/mutual-funds/${fund.scheme_code}`}>
-      <Card className="h-42 w-47 cursor-pointer justify-between text-inherit transition-normal duration-300 hover:scale-101">
-        <CardHeader>
-          <FundLogo logoCode={fund.short_code} />
-        </CardHeader>
-
-        <CardTitle className="text-sm font-semibold">
+      <Card className="h-42 w-47 cursor-pointer justify-between gap-2 p-4 text-inherit transition-normal duration-300 hover:scale-101">
+        <FundLogo logoCode={fund.short_code} />
+        <CardTitle className="text-sm font-medium sm:font-semibold">
           {fund.short_name}
         </CardTitle>
 
-        <CardDescription className="content-center space-x-4 font-medium sm:font-semibold">
-          <span className="text-foreground text-base">
+        <CardFooter className="content-center space-x-2 p-0 font-medium">
+          <span className="text-md">
             {fund.return_3y ? fund.return_3y.toFixed(1) + "%" : "NA"}
           </span>
-          <span className="text-sm">3Y</span>
-        </CardDescription>
+          <span className="text-muted-foreground text-sm">(3Y)</span>
+        </CardFooter>
       </Card>
     </Link>
   );
