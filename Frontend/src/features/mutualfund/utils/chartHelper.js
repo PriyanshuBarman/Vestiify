@@ -1,4 +1,4 @@
-const monthArr = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]; // prettier-ignore
+const monthArr = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec"]; // prettier-ignore
 const timeUnits = {
   "1M": { months: 1 },
   "6M": { months: 6 },
