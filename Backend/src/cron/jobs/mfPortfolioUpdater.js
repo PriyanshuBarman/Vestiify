@@ -51,13 +51,13 @@ async function updateFund(fund) {
 
   // 4. Proceed with update logic...
   const units = fund.units.toNumber();
-  const invested = fund.invested;
+  const invested = fund.invested.toNumber();
 
   const current = units * navInfo.latestNav;
   const pnl = current - invested;
   const returnPercent = (pnl / invested) * 100;
-  const dayChangeValue = units * (navInfo.latestNav - prevNav);
-  const dayChangePercent = ((navInfo.latestNav - prevNav) / prevNav) * 100;
+  const dayChangeValue = current - fund.current.toNumber();
+  const dayChangePercent = (dayChangeValue / fund.current.toNumber()) * 100;
 
   await db.mfPortfolio.update({
     where: { id: fund.id },

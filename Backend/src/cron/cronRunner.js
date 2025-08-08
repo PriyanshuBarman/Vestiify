@@ -18,6 +18,6 @@ const scheduleMfPortfolioUpdate = (scheduleTime) => {
   );
 };
 
-scheduleMfPortfolioUpdate("0 2 * * *"); // Runs everyday at 2:00 AM IST
 scheduleMfPortfolioUpdate("0 3 * * *"); // Runs everyday at 3:00 AM IST
 scheduleMfPortfolioUpdate("0 4 * * *"); // Runs everyday at 4:00 AM IST
+scheduleMfPortfolioUpdate("0 5 * * *"); // Runs everyday at 5:00 AM IST

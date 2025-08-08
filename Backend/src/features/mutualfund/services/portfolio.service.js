@@ -1,12 +1,15 @@
 import { ApiError } from "../../../shared/utils/apiError.utils.js";
 import { portfolioRepo } from "../repositories/index.repository.js";
+import { formatPortfolio } from "../utils/formatPortfolio.utils.js";
 
 //prettier-ignore
-export const fetchPortfolio = async ({ userId, fundType, sort_by = "createdAt", order_by = "desc" }) => {
-  return await portfolioRepo.findMany(
+export const fetchPortfolio = async ({ userId, fundType, sort_by = "current", order_by = "desc" }) => {
+  const portfolios = await portfolioRepo.findMany(
     { userId, fundType },
     { orderBy: { [sort_by]: order_by } }
   );
+
+  return formatPortfolio(portfolios);
 };
 
 export const fetchFund = async (userId, fundCode) => {
@@ -15,15 +18,21 @@ export const fetchFund = async (userId, fundCode) => {
   });
 
   if (!fund) throw new ApiError(404, "Fund not found in portfolio.");
+
+  return formatPortfolio(fund);
 };
 
 export const fetchPortfolioSummary = async (userId) => {
   const result = await portfolioRepo.getPortfolioSummary(userId);
 
-  const { current, invested, pnl, dayChangeValue } = result._sum;
+  const current = result._sum.current?.toNumber();
+  const invested = result._sum.invested?.toNumber();
+  const pnl = result._sum.pnl?.toNumber();
+  const dayChangeValue = result._sum.dayChangeValue?.toNumber();
 
-  const returnPercent = (pnl / current) * 100;
-  const dayChangePercent = (dayChangeValue / current) * 100;
+  const returnPercent = (pnl / invested) * 100;
+  const prevCurrent = current - dayChangeValue;
+  const dayChangePercent = (dayChangeValue / prevCurrent) * 100;
 
   return { current, invested, pnl, returnPercent, dayChangeValue, dayChangePercent };
 };

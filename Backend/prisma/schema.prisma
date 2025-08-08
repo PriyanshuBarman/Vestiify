@@ -40,7 +40,7 @@ model Transaction {
   code      String?
   name      String?
   tnxType   TransactionType
-  quantity  Decimal?        @db.Decimal(10, 2)
+  quantity  Decimal?        @db.Decimal(36, 18)
   price     Decimal?        @db.Decimal(10, 4)
   createdAt DateTime        @default(now())
 
@@ -74,7 +74,7 @@ model MfPortfolio {
   latestNav        Decimal  @db.Decimal(10, 4) // stores latest nav (it also needs to updates every day )
   latestNavDate    DateTime @db.Date
   logoCode         String // it's need to get fund logo
-  units            Decimal  @db.Decimal(10, 4)
+  units            Decimal  @db.Decimal(36, 18)
   invested         Decimal  @db.Decimal(10, 2)
   current          Decimal  @db.Decimal(10, 2)
   pnl              Decimal  @default(0.00) @db.Decimal(10, 2)
@@ -104,7 +104,7 @@ model MfHolding {
   schemeCode   Int
   fundName     String
   purchaseNav  Decimal  @db.Decimal(10, 4)
-  units        Decimal  @db.Decimal(10, 4)
+  units        Decimal  @db.Decimal(36, 18)
   amount       Decimal  @db.Decimal(10, 2)
   purchaseDate DateTime @default(now())
   updatedAt    DateTime @default(now()) @updatedAt
