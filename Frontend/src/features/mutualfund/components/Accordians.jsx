@@ -13,6 +13,7 @@ import FundLogo from "./FundLogo";
 import ReturnCalculator from "./ReturnCalculator";
 import SimilarFundsTableDesktop from "./tables/SimilarFundsTableDesktop";
 import SimilarFundsTableMobile from "./tables/SimilarFundsTableMobile";
+import { UnderstandTermsInfo } from "./info/UnderstandTermsInfo";
 
 function Accordians({ fund }) {
   const isMobile = useIsMobile();
@@ -39,10 +40,10 @@ function Accordians({ fund }) {
         <AccordionTrigger className="text-base sm:text-xl sm:font-semibold">
           Expense ratio, exit load & tax
         </AccordionTrigger>
-        <AccordionContent className="py-4">
-          <ul className="mt-2 list-disc space-y-5 pl-4">
+        <AccordionContent className="py-4 pl-4">
+          <ul className="mt-2 list-disc space-y-5 sm:list-none">
             <li>
-              <h5 className="text-sm font-medium sm:text-base sm:font-semibold">
+              <h5 className="text-sm font-[450] sm:text-base sm:font-semibold">
                 Expense ratio : {fund.expense_ratio}%
               </h5>
               <p className="text-muted-foreground sm:text-foreground mt-1 sm:mt-2 sm:text-base">
@@ -50,7 +51,7 @@ function Accordians({ fund }) {
               </p>
             </li>
             <li>
-              <h5 className="text-sm font-medium sm:text-base sm:font-semibold">
+              <h5 className="text-sm font-[450] sm:text-base sm:font-semibold">
                 Portfolio turnover
               </h5>
               <p className="text-muted-foreground sm:text-foreground mt-1 sm:mt-2 sm:text-base">
@@ -58,7 +59,7 @@ function Accordians({ fund }) {
               </p>
             </li>
             <li>
-              <h5 className="text-sm font-medium sm:text-base sm:font-semibold">
+              <h5 className="text-sm font-[450] sm:text-base sm:font-semibold">
                 Exit load
               </h5>
               <p className="text-muted-foreground sm:text-foreground mt-1 sm:mt-2 sm:text-base">
@@ -66,7 +67,7 @@ function Accordians({ fund }) {
               </p>
             </li>
             <li>
-              <h5 className="text-sm font-medium sm:text-base sm:font-semibold">
+              <h5 className="text-sm font-[450] sm:text-base sm:font-semibold">
                 Tax implications
               </h5>
               <p className="text-muted-foreground sm:text-foreground mt-1 text-sm/4.5 sm:mt-2 sm:text-base">
@@ -75,6 +76,10 @@ function Accordians({ fund }) {
                 1.25 lakh+ in a financial year.
               </p>
             </li>
+
+            <div className="sm:text-md text-muted-foreground relative right-2 mt-4 flex items-center sm:right-0 sm:font-semibold">
+              Understand terms <UnderstandTermsInfo />
+            </div>
           </ul>
         </AccordionContent>
       </AccordionItem>
@@ -108,9 +113,7 @@ function Accordians({ fund }) {
               <Avatar className="border sm:size-10">
                 <User className="m-auto size-full p-1.5 sm:p-2" />
               </Avatar>
-              <span className="ml-2 sm:text-base sm:font-medium">
-                {manager}
-              </span>
+              <span className="ml-2 sm:text-base sm:font-[450]">{manager}</span>
             </div>
           ))}
         </AccordionContent>
@@ -126,7 +129,7 @@ function Accordians({ fund }) {
         <AccordionContent className="space-y-8">
           <div className="mt-4 flex items-center gap-2">
             <FundLogo logoCode={fund.short_code} />
-            <h2 className="ml-2 text-sm sm:text-base sm:font-medium">
+            <h2 className="ml-2 text-sm sm:text-base sm:font-[450]">
               {fund.amc_name}
             </h2>
           </div>
@@ -136,11 +139,11 @@ function Accordians({ fund }) {
               <span className="sm:text-muted-foreground">
                 Rank ( total assets )
               </span>
-              <span className="sm:font-medium">#14 in India</span>
+              <span className="sm:font-[450]">#14 in India</span>
             </p>
             <p className="flex w-full justify-between sm:w-[45%]">
               <span className="sm:text-muted-foreground">Total AUM</span>
-              <span className="sm:font-medium">$4393987 Crors</span>
+              <span className="sm:font-[450]">$4393987 Crors</span>
             </p>
 
             <Separator
@@ -152,12 +155,12 @@ function Accordians({ fund }) {
               <span className="sm:text-muted-foreground">
                 Date of incorporation
               </span>
-              <span className="sm:font-medium">20 January 2025</span>
+              <span className="sm:font-[450]">20 January 2025</span>
             </p>
           </div>
 
           <div>
-            <h5 className="font-medium">Investment Objective</h5>
+            <h5 className="font-[450]">Investment Objective</h5>
             <p
               onClick={() => setTextClamp(!textClamp)}
               className={`text-muted-foreground sm:text-foreground mt-4 text-sm/4.5 sm:mt-2 sm:text-base ${textClamp ? "line-clamp-3" : ""}`}

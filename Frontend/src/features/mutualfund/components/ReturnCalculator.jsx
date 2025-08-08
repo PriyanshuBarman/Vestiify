@@ -1,56 +1,79 @@
-import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { useDebounce } from "@/hooks/useDebounce";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import CountUp from "react-countup";
+import { useGetChart } from "../hooks/queries/externalQueries";
 import { formatToINR } from "../utils/formaters";
-import { calculateAbsoluteReturn } from "../utils/returnCalculatorHelper";
-import { Button } from "@/components/ui/button";
+import {
+  calculateAbsoluteReturn,
+  calculateSIPReturns,
+} from "../utils/returnCalculatorHelper";
+import { InfoDrawer } from "@/components/InfoDrawer";
+import SIPCalculationInfo from "./info/SIPCalculationInfo";
 
-const returnsMapping = [
-  { label: "1 year", key: "return_1y", year: 1 },
-  { label: "3 years", key: "return_3y", year: 3 },
-  { label: "5 years", key: "return_5y", year: 5 },
+const TIME_OPTIONS = [
+  { label: "1 year", year: 1 },
+  { label: "3 years", year: 3 },
+  { label: "5 years", year: 5 },
 ];
 
 function ReturnCalculator({ fund }) {
-  const [amount, setAmount] = useState(20000);
-  const [percentage, setPercentage] = useState(fund.return_1y);
+  const { data: chartData } = useGetChart(fund?.scheme_code);
+  const [type, setType] = useState("sip"); // Default to SIP calculator
+  const [amount, setAmount] = useState(5000); // Default to ₹5,000 for SIP
   const debouncedValue = useDebounce(amount, 900);
   const [selectedYear, setSelectedYear] = useState(1); // Default to 1 year
 
-  const value = Math.round(
-    debouncedValue + (debouncedValue * percentage) / 100,
-  );
-
-  const updatePercentage = (item) => {
-    const absoluteReturn = calculateAbsoluteReturn(fund[item.key], item.year);
-
-    setPercentage(absoluteReturn);
-    setSelectedYear(item.year);
+  const switchCalculationType = (newType) => {
+    setType(newType);
+    // Switch default amount based on calculation type
+    setAmount(newType === "sip" ? 5000 : 20000);
   };
 
+  // Calculate everything using the unified utility function
+  const result = useMemo(() => {
+    if (type === "sip") {
+      return calculateSIPReturns(chartData, amount, selectedYear);
+    } else {
+      return calculateAbsoluteReturn(
+        amount,
+        fund[`return_${selectedYear}y`],
+        selectedYear,
+      );
+    }
+  }, [type, chartData, debouncedValue, selectedYear, fund]);
+
   return (
-    <Card className="text-muted-foreground border-0 py-0 pb-6 sm:gap-8 sm:rounded-xl sm:border sm:py-10">
+    <Card className="text-muted-foreground bg-background border-0 py-0 pb-6 sm:gap-8 sm:rounded-xl sm:border sm:py-10">
       <CardHeader className="px-0 sm:px-8">
         <CardTitle>
           <Button
             variant="ghost"
-            className="sm:text-md h-7 rounded-full px-3 font-medium sm:px-4 sm:py-2"
+            onClick={() => switchCalculationType("sip")}
+            className={`sm:text-md h-7 rounded-full px-3 font-medium sm:px-4 sm:py-2 ${
+              type === "sip"
+                ? "text-primary border-primary bg-primary/10 sm:border"
+                : ""
+            }`}
           >
-            Monthly Sip
+            Monthly SIP
           </Button>
           <Button
             variant="ghost"
-            className="text-primary border-primary sm:text-md bg-primary/10 h-7 rounded-full px-3 font-medium sm:border sm:px-4 sm:py-2"
+            onClick={() => switchCalculationType("one-time")}
+            className={`sm:text-md h-7 rounded-full px-3 font-medium sm:px-4 sm:py-2 ${
+              type === "one-time"
+                ? "text-primary border-primary bg-primary/10 sm:border"
+                : ""
+            }`}
           >
             One-Time
           </Button>
@@ -58,33 +81,35 @@ function ReturnCalculator({ fund }) {
       </CardHeader>
 
       <CardContent className="px-0 sm:px-10">
-        <div className="font-semibold">
-          <span className="text-primary sm:text-foreground align-middle text-lg tracking-tighter tabular-nums">
+        <div className="flex items-center gap-2 font-semibold">
+          <span className="text-primary sm:text-foreground text-lg tracking-tighter tabular-nums">
             {formatToINR(amount)}
           </span>
-          <span className="sm:text-foreground ml-4 align-middle sm:ml-2 sm:text-base">
-            one-time
-          </span>
+          <div className="sm:text-foreground flex items-center font-normal sm:text-base">
+            <span>{type === "sip" ? "per month " : "one-time"}</span>
+
+            {type === "sip" && <SIPCalculationInfo />}
+          </div>
         </div>
 
         <Slider
-          className="mt-6 cursor-pointer [&_[role=slider]]:h-6 [&_[role=slider]]:w-8 [&_[role=slider]]:rounded-lg sm:[&_[role=slider]]:h-8 sm:[&_[role=slider]]:w-12 sm:[&_[role=slider]]:border-2"
+          className="mt-6 cursor-pointer sm:mt-10 [&_[role=slider]]:h-6 [&_[role=slider]]:w-8 [&_[role=slider]]:rounded-lg sm:[&_[role=slider]]:h-8 sm:[&_[role=slider]]:w-12 sm:[&_[role=slider]]:border-2"
           value={[amount]}
           onValueChange={(newValue) => setAmount(newValue[0])}
-          min={500}
-          max={100000}
+          min={100}
+          max={type === "sip" ? 50000 : 100000}
           step={500}
         />
 
-        <div className="mt-10 flex items-center justify-between sm:mt-12 sm:justify-start">
+        <div className="mt-10 flex items-center justify-between sm:mt-14 sm:justify-start">
           <span className="sm:text-base">Over the past</span>
           <div className="flex sm:ml-6 sm:gap-2">
-            {returnsMapping.map((item) => (
+            {TIME_OPTIONS.map((item) => (
               <Button
-                key={item.key}
+                key={item.year}
                 variant="outline"
-                onClick={() => updatePercentage(item)}
-                className={`sm:border-border h-7 rounded-full border-transparent px-3 shadow-none sm:h-9 sm:w-22 ${selectedYear === item.year && "sm:!bg-accent !bg-primary/10 text-primary sm:!border-foreground sm:text-foreground"}`}
+                onClick={() => setSelectedYear(item.year)}
+                className={`sm:!border-border h-7 rounded-full !border-transparent !bg-transparent px-3 shadow-none sm:h-9 sm:w-22 ${selectedYear === item.year && "sm:!bg-accent !bg-primary/10 text-primary sm:!border-foreground sm:text-foreground"}`}
               >
                 {item.label}
               </Button>
@@ -95,20 +120,32 @@ function ReturnCalculator({ fund }) {
 
       <CardFooter className="flex flex-col items-start gap-2 border-t px-0 sm:px-10">
         <p className="text-sm sm:text-base">
-          Total investment of {formatToINR(amount)}
+          Total investment of {formatToINR(result.totalInvestment)}
         </p>
         <div className="text-foreground space-x-2 text-base font-medium sm:text-lg">
           <span>Would have become</span>
-          <CountUp end={value} duration={0.5} separator="," prefix="₹" />
           <CountUp
-            end={percentage}
+            end={result.finalValue}
             duration={0.5}
             separator=","
-            prefix={percentage > 0 ? "(+" : "("}
+            prefix="₹"
+          />
+          <CountUp
+            end={result.returnPercentage}
+            duration={0.5}
+            separator=","
+            prefix={result.returnPercentage > 0 ? "(+" : "("}
             suffix=")%"
-            className={percentage > 0 ? "text-positive" : "text-negative"}
+            className={
+              result.returnPercentage > 0 ? "text-positive" : "text-negative"
+            }
             decimals={2}
           />
+          {type === "sip" && result.annualizedReturn && (
+            <span className="text-muted-foreground text-sm">
+              ({result.annualizedReturn.toFixed(2)}% XIRR)
+            </span>
+          )}
         </div>
       </CardFooter>
     </Card>
