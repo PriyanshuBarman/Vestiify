@@ -8,7 +8,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { useGetBalance } from "@/hooks/queries/internalQueries";
+import { useGetBalance, useGetUserData } from "@/hooks/queries/internalQueries";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useSheetHistory } from "@/hooks/useSheetHistory";
 import { selectTheme, setTheme } from "@/store/slices/themeSlice";
@@ -33,20 +33,21 @@ const themeMapping = [
 ];
 
 function ProfileSheet({ children }) {
+  const navigate = useNavigate();
   const { isOpen, handleOpenChange } = useSheetHistory("profileSheetOpen");
   const isMobile = useIsMobile();
   const { data: balance } = useGetBalance();
   const currentTheme = useSelector(selectTheme);
   const dispatch = useDispatch();
 
-  const navigate = useNavigate();
+  const { data: user = {} } = useGetUserData();
 
   return (
     <Sheet modal={!isMobile} open={isOpen} onOpenChange={handleOpenChange}>
       <SheetTrigger asChild>{children}</SheetTrigger>
       <SheetContent
         side="right"
-        className="h-lvh w-full sm:rounded-l-2xl pb-18 sm:min-w-md sm:pb-0 sm:pl-6"
+        className="h-lvh w-full pb-18 sm:min-w-md sm:rounded-l-2xl sm:pb-0 sm:pl-6"
       >
         <SheetHeader>
           <SheetTitle>Profile</SheetTitle>
@@ -58,14 +59,16 @@ function ProfileSheet({ children }) {
             <Avatar className="size-16">
               <AvatarImage
                 referrerPolicy="no-referrer"
-                src="https://lh3.googleusercontent.com/a/AATXAJwJ56LqNyGRvIdELAraD5tw4mwn6jZq7C8JP_oV=s96-c"
+                src={user.avatar}
                 alt="User Profile Picture"
               />
-              <AvatarFallback>A</AvatarFallback>
+              <AvatarFallback className="text-3xl font-semibold text-shadow-lg">
+                {user.name?.charAt(0).toUpperCase()}
+              </AvatarFallback>
             </Avatar>
             <div>
-              <h3 className="text-center text-lg font-semibold">John Doe</h3>
-              <p className="text-muted-foreground">john.doe@gmail.com</p>
+              <h3 className="text-center text-lg font-semibold">{user.name}</h3>
+              <p className="text-muted-foreground text-sm">{user.email}</p>
             </div>
           </div>
           <Separator className="my-6" />

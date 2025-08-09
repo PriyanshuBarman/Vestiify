@@ -8,6 +8,7 @@ import { SearchIcon, ShoppingCart } from "lucide-react";
 import MediaQuery from "react-responsive";
 import { NavLink, useLocation, useNavigate } from "react-router";
 import Desktopsearch from "../features/search/DesktopSearch";
+import { useGetUserData } from "@/hooks/queries/internalQueries";
 
 const allowedRoutes = new Set(["/mutual-funds", "/stocks", "/gold"]);
 
@@ -15,6 +16,7 @@ function Navbar() {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   const location = useLocation();
+  const { data: user } = useGetUserData();
 
   if (!allowedRoutes.has(location.pathname) && isMobile) return;
 
@@ -45,13 +47,15 @@ function Navbar() {
         </Button>
         {!isMobile && <ModeToggle />}
         <ProfileSheet>
-          <Avatar tabIndex={0} className="size-8.5">
+          <Avatar className="size-8.5">
             <AvatarImage
               referrerPolicy="no-referrer"
-              src="https://lh3.googleusercontent.com/a/AATXAJwJ56LqNyGRvIdELAraD5tw4mwn6jZq7C8JP_oV=s96-c"
+              src={user?.avatar}
               alt="User Profile Picture"
             />
-            <AvatarFallback>A</AvatarFallback>
+            <AvatarFallback className="text-3xl font-semibold text-shadow-lg">
+              {user?.name.charAt(0).toUpperCase()}
+            </AvatarFallback>
           </Avatar>
         </ProfileSheet>
       </div>

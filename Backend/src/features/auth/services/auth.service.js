@@ -3,8 +3,7 @@ import jwt from "jsonwebtoken";
 import { ApiError } from "../../../shared/utils/apiError.utils.js";
 import { userRepo } from "../../user/repositories/user.repository.js";
 import { JWT_SECRET } from "../../../config/env.config.js";
-
-const TOKEN_EXPIRY = "7d";
+import { TOKEN_EXPIRY } from "../constants/auth.constants.js";
 
 export const signupUser = async (name, email, password) => {
   const existingUser = await userRepo.findUnique({ email });

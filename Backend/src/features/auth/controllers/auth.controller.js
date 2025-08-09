@@ -1,13 +1,7 @@
 import { asyncHandler } from "../../../shared/utils/asyncHandler.utils.js";
 import * as authService from "../services/auth.service.js";
 import { NODE_ENV } from "../../../config/env.config.js";
-
-const COOKIE_OPTIONS = {
-  httpOnly: true,
-  secure: NODE_ENV === "production",
-  sameSite: NODE_ENV === "production" ? "none" : "strict",
-  maxAge: 7 * 24 * 60 * 60 * 1000,
-};
+import { COOKIE_OPTIONS } from "../constants/auth.constants.js";
 
 export const signup = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;

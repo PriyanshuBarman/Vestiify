@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as authController from "../controllers/auth.controller.js";
-import { googleAuth } from "../controllers/google.controller.js";
+import { googleAuth } from "../controllers/googleAuth.controller.js";
 import { loginValidator, signupValidator } from "../validators/auth.validator.js";
 
 export const authRoutes = Router();
