@@ -1,9 +1,11 @@
+import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
+
 function Logo() {
   return (
-    <h1 className="text-xl font-semibold text-shadow-sm sm:text-2xl md:text-3xl dark:text-neutral-200">
-      <span className="text-primary font-bold">V</span>
-      estiify
-    </h1>
+    <Avatar className="size-10 rounded-full sm:size-12">
+      <AvatarImage src="favicon.ico" className="scale-130" alt="Logo" />
+      <AvatarFallback>VS</AvatarFallback>
+    </Avatar>
   );
 }
 
