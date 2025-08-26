@@ -9,71 +9,105 @@ datasource db {
 }
 
 model User {
-  id             String           @id @default(uuid())
-  name           String
-  email          String           @unique
-  password       String?
-  isAdmin        Boolean          @default(false)
-  avatar         String?
-  balance        Decimal          @default(1000.00) @db.Decimal(10, 2)
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @default(now()) @updatedAt
-  transactions   Transaction[]
-  mfPortfolio    MfPortfolio[]
-  mfHolding      MfHolding[]
-  stockPortfolio StockPortfolio[]
-  stockHoldings  StockHolding[]
-  mfWatchlist    MfWatchlist[]
-  stockWatchlist StockWatchlist[]
+  id                String             @id @default(uuid())
+  name              String
+  email             String             @unique
+  password          String?
+  isAdmin           Boolean            @default(false)
+  avatar            String?
+  balance           Decimal            @default(1000.00) @db.Decimal(10, 2)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  transactions      Transaction[]
+  mfPortfolio       MfPortfolio[]
+  mfHolding         MfHolding[]
+  stockPortfolio    StockPortfolio[]
+  stockHoldings     StockHolding[]
+  mfWatchlist       MfWatchlist[]
+  stockWatchlist    StockWatchlist[]
+  mfOrders          MfOrder[]
+  mfSips            MfSip[]
+  pendingSipChanges PendingSipChange[]
 
   @@map("user")
 }
 
 // ======== Transaction =======
-
 model Transaction {
-  id        String          @id @default(uuid())
+  id             String          @id @default(uuid())
+  amount         Decimal         @db.Decimal(15, 2)
+  tnxType        TransactionType
+  method         TnxMethod       @default(REGULAR)
+  updatedBalance Decimal         @db.Decimal(15, 2)
+  createdAt      DateTime        @default(now())
+
+  // relations
   userId    String
-  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  amount    Decimal         @db.Decimal(10, 2)
-  assetType AssetType?
-  code      String?
-  name      String?
-  tnxType   TransactionType
-  quantity  Decimal?        @db.Decimal(36, 18)
-  price     Decimal?        @db.Decimal(10, 4)
-  createdAt DateTime        @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mfOrderId String?
+  mfOrder   MfOrder? @relation(fields: [mfOrderId], references: [id])
 
   @@map("transaction")
 }
 
-enum AssetType {
-  MF
-  STOCK
-  GOLD
+enum TnxMethod {
+  REGULAR
+  SIP
+  SWP
 }
 
 enum TransactionType {
-  DEPOSIT
-  BUY
-  SELL
+  CREDIT
+  DEBIT
 }
 
 // =============================================== MUTUAL FUND ==============================================
 
-// ======== MfPortfolio =======
+model MfOrder {
+  id            String    @id @default(uuid())
+  schemeCode    Int
+  fundName      String
+  orderType     OrderType
+  status        Status    @default(PENDING)
+  amount        Decimal?  @db.Decimal(10, 2)
+  units         Decimal?  @db.Decimal(36, 18)
+  method        TnxMethod @default(REGULAR)
+  sipId         String?
+  processDate   DateTime  @db.Date
+  navDate       DateTime  @db.Date
+  nav           Decimal?  @db.Decimal(10, 4)
+  failureReason String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
+  userId      String
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Transaction Transaction[]
+
+  @@map("mf_order")
+}
+
+enum Status {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+enum OrderType {
+  ONE_TIME
+  REDEEM
+  SIP_INSTALLMENT
+  NEW_SIP
+}
+
+// ======== MfPortfolio =======
 model MfPortfolio {
   id               String   @id @default(uuid())
-  userId           String
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   schemeCode       Int
   fundName         String
   shortName        String
   fundType         FundType
-  latestNav        Decimal  @db.Decimal(10, 4) // stores latest nav (it also needs to updates every day )
-  latestNavDate    DateTime @db.Date
-  logoCode         String // it's need to get fund logo
+  website          String // it's need to get fund logo
   units            Decimal  @db.Decimal(36, 18)
   invested         Decimal  @db.Decimal(10, 2)
   current          Decimal  @db.Decimal(10, 2)
@@ -82,7 +116,12 @@ model MfPortfolio {
   dayChangePercent Decimal? @default(0.00) @db.Decimal(5, 2)
   dayChangeValue   Decimal? @default(0) @db.Decimal(10, 2)
   createdAt        DateTime @default(now())
-  updatedAt        DateTime @default(now()) @updatedAt
+  updatedAt        DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  mfHoldings MfHolding[]
 
   @@unique([userId, schemeCode])
   @@map("mf_portfolio")
@@ -93,33 +132,79 @@ enum FundType {
   DEBT
   HYBRID
   OTHER
+  SOLUTION_ORIENTED
 }
 
-// ======== MfHoldings =======
-
+// ======== MfHolding =======
 model MfHolding {
-  id           String   @id @default(uuid())
-  userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  schemeCode   Int
-  fundName     String
-  purchaseNav  Decimal  @db.Decimal(10, 4)
-  units        Decimal  @db.Decimal(36, 18)
-  amount       Decimal  @db.Decimal(10, 2)
-  purchaseDate DateTime @default(now())
-  updatedAt    DateTime @default(now()) @updatedAt
+  id         String   @id @default(uuid())
+  schemeCode Int
+  nav        Decimal  @db.Decimal(10, 4) // purchase/redeem nav
+  units      Decimal  @db.Decimal(36, 18) // purchase/redeem units
+  amount     Decimal  @db.Decimal(10, 2)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  userId      String
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  portfolioId String
+  mfPortfolio MfPortfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
 
   @@map("mf_holding")
 }
 
-// ======== MfWatchlist =======
+// ======== MfSip =======
+model MfSip {
+  id                  String   @id @default(uuid())
+  fundName            String
+  fundCategory        String
+  schemeCode          Int
+  amount              Int
+  dateOfMonth         Int
+  nextInstallmentDate DateTime @db.Date
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  pendingChanges PendingSipChange[]
+
+  @@index([userId, schemeCode])
+  @@map("mf_sip")
+}
+
+enum SipStatus {
+  ACTIVE
+  PAUSED
+}
+
+model PendingSipChange {
+  id                  String    @id @default(uuid())
+  amount              Int? // future amount
+  dateOfMonth         Int?
+  nextInstallmentDate DateTime? @db.Date
+  applyDate           DateTime  @db.Date // when these changes should be applied
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  sipId  String
+  mfSip  MfSip  @relation(fields: [sipId], references: [id], onDelete: Cascade)
+  userId String
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, sipId])
+  @@map("pending_sip_changes")
+}
+
+// ======== MfWatchlist =======
 model MfWatchlist {
   id         String   @id @default(uuid())
   userId     String
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   schemeCode Int
   fundName   String
+  shortName  String
   createdAt  DateTime @default(now())
 
   @@unique([userId, schemeCode])
@@ -131,7 +216,6 @@ model MfWatchlist {
 // =============================================== STOCK ==============================================
 
 // ======== StockPortfolio =======
-
 model StockPortfolio {
   id            String   @id @default(uuid())
   userId        String
@@ -144,31 +228,31 @@ model StockPortfolio {
   current       Decimal  @db.Decimal(10, 2)
   pnl           Decimal  @default(0.00) @db.Decimal(10, 2)
   returnPercent Decimal  @default(0.00) @db.Decimal(8, 2)
-  updatedAt     DateTime @default(now()) @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@unique([userId, symbol])
   @@map("stock_portfolio")
 }
 
 // ======== StockHolding =======
-
 model StockHolding {
   id           String   @id @default(uuid())
   userId       String
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   symbol       String
   stockName    String
-  amount       Decimal  @db.Decimal(10, 2)
+  amount       Int
   quantity     Int      @default(0)
   price        Decimal  @db.Decimal(10, 2)
   purchaseDate DateTime @default(now())
-  updatedAt    DateTime @default(now()) @updatedAt
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   @@map("stock_holding")
 }
 
 // ======== StockWatchlist =======
-
 model StockWatchlist {
   id        String   @id @default(uuid())
   userId    String

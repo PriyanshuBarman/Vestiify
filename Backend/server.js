@@ -1,16 +1,15 @@
-import "dotenv/config";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import "dotenv/config";
 import express from "express";
-import "./src/cron/cronRunner.js";
-import { authRoutes } from "./src/features/auth/routes/auth.routes.js";
-import { mutualFundRoutes } from "./src/features/mutualfund/routes/index.routes.js";
-import { stockRoutes } from "./src/features/stock/routes/index.routes.js";
-import { userRoutes } from "./src/features/user/routes/user.routes.js";
-import { walletRoutes } from "./src/features/wallet/routes/index.routes.js";
+import { FRONTEND_URL } from "./config/env.config.js";
+import { authRoutes } from "./src/auth/routes/auth.routes.js";
+import { mutualFundRoutes } from "./src/mutualfund/routes/index.routes.js";
 import { errorHandler } from "./src/shared/middlewares/errorHandler.js";
 import { notFoundHandler } from "./src/shared/middlewares/notFoundHandler.js";
-import { FRONTEND_URL } from "./src/config/env.config.js";
+import { stockRoutes } from "./src/stock/routes/index.routes.js";
+import { userRoutes } from "./src/user/routes/user.routes.js";
+import { walletRoutes } from "./src/wallet/routes/index.routes.js";
 
 const app = express();
 

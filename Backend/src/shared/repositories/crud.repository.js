@@ -1,49 +1,43 @@
-import { db } from "../../config/db.config.js";
+import { db } from "../../../config/db.config.js";
 
 export class CrudRepository {
   constructor(model) {
     this.model = model;
   }
 
-  async create(data) {
+  async create(data, client = db) {
     try {
-      const user = await db[this.model].create({ data });
-      return user;
-    } catch (error) {
-      console.log(
-        `♾️Error occurred at CrudRepository repository - create method: ${error.message}`
-      );
-      throw error;
-    }
-  }
-
-  async findUnique(where, options = {}) {
-    try {
-      const result = await db[this.model].findUnique({ where, ...options });
+      const result = await client[this.model].create({ data });
       return result;
     } catch (error) {
-      console.log(
-        `♾️Error occurred at CrudRepository repository - findUnique method: ${error.message}`
-      );
+      console.log(`❌ Error in create: ${error.message}`);
       throw error;
     }
   }
 
-  async findFirst(where) {
+  async findUnique(where, options = {}, client = db) {
     try {
-      const result = await db[this.model].findFirst({ where });
+      const result = await client[this.model].findUnique({ where, ...options });
       return result;
     } catch (error) {
-      console.log(
-        `♾️Error occurred at CrudRepository repository - findUnique method: ${error.message}`
-      );
+      console.log(`❌ Error in findUnique: ${error.message}`);
       throw error;
     }
   }
 
-  async findMany(where, options = {}) {
+  async findFirst(where, options = {}, client = db) {
     try {
-      const result = await db[this.model].findMany({
+      const result = await client[this.model].findFirst({ where, ...options });
+      return result;
+    } catch (error) {
+      console.log(`❌ Error in findFirst: ${error.message}`);
+      throw error;
+    }
+  }
+
+  async findMany(where, options = {}, client = db) {
+    try {
+      const result = await client[this.model].findMany({
         where,
         orderBy: options.orderBy || undefined,
         take: options.take || undefined,
@@ -51,52 +45,47 @@ export class CrudRepository {
       });
       return result;
     } catch (error) {
-      console.log(
-        `♾️Error occurred at CrudRepository repository - findMany method: ${error.message}`
-      );
+      console.log(`❌ Error in findMany: ${error.message}`);
       throw error;
     }
   }
 
-  async update(where, data) {
+  async update(where, data, client = db) {
     try {
-      await db[this.model].update({ where, data });
+      const result = await client[this.model].update({ where, data });
+      return result;
     } catch (error) {
-      console.log(
-        `♾️Error occurred at CrudRepository repository - update method: ${error.message}`
-      );
-      throw error;
-    }
-  }
-  async updateMany(where, data) {
-    try {
-      await db[this.model].updateMany({ where, data });
-    } catch (error) {
-      console.log(
-        `♾️Error occurred at CrudRepository repository - updateMany method: ${error.message}`
-      );
+      console.log(`❌ Error in update: ${error.message}`);
       throw error;
     }
   }
 
-  async delete(where) {
+  async updateMany(where, data, client = db) {
     try {
-      await db[this.model].delete({ where });
+      const result = await client[this.model].updateMany({ where, data });
+      return result;
     } catch (error) {
-      console.log(
-        `♾️Error occurred at CrudRepository repository - delete method: ${error.message}`
-      );
+      console.log(`❌ Error in updateMany: ${error.message}`);
       throw error;
     }
   }
 
-  async deleteMany(where) {
+  async delete(where, client = db) {
     try {
-      await db[this.model].deleteMany({ where });
+      const result = await client[this.model].delete({ where });
+      return result;
     } catch (error) {
-      console.log(
-        `♾️Error occurred at CrudRepository repository - deleteMany method: ${error.message}`
-      );
+      console.log(`❌ Error in delete: ${error.message}`);
+      throw error;
+    }
+  }
+
+  async deleteMany(where, client = db) {
+    try {
+      const result = await client[this.model].deleteMany({ where });
+      return result;
+    } catch (error) {
+      console.log(`❌ Error in deleteMany: ${error.message}`);
       throw error;
     }
   }

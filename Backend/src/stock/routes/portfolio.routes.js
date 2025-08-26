@@ -1,0 +1,12 @@
+import { Router } from "express";
+import { isAuthenticated } from "../../shared/middlewares/authMiddleware.js";
+import * as portfolioController from "../controllers/portfolio.controller.js";
+import { validateQuery } from "../validators/portfolioQuery.validator.js";
+
+export const portfolioRoutes = Router();
+
+portfolioRoutes.get("/", isAuthenticated, validateQuery, portfolioController.getPortfolio);
+
+portfolioRoutes.get("/summary", isAuthenticated, portfolioController.getUserPortfolio);
+
+portfolioRoutes.get("/:symbol?", isAuthenticated, portfolioController.getStock);
