@@ -2,9 +2,9 @@ import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 
 function Logo() {
   return (
-    <Avatar className="size-10 rounded-full sm:size-12">
-      <AvatarImage src="favicon.ico" className="scale-130" alt="Logo" />
-      <AvatarFallback>VS</AvatarFallback>
+    <Avatar className="sm:size-9">
+      <AvatarImage src="logo.png" className="" alt="Logo" />
+      <AvatarFallback />
     </Avatar>
   );
 }

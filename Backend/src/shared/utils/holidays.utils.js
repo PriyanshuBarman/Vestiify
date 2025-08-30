@@ -138,7 +138,7 @@ export function getNextBusinessDate(offset = 0, fromDate) {
     }
   }
 
-  return new newDate();
+  return newDate;
 }
 
 export function getPrevBusinessDate(offset = 0, fromDate) {

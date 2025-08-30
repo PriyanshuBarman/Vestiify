@@ -3,12 +3,12 @@ import ProfileSheet from "@/components/ProfileSheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/mode-togle";
+import { useGetUserData } from "@/hooks/queries/internalQueries";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { SearchIcon, ShoppingCart } from "lucide-react";
+import { BellIcon, SearchIcon } from "lucide-react";
 import MediaQuery from "react-responsive";
 import { NavLink, useLocation, useNavigate } from "react-router";
 import Desktopsearch from "../features/search/DesktopSearch";
-import { useGetUserData } from "@/hooks/queries/internalQueries";
 
 const allowedRoutes = new Set(["/mutual-funds", "/stocks", "/gold"]);
 
@@ -22,7 +22,7 @@ function Navbar() {
 
   return (
     <nav className="bg-background z-50 flex items-center justify-between gap-8 px-4 pt-4 pb-2 sm:px-12 sm:py-2 xl:px-0">
-      <div className="flex items-center gap-0 sm:gap-6">
+      <div className="flex items-center gap-0 sm:gap-4">
         <Logo />
         <NavLinks />
       </div>
@@ -43,7 +43,7 @@ function Navbar() {
           <SearchIcon className="size-5.5" />
         </Button>
         <Button aria-label="cart" variant="ghost" size="icon">
-          <ShoppingCart className="size-5.5" />
+          <BellIcon className="size-5.5" />
         </Button>
         {!isMobile && <ModeToggle />}
         <ProfileSheet>
@@ -53,7 +53,7 @@ function Navbar() {
               src={user?.avatar}
               alt="User Profile Picture"
             />
-            <AvatarFallback className="text-3xl font-semibold text-shadow-lg">
+            <AvatarFallback>
               {user?.name.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>

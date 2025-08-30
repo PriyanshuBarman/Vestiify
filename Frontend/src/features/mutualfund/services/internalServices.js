@@ -3,16 +3,12 @@ import { VITE_BACKEND_BASE_URL } from "@/config/env";
 
 export const processInvestment = async (amount, fund) => {
   const { data } = await axios.post(
-    `${VITE_BACKEND_BASE_URL}/mutual-funds/invest`,
+    `${VITE_BACKEND_BASE_URL}/mutual-funds/order/invest`,
     {
-      investmentAmt: Number(amount),
+      amount: Number(amount),
       schemeCode: fund.scheme_code,
       fundName: fund.name,
-      fundType: fund.category,
-      logoCode: fund.short_code,
-      shortName: fund.short_name,
-      latestNav: fund.nav.nav,
-      latestNavDate: fund.nav.date,
+      fundCategory: fund.fund_category,
     },
     { withCredentials: true },
   );
