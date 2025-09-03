@@ -1,49 +1,60 @@
 import { tz } from "@date-fns/tz";
 import { addDays, addMonths, differenceInDays } from "date-fns";
 import { ApiError } from "../../shared/utils/apiError.utils.js";
+import { orderRepo } from "../repositories/order.repository.js";
 import { pendingSipChangeRepo } from "../repositories/pendingSipChange.repository.js";
 import { sipRepo } from "../repositories/sip.repository.js";
+import { getMainDomain } from "../utils/getMainDomain.utils.js";
 import { getNextInstallmentDate } from "../utils/getNextInstallmentDate.utils.js";
 import * as orderService from "./order.service.js";
 
-export const startSip = async ({
+export const createSip = async ({
   userId,
   amount,
-  dateOfMonth,
+  sipDate,
   schemeCode,
   fundName,
+  shortName, // required for order placement
   fundCategory,
+  fundHouseDomain,
+  fundType, // required for order placement
 }) => {
   //1. create/subscribe to new SIP
   const { id: sipId } = await sipRepo.create({
     userId,
     amount,
-    dateOfMonth,
+    sipDate,
     schemeCode,
     fundName,
+    shortName,
+    fundType: fundType.toUpperCase(),
     fundCategory,
-    nextInstallmentDate: getNextInstallmentDate(dateOfMonth),
+    fundHouseDomain: getMainDomain(fundHouseDomain),
+    nextInstallmentDate: getNextInstallmentDate(sipDate),
   });
 
   //2. place initial investment order
   await orderService.placeInvestmentOrder({
+    sipId,
     userId,
     amount,
     fundName,
+    shortName, //
     fundCategory,
     schemeCode,
-    sipId,
+    fundHouseDomain,
+    fundType: fundType.toUpperCase(), //
   });
 };
 
-export const editSip = async ({ userId, sipId, amount, dateOfMonth }) => {
+export const editSip = async ({ userId, sipId, amount, sipDate }) => {
   // Fetch the current SIP
   const sip = await sipRepo.findUnique({ id: sipId, userId });
   if (!sip) {
     throw new ApiError(404, "SIP not found");
   }
 
-  if (amount === sip.amount && dateOfMonth === sip.dateOfMonth) {
+  if (amount === sip.amount && sipDate === sip.sipDate) {
     throw new ApiError(400, "No changes detected");
   }
 
@@ -57,32 +68,32 @@ export const editSip = async ({ userId, sipId, amount, dateOfMonth }) => {
       { id: sipId },
       {
         amount,
-        dateOfMonth,
-        nextInstallmentDate: getNextInstallmentDate(dateOfMonth),
+        sipDate,
+        nextInstallmentDate: getNextInstallmentDate(sipDate),
       }
     );
   }
 
-  // Otherwise, create or update a pending change
+  // Otherwise, update or create a pending change
   await pendingSipChangeRepo.upsert(
     { userId_sipId: { userId, sipId } },
     {
       amount,
-      dateOfMonth,
+      sipDate,
       applyDate: addDays(sip.nextInstallmentDate, 1), // apply the changes after the next installment
     },
     {
       userId,
       sipId,
       amount,
-      dateOfMonth,
+      sipDate,
       applyDate: addDays(sip.nextInstallmentDate, 1), // apply the changes after the next installment
     }
   );
 };
 
 export const skipSip = async (userId, sipId) => {
-  const sip = await sipRepo.findUnique({ id: sipId, userId });
+  const sip = await sipRepo.findUnique({ id: sipId });
   if (!sip) {
     throw new ApiError(404, "SIP not found");
   }
@@ -101,7 +112,7 @@ export const skipSip = async (userId, sipId) => {
     );
   }
 
-  // Otherwise, create or update a pending change
+  // Otherwise, update or create a pending change
   await pendingSipChangeRepo.upsert(
     { userId_sipId: { userId, sipId } },
     {
@@ -117,6 +128,27 @@ export const skipSip = async (userId, sipId) => {
   );
 };
 
+export const cancelSip = async (sipId) => {
+  // Fetch the current SIP
+  const sip = await sipRepo.findUnique({ id: sipId });
+  if (!sip) {
+    throw new ApiError(404, "SIP not found");
+  }
+
+  const diffDays = differenceInDays(sip.nextInstallmentDate, new Date(), {
+    in: tz("Asia/Kolkata"),
+  });
+
+  if (diffDays <= 3) {
+    throw new ApiError(
+      400,
+      "You Can't cancel SIP before 3 days of next installment"
+    );
+  }
+
+  await sipRepo.delete({ id: sipId });
+};
+
 export const getAllSips = async (userId) => {
   const allSips = await sipRepo.findMany({ userId });
   const activeSipAmount = await sipRepo.getTotalActiveSipAmountByUser(userId);
@@ -129,4 +161,14 @@ export const getAllSips = async (userId) => {
     totalActiveSipAmount: activeSipAmount._sum.amount,
     allSips,
   };
+};
+
+export const getSipDetail = async (sipId) => {
+  const sipDetail = await sipRepo.findUnique({ id: sipId });
+
+  const installments = await orderRepo.findMany({
+    sipId,
+  });
+
+  return { sipDetail, installments };
 };

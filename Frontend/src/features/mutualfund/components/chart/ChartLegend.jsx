@@ -11,7 +11,7 @@ function ChartLegend({ selectedRange, fund, returnPercent }) {
           duration={0.7}
           useEasing={true}
           suffix="%"
-          className={`text-2xl font-semibold sm:text-[1.65rem] ${returnPercent >= 0 ? "text-positive" : "text-negative"}`}
+          className={`text-2xl font-semibold sm:text-[1.65rem] ${!returnPercent || returnPercent >= 0 ? "text-positive" : "text-negative"}`}
         />
         <span className="text-muted-foreground/90 text-xs font-medium sm:text-sm sm:font-semibold">
           {selectedRange}

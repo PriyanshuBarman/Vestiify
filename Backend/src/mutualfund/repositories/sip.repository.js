@@ -8,7 +8,7 @@ class SipRepository extends CrudRepository {
 
   async getTotalActiveSipAmountByUser(userId) {
     return await db.mfSip.aggregate({
-      where: { userId, status: "ACTIVE" },
+      where: { userId },
       _sum: { amount: true },
     });
   }

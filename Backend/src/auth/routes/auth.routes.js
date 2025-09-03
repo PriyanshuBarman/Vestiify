@@ -1,7 +1,11 @@
 import { Router } from "express";
 import * as authController from "../controllers/auth.controller.js";
 import { googleAuth } from "../controllers/googleAuth.controller.js";
-import { loginValidator, signupValidator } from "../validators/auth.validator.js";
+import {
+  loginValidator,
+  signupValidator,
+} from "../validators/auth.validator.js";
+import { authenticate } from "../../shared/middlewares/auth.middleware.js";
 
 export const authRoutes = Router();
 
@@ -10,3 +14,4 @@ authRoutes.post("/google", googleAuth);
 authRoutes.post("/signup", signupValidator, authController.signup);
 authRoutes.post("/login", loginValidator, authController.login);
 authRoutes.get("/logout", authController.logout);
+authRoutes.post("/pin", authenticate, authController.setPin);

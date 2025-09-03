@@ -1,11 +1,19 @@
-import { tnxRepo, walletRepo } from "../../shared/repositories/index.repository.js";
+import {
+  tnxRepo,
+  userRepo,
+} from "../../shared/repositories/index.repository.js";
 import { ApiError } from "../../shared/utils/apiError.utils.js";
-import { holdingRepo, portfolioRepo } from "../repositories/index.repository.js";
+import {
+  holdingRepo,
+  portfolioRepo,
+} from "../repositories/index.repository.js";
 import { calculateUpdatedPortfolio } from "../utils/sell.utils.js";
 import { fifoRedemption } from "./fifo.service.js";
 
 export const sellAllQty = async (userId, symbol, price) => {
-  const prev = await portfolioRepo.findUnique({ userId_symbol: { userId, symbol } });
+  const prev = await portfolioRepo.findUnique({
+    userId_symbol: { userId, symbol },
+  });
 
   if (!prev) throw new ApiError(404, "Stock Not Found");
 
@@ -23,11 +31,13 @@ export const sellAllQty = async (userId, symbol, price) => {
   });
   await portfolioRepo.delete({ id: prev.id });
   await holdingRepo.deleteMany({ userId, symbol });
-  await walletRepo.creditBalance(userId, amount);
+  await userRepo.creditBalance(userId, amount);
 };
 
 export const sellSomeQty = async (userId, symbol, price, quantity) => {
-  const prev = await portfolioRepo.findUnique({ userId_symbol: { userId, symbol } });
+  const prev = await portfolioRepo.findUnique({
+    userId_symbol: { userId, symbol },
+  });
 
   // ----------------------------------------------------------------------------------------- Validations
   if (!prev) throw new ApiError(404, "Stock Not Found");
@@ -41,10 +51,15 @@ export const sellSomeQty = async (userId, symbol, price, quantity) => {
   const amount = quantity * price; // sellingAmount
   const costBasis = await fifoRedemption(userId, symbol, quantity);
 
-  const updatedValues = calculateUpdatedPortfolio(prev, costBasis, quantity, price);
+  const updatedValues = calculateUpdatedPortfolio(
+    prev,
+    costBasis,
+    quantity,
+    price
+  );
 
   await portfolioRepo.update({ id: prev.id }, updatedValues);
-  await walletRepo.creditBalance(userId, amount);
+  await userRepo.creditBalance(userId, amount);
   await tnxRepo.create({
     userId,
     price,

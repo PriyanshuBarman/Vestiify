@@ -8,8 +8,8 @@ import { watchlistRoutes } from "./watchlist.routes.js";
 
 export const mutualFundRoutes = Router();
 
-mutualFundRoutes.use("/order", orderRoutes);
+mutualFundRoutes.use("/orders", orderRoutes);
 mutualFundRoutes.use("/tnx", tnxRoutes);
 mutualFundRoutes.use("/portfolio", portfolioRoutes);
 mutualFundRoutes.use("/watchlist", watchlistRoutes);
-mutualFundRoutes.use("/sip", sipRoutes);
+mutualFundRoutes.use("/sips", sipRoutes);

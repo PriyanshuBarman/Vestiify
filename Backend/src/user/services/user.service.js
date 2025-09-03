@@ -4,7 +4,16 @@ import { userRepo } from "../../shared/repositories/index.repository.js";
 export const fetchUser = async (userId) => {
   const user = await userRepo.findUnique(
     { id: userId },
-    { select: { name: true, email: true, avatar: true, balance: true } }
+    {
+      select: {
+        name: true,
+        email: true,
+        avatar: true,
+        balance: true,
+        pin: true,
+        createdAt: true,
+      },
+    }
   );
 
   if (!user) throw new ApiError(404, "User not found");

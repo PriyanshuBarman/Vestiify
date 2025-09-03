@@ -45,9 +45,20 @@ export const logoutUser = async () => {
     const { data } = await axios.get(`${VITE_BACKEND_BASE_URL}/auth/logout`, {
       withCredentials: true,
     });
-    if (data.success) return data;
+
+    return data;
   } catch (error) {
-    console.error(error);
     const message = error?.response?.data?.message || "Something went wrong.";
+    return { success: false, message };
   }
+};
+
+export const createPin = async (pin) => {
+  const { data } = await axios.post(
+    `${VITE_BACKEND_BASE_URL}/auth/pin`,
+    { pin },
+    { withCredentials: true },
+  );
+
+  return data;
 };

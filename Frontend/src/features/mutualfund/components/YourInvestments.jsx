@@ -7,26 +7,26 @@ import { formatToINR } from "../utils/formaters";
 function YourInvestments() {
   const { data: portfolio = {} } = useGetPortfolioSummary();
 
-  const hide = useMediaQuery({ maxWidth: 1199 });
+  const hide = useMediaQuery({ maxWidth: 1125 });
   if (hide) return null;
 
   return (
-    <div className="h-full w-full min-w-3xs">
+    <div className="h-full w-sm">
       <SectionHeading heading={"Your investments"} subHeading={"Dashboard"} />
-      <Card className="mt-4 min-w-3xs">
+      <Card className="mt-4">
         <CardContent className="flex justify-between text-center lg:flex-col xl:flex-row">
           <div>
             <span
-              className={`font-semibold tabular-nums sm:text-lg ${portfolio.pnl >= 0 ? "text-positive" : "text-negative"}`}
+              className={`font-semibold tabular-nums sm:text-lg ${portfolio && portfolio.pnl < 0 ? "text-negative" : "text-positive"}`}
             >
-              {formatToINR(portfolio.pnl)}
+              {formatToINR(portfolio.pnl || 0)}
             </span>
             <br />
             <span className="text-sm">Total Returns</span>
           </div>
           <div>
             <span className="font-medium tabular-nums sm:text-lg">
-              {formatToINR(portfolio.current)}
+              {formatToINR(portfolio.current || 0)}
             </span>
             <br />
             <span className="text-sm">Current Value</span>

@@ -14,6 +14,7 @@ export const useGetUserData = () => {
     queryKey: ["user"],
     queryFn: fetchUserData,
 
+    retry: false,
     staleTime: Infinity,
     gcTime: Infinity,
   });

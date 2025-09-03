@@ -1,8 +1,8 @@
 import { Router } from "express";
 import * as tnxController from "../controllers/tnx.controller.js";
-import { isAuthenticated } from "../../shared/middlewares/authMiddleware.js";
+import { authenticate } from "../../shared/middlewares/auth.middleware.js";
 
 export const tnxRoutes = Router();
 
-tnxRoutes.get("/", isAuthenticated, tnxController.getPortfolioTnx);
-tnxRoutes.get("/:symbol", isAuthenticated, tnxController.getStockTnx);
+tnxRoutes.get("/", authenticate, tnxController.getPortfolioTnx);
+tnxRoutes.get("/:symbol", authenticate, tnxController.getStockTnx);

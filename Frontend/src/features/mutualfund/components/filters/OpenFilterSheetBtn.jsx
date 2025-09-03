@@ -7,14 +7,13 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { useScrollLock } from "@/hooks/useScrollLock";
 import { selectFilters } from "@/store/slices/mutualFundSlice";
 import { SlidersHorizontalIcon } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { getActiveFilterCount } from "../../utils/filterUtils";
 import FilterSheet from "./FilterSheet";
-import { useScrollLock } from "@/hooks/useScrollLock";
-import { useSheetHistory } from "@/hooks/useSheetHistory";
 
 const OpenFilterSheetBtn = () => {
   const isMobile = useIsMobile();

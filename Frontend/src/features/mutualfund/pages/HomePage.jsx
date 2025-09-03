@@ -8,10 +8,9 @@ import { useDispatch, useSelector } from "react-redux";
 import "swiper/css";
 import { HashNavigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import OrdersTab from "../components/OrdersTab";
 
 const InvestmentsTab = lazy(() => import("../components/InvestmentsTab"));
-const SipTab = lazy(() => import("../components/SipTab"));
+const SipsTab = lazy(() => import("../components/SipsTab"));
 const WatchlistTab = lazy(() => import("../components/WatchlistTab"));
 const ExploreTab = lazy(() => import("../components/ExploreTab"));
 
@@ -24,6 +23,7 @@ function HomePage() {
       modules={[HashNavigation]}
       spaceBetween={50}
       slidesPerView={1}
+      autoHeight={true}
       hashNavigation={{
         watchState: true,
         replaceState: true,
@@ -37,40 +37,33 @@ function HomePage() {
         },
       }}
     >
-      <SwiperSlide data-hash="explore" className="min-h-svh">
-        <Suspense fallback={<LoadingState isLoading={true} />}>
-          <ExploreTab />
-        </Suspense>
+      <SwiperSlide data-hash="explore" className="min-h-[calc(100vh-200px)]">
+        <ExploreTab />
       </SwiperSlide>
 
-      <SwiperSlide data-hash="investments" className="min-h-svh">
+      <SwiperSlide
+        data-hash="investments"
+        className="min-h-[calc(100vh-200px)]"
+      >
         {activeTabIndex === 1 && (
-          <Suspense fallback={<LoadingState isLoading={true} />}>
+          <Suspense fallback={<LoadingState />}>
             <InvestmentsTab />
           </Suspense>
         )}
       </SwiperSlide>
 
-      <SwiperSlide data-hash="sip" className="min-h-svh">
+      <SwiperSlide data-hash="sips" className="min-h-[calc(100vh-200px)]">
         {activeTabIndex === 2 && (
-          <Suspense fallback={<LoadingState isLoading={true} />}>
-            <SipTab />
+          <Suspense fallback={<LoadingState />}>
+            <SipsTab />
           </Suspense>
         )}
       </SwiperSlide>
 
-      <SwiperSlide data-hash="watchlist" className="min-h-svh">
+      <SwiperSlide data-hash="watchlist" className="min-h-[calc(100vh-200px)]">
         {activeTabIndex === 3 && (
-          <Suspense fallback={<LoadingState isLoading={true} />}>
+          <Suspense fallback={<LoadingState />}>
             <WatchlistTab />
-          </Suspense>
-        )}
-      </SwiperSlide>
-
-      <SwiperSlide data-hash="orders" className="min-h-svh">
-        {activeTabIndex === 4 && (
-          <Suspense fallback={<LoadingState isLoading={true} />}>
-            <OrdersTab />
           </Suspense>
         )}
       </SwiperSlide>

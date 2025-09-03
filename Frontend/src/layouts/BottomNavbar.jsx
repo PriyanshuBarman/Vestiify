@@ -1,63 +1,65 @@
-import { ChartNoAxesCombined, HandCoins, PieChartIcon } from "lucide-react";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import {
+  ChartNoAxesCombined,
+  HandCoins,
+  PieChartIcon,
+  Wallet2Icon,
+} from "lucide-react";
 import { NavLink, useLocation } from "react-router";
 
 const tabsMapping = [
   {
-    name: "MF",
-    icon: <PieChartIcon className="max-sm:size-5" />,
+    id: 1,
+    name: "Mutual Funds",
+    icon: PieChartIcon,
     link: "/mutual-funds#explore",
   },
   {
-    name: "Stock",
-    icon: <ChartNoAxesCombined className="max-sm:size-5" />,
+    id: 2,
+    name: "Stocks",
+    icon: ChartNoAxesCombined,
     link: "/stocks",
   },
   {
+    id: 3,
     name: "Gold",
-    icon: <HandCoins className="max-sm:size-5" />,
+    icon: HandCoins,
     link: "/gold",
   },
+  {
+    id: 4,
+    name: "Wallet",
+    icon: Wallet2Icon,
+    link: "/wallet",
+  },
 ];
-const allowedRoutes = ["/mutual-funds", "/stocks", "/gold"];
+const allowedRoutes = ["/mutual-funds", "/mutual-funds/", "/stocks", "/gold"];
 
 function BottomNavbar() {
+  const isMobile = useIsMobile();
   const location = useLocation();
   const currentPath = location.pathname;
 
   if (!allowedRoutes.includes(currentPath)) return;
-
-  const activeTabIndex = tabsMapping.findIndex((tab) => currentPath === tab.link);
-  const activeTab = activeTabIndex !== -1 ? activeTabIndex : 0;
-
-  const tabCount = tabsMapping.length;
-  const tabWidth = 100 / tabCount;
+  if (!isMobile) return;
 
   return (
-    <nav className="fixed right-1/2 bottom-0.5 left-1/2 z-10 flex w-full -translate-x-1/2 justify-center sm:bottom-2">
-      <div className="Navbar relative w-[300px] rounded-2xl border bg-zinc-100/90 p-1 backdrop-blur-sm dark:bg-zinc-950/90 dark:shadow-white/15">
-        <div className="relative flex h-14 items-center justify-around sm:min-h-16">
-          <div
-            className="Active-Layout absolute top-0 bottom-0 left-0 rounded-2xl bg-white transition-all duration-200 dark:bg-white/12.5"
-            style={{
-              width: `${tabWidth}%`,
-              transform: `translateX(${activeTab * 100}%)`,
-            }}
-          ></div>
+    <nav className="bg-background fixed inset-x-0 bottom-0 z-10 flex w-full justify-around border-t py-2">
+      {tabsMapping.map((tab) => (
+        <NavLink
+          to={`${tab.link === "/mutual-funds#explore" ? tab.link : "/coming-soon"}`}
+          key={tab.id}
+          className={({ isActive }) =>
+            `flex flex-col items-center gap-1 text-[0.65rem] font-medium transition-all duration-200 hover:scale-105 sm:text-xs ${isActive ? "text-primary font-semibold dark:text-white" : "text-zinc-500 dark:text-zinc-400"}`
+          }
+        >
+          <tab.icon
+            className={`size-5 ${tab.link.includes(currentPath) && "stroke-[2.5]"}`}
+          />
 
-          {tabsMapping.map((tab, idx) => (
-            <NavLink
-              to={`${tab.link === "/mutual-funds" ? tab.link : "/coming-soon"}`}
-              key={idx}
-              className={({ isActive }) =>
-                `relative z-10 flex cursor-pointer flex-col items-center gap-1.5 rounded-2xl px-4 pt-2.5 pb-1.5 text-[0.65rem] transition-all duration-200 hover:scale-105 sm:text-xs ${isActive ? "text-primary dark:text-white" : "text-zinc-500 dark:text-zinc-400"}`
-              }
-            >
-              {tab.icon}
-              {tab.name}
-            </NavLink>
-          ))}
-        </div>
-      </div>
+          {tab.name}
+        </NavLink>
+      ))}
     </nav>
   );
 }

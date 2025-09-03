@@ -1,5 +1,6 @@
 import { asyncHandler } from "../../shared/utils/asyncHandler.utils.js";
 import * as portfolioService from "../services/portfolio.service.js";
+import { ApiError } from "../../shared/utils/apiError.utils.js";
 
 export const getPortfolio = asyncHandler(async (req, res) => {
   const { userId } = req.user;
@@ -17,11 +18,15 @@ export const getPortfolio = asyncHandler(async (req, res) => {
     .json({ success: true, sort_by, order_by, fund_type, portfolio });
 });
 
-export const getFund = asyncHandler(async (req, res) => {
+export const getFundPortfolio = asyncHandler(async (req, res) => {
   const { userId } = req.user;
-  const { fundCode } = req.params;
+  const { schemeCode } = req.params;
 
-  const fund = await portfolioService.fetchFund(userId, fundCode);
+  if (!schemeCode) {
+    throw new ApiError(400, "schemeCode is required");
+  }
+
+  const fund = await portfolioService.fetchFundPortfolio(userId, schemeCode);
 
   return res.status(200).json({ success: true, fund });
 });

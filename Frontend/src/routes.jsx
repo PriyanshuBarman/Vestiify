@@ -1,17 +1,30 @@
+import { lazy } from "react";
 import { createBrowserRouter } from "react-router";
-import ComingSoonPage from "./ComingSoonPage";
+import ProtectedRoutes from "./components/ProtectedRoutes";
 import { authRoutes } from "./features/auth/routes";
 import { mutualFundRoutes } from "./features/mutualfund/routes";
-import Home from "./HomePage";
-import Layout from "./layouts/Layout";
-import MobileSearchPage from "./features/search/MobileSearchPage";
-import ProtectedRoutes from "./components/ProtectedRoutes";
+
+const ComingSoonPage = lazy(() => import("./pages/ComingSoonPage"));
+const Home = lazy(() => import("./pages/HomePage"));
+const Layout = lazy(() => import("./layouts/Layout"));
+const MobileSearchPage = lazy(
+  () => import("./features/search/MobileSearchPage"),
+);
+const AllOrdersPage = lazy(
+  () => import("./features/mutualfund/pages/AllOrdersPage"),
+);
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
+const Upi = lazy(() => import("./components/Upi"));
 
 export const routes = createBrowserRouter([
   authRoutes,
   {
     index: true,
-    element: <Home />,
+    element: (
+      <ProtectedRoutes>
+        <Home />
+      </ProtectedRoutes>
+    ),
   },
   {
     path: "/search",
@@ -20,6 +33,26 @@ export const routes = createBrowserRouter([
         <MobileSearchPage />
       </ProtectedRoutes>
     ),
+  },
+  {
+    path: "/orders",
+    element: (
+      <ProtectedRoutes>
+        <AllOrdersPage />
+      </ProtectedRoutes>
+    ),
+  },
+  {
+    path: "/profile",
+    element: (
+      <ProtectedRoutes>
+        <ProfilePage />
+      </ProtectedRoutes>
+    ),
+  },
+  {
+    path: "/upi",
+    element: <Upi />,
   },
   { path: "/coming-soon", element: <ComingSoonPage /> },
   {

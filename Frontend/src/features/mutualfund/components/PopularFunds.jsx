@@ -14,6 +14,7 @@ function PopularFunds() {
       <SectionHeading
         heading={"Popular Funds"}
         subHeading={"All Mutual Funds"}
+        navigateTo="/mutual-funds/all-funds"
       />
       <ScrollArea>
         <div className="flex justify-between gap-4 px-4 sm:m-0.5 sm:gap-3 sm:px-0">

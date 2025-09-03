@@ -1,15 +1,23 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { CardDescription } from "@/components/ui/card";
 import SectionHeading from "./SectionHeading";
+import { BookOpenCheckIcon, CompassIcon, MicroscopeIcon } from "lucide-react";
+import { Link } from "react-router";
 
 const base =
   "https://storage.googleapis.com/groww-assets/mf-assets/web/quick_access/light";
 const cardsMapping = [
-  { label: "Compare Funds", img: `${base}/compare_funds.svg` },
-  { label: "Sip Calculator", img: `${base}/calculator.svg` },
-  { label: "Import Funds", img: `${base}/import_funds.svg` },
-  { label: "NFOs", img: `${base}/nfo.svg` },
+  {
+    label: "Compare Funds",
+    img: "/compare_funds.svg",
+    to: "/mutual-funds/compare-funds",
+  },
+  {
+    label: "Sip Calculator",
+    img: "/calculator.svg",
+    to: "/mutual-funds/sip-calculator",
+  },
+  { label: "NFOs", img: "/nfo.svg" },
 ];
 
 function QuickAccess() {
@@ -19,23 +27,36 @@ function QuickAccess() {
 
       <ScrollArea>
         <div className="flex justify-between gap-4 px-4 sm:m-0.5 sm:gap-4.5 sm:px-0">
-          {cardsMapping.map(({ label, img }) => (
-            <Card
-              key={label}
-              className="w-36 cursor-pointer gap-2 p-3 duration-500 hover:scale-101 sm:w-46 sm:min-w-40 sm:p-4 sm:transition-all"
-            >
+          <Link to="/mutual-funds/all-funds">
+            <Card className="w-36 cursor-pointer justify-between gap-2 p-3 sm:w-46 sm:min-w-40 sm:p-4 sm:transition-all sm:duration-500 sm:hover:scale-101">
               <CardContent className="flex flex-col items-start gap-1 p-0">
-                <img
-                  src={img}
-                  alt={label}
-                  className="min-h-6 min-w-6 sm:size-7 dark:brightness-0 dark:invert"
-                  loading="lazy"
-                />
-                <CardTitle className="text-[0.8rem] font-normal sm:text-base">
-                  {label}
-                </CardTitle>
+                <CompassIcon className="size-6 sm:size-7" />
               </CardContent>
+              <CardFooter className="px-0 text-[0.8rem] font-normal sm:text-base">
+                Screener
+              </CardFooter>
             </Card>
+          </Link>
+
+          {cardsMapping.map(({ label, img, to }) => (
+            <Link to={to}>
+              <Card
+                key={label}
+                className="w-36 cursor-pointer gap-2 p-3 sm:w-46 sm:min-w-40 sm:p-4 sm:transition-all sm:duration-500 sm:hover:scale-101"
+              >
+                <CardContent className="p-0">
+                  <img
+                    src={img}
+                    alt={label}
+                    className="min-h-6 min-w-6 sm:size-7 dark:brightness-0 dark:invert"
+                    loading="lazy"
+                  />
+                </CardContent>
+                <CardFooter className="px-0 text-[0.8rem] font-normal sm:text-base">
+                  {label}
+                </CardFooter>
+              </Card>
+            </Link>
           ))}
         </div>
 

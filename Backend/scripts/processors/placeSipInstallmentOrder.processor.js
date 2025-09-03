@@ -2,7 +2,7 @@ import { addMonths } from "date-fns";
 import { db } from "../../config/db.config.js";
 import {
   tnxRepo,
-  walletRepo,
+  userRepo,
 } from "../../src/shared/repositories/index.repository.js";
 import {
   sipRepo,
@@ -17,22 +17,28 @@ export const placeSipInstallmentOrder = async (data) => {
     amount,
     schemeCode,
     fundName,
+    shortName,
+    fundType,
     fundCategory,
+    fundHouseDomain,
     nextInstallmentDate,
   } = data;
 
-  const balance = await walletRepo.checkBalance(userId);
+  const balance = await userRepo.checkBalance(userId);
   if (amount > balance) {
     await orderRepo.create({
+      sipId,
       userId,
       amount,
       schemeCode,
       fundName,
+      shortName,
+      fundType,
+      fundHouseDomain,
       processDate,
       navDate,
       method: "SIP",
       orderType: "SIP_INSTALLMENT",
-      sipId,
       status: "FAILED",
       failureReason: "Insufficient wallet balance",
     });
@@ -49,20 +55,23 @@ export const placeSipInstallmentOrder = async (data) => {
   await db.$transaction(async (tx) => {
     const order = await orderRepo.create(
       {
+        sipId,
         userId,
         amount,
         schemeCode,
         fundName,
+        shortName,
+        fundType,
+        fundHouseDomain,
         processDate,
         navDate,
         method: "SIP",
         orderType: "SIP_INSTALLMENT",
-        sipId: sipId,
       },
       tx
     );
 
-    const updatedBalance = await walletRepo.debitBalance(userId, amount, tx);
+    const updatedBalance = await userRepo.debitBalance(userId, amount, tx);
 
     await tnxRepo.create(
       {

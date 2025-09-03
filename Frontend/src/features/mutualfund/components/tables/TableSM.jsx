@@ -14,6 +14,7 @@ import FundLogo from "../FundLogo";
 import SortByButton from "../filters/SortByButton";
 import { formatFundCategory, formatToINR } from "../../utils/formaters";
 import LoadingState from "@/components/LoadingState";
+import { getMainDomain } from "../../utils/getMainDomain";
 
 /**
  *  Reusable Small screen table with pagination support
@@ -80,10 +81,11 @@ function TableSM({
               </TableCell>
             </TableRow>
           )}
+
           {funds?.map((fund) => (
             <TableRow key={fund.scheme_code}>
               <TableCell className="flex items-center gap-4 py-4 pl-4">
-                <FundLogo logoCode={fund.short_code} className="size-8.5" />
+                <FundLogo fundHouseDomain={getMainDomain(fund.detail_info)} />
                 <div>
                   <Link to={`/mutual-funds/${fund.scheme_code}`}>
                     <h4 className="Fund-Name text-foreground text-wrap">

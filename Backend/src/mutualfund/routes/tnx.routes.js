@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { isAuthenticated } from "../../shared/middlewares/authMiddleware.js";
+import { authenticate } from "../../shared/middlewares/auth.middleware.js";
 import * as tnxController from "../controllers/tnx.controller.js";
 
 export const tnxRoutes = Router();
 
-tnxRoutes.get("/", isAuthenticated, tnxController.getPortfolioTnx);
+tnxRoutes.get("/", authenticate, tnxController.getPortfolioTnx);
 
-tnxRoutes.get("/:fundCode", isAuthenticated, tnxController.getFundTnx);
+tnxRoutes.get("/:fundCode", authenticate, tnxController.getFundTnx);

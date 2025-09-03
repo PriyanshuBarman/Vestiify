@@ -9,12 +9,13 @@ import { Provider } from "react-redux";
 import { persistor, store } from "./store/store.js";
 import { PersistGate } from "redux-persist/integration/react";
 import ThemeProvider from "./components/ThemeProvider.jsx";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 60 * 24,
-      gcTime: 1000 * 60 * 60 * 24,
+      staleTime: 1000 * 60 * 60 * 6,
+      gcTime: 1000 * 60 * 60 * 6,
     },
   },
 });
@@ -29,10 +30,11 @@ createRoot(document.getElementById("root")).render(
       <PersistGate loading={null} persistor={persistor}>
         <PersistQueryClientProvider
           client={queryClient}
-          persistOptions={{ persister, maxAge: 1000 * 60 * 60 * 24 }}
+          persistOptions={{ persister }}
         >
           <ThemeProvider>
             <App />
+            <ReactQueryDevtools />
           </ThemeProvider>
         </PersistQueryClientProvider>
       </PersistGate>

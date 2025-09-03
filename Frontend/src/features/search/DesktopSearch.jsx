@@ -17,7 +17,7 @@ import TrendingSearchList from "./components/TrendingSearchList";
 import SearchHistoryList from "./components/SearchHistoryList";
 import SearchResultList from "./components/SearchResultList";
 
-const Desktopsearch = () => {
+function DesktopSearch() {
   const { data: popularFunds } = useGetPopularFunds();
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
@@ -155,4 +155,4 @@ const Desktopsearch = () => {
   );
 };
 
-export default Desktopsearch;
+export default DesktopSearch;

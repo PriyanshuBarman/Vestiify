@@ -1,22 +1,7 @@
-import LoadingState from "@/components/LoadingState";
-import { useGetUserData } from "@/hooks/queries/internalQueries";
-import { GalleryVerticalEnd } from "lucide-react";
-import { Navigate } from "react-router";
+import Logo from "@/components/Logo";
 import { LoginForm } from "../components/LoginForm";
 
 function LoginPage() {
-  const { data, isPending } = useGetUserData();
-
-  if (isPending)
-    return (
-      <LoadingState
-        isLoading={true}
-        className="absolute inset-0 flex items-center justify-center"
-      />
-    );
-
-  if (data) return <Navigate to="/mutual-funds#explore" />;
-
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="relative hidden content-center space-y-15 font-medium lg:block">
@@ -27,12 +12,10 @@ function LoginPage() {
         <img src="/Stocks.png" alt="Image" className="mx-auto" />
       </div>
 
-      <div className="flex flex-col gap-4 p-6 font-[450] md:p-10">
+      <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-center gap-2">
           <a href="#" className="flex items-center gap-2 font-medium">
-            <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
-              <GalleryVerticalEnd className="size-4" />
-            </div>
+            <Logo className="size-6 rounded-md sm:size-7" />
             Vestiify
           </a>
         </div>

@@ -13,7 +13,7 @@ import FilterBtns from "../components/filters/FilterBtns";
 import TableLG from "../components/tables/TableLG";
 import TableSM from "../components/tables/TableSM";
 import { DEFAULT_COLUMNS } from "../constants/collectionConstants";
-import { useFilteredFunds } from "../hooks/queries/externalQueries";
+import { useGetFilteredFunds } from "../hooks/queries/externalQueries";
 import {
   columnsConfig,
   getNewOrder,
@@ -30,7 +30,7 @@ function AllFundsPage() {
 
   // Pagination
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
-    useFilteredFunds(filters);
+    useGetFilteredFunds(filters);
 
   const totalCount = data?.pages[0].totalCount;
   const funds = data?.pages.flatMap((page) => page.funds) || []; // automatically adds next page funds to the array

@@ -1,23 +1,29 @@
+import GoBackBar from "@/components/GoBackBar";
 import { Badge } from "@/components/ui/badge";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { setIsSearchOpen } from "@/store/slices/searchSlice";
 import { Bookmark, LockKeyholeIcon, Search } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router";
-import Accordians from "../components/Accordians";
+import FundPageAccordions from "../components/FundPageAccordions.jsx";
 import Chart from "../components/chart/Chart";
 import FundDescription from "../components/FundDescription";
 import FundLogo from "../components/FundLogo";
-import InvestFormDesktop from "../components/InvestFormDesktop";
-import PurchaseBtns from "../components/PurchaseBtns";
+import FundPortfolioPreview from "../components/fundPortfolioPreview";
 import RecentlyViewed from "../components/RecentlyViewed";
 import { useGetFundData } from "../hooks/queries/externalQueries";
-import GoBackBar from "@/components/GoBackBar";
 import { formatFundCategory } from "../utils/formaters";
+import { getMainDomain } from "../utils/getMainDomain";
+import { lazy } from "react";
+
+const PurchaseBtns = lazy(() => import("../components/PurchaseBtns"));
+const DesktopPaymentCard = lazy(
+  () => import("../components/DesktopPaymentCard"),
+);
 
 function FundPage() {
   const { scheme_code } = useParams();
-  const { data: fund = {} } = useGetFundData(scheme_code);
+  const { data: fund = {}, isPending } = useGetFundData(scheme_code);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -28,13 +34,13 @@ function FundPage() {
   };
 
   return (
-    <div className="sm:flex sm:gap-6">
+    <div className="mt-4 sm:flex sm:gap-6">
       <GoBackBar />
       <div className="h-full w-full space-y-4 text-inherit sm:space-y-6 lg:w-[67%]">
         <div className="px-4">
           <div className="flex justify-between">
             <FundLogo
-              logoCode={fund.short_code}
+              fundHouseDomain={getMainDomain(fund?.detail_info)}
               className="border sm:size-13"
             />
             <div className="icons flex items-center gap-8">
@@ -43,7 +49,7 @@ function FundPage() {
             </div>
           </div>
 
-          <h2 className="Fund-name mt-4 min-h-[1.5rem] text-lg font-medium sm:font-semibold sm:text-2xl">
+          <h2 className="Fund-name mt-4 min-h-[1.5rem] text-lg font-medium sm:text-2xl sm:font-semibold">
             {fund.name}
           </h2>
 
@@ -73,13 +79,14 @@ function FundPage() {
         </div>
 
         <Chart fund={fund} />
+        <FundPortfolioPreview schemeCode={scheme_code} />
         <FundDescription fund={fund} />
-        <Accordians fund={fund} />
+        <FundPageAccordions fund={fund} />
         <RecentlyViewed />
-        {isMobile && <PurchaseBtns fund={fund} />}
+        {isMobile && <PurchaseBtns fund={fund} isPending={isPending} />}
       </div>
 
-      <InvestFormDesktop fund={fund} />
+      <DesktopPaymentCard fund={fund} />
     </div>
   );
 }

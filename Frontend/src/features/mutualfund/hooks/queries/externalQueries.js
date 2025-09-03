@@ -8,11 +8,12 @@ import {
   fetchFilteredFunds,
   fetchAMCs,
   fetchCategories,
+  fetchFundsByFilter,
 } from "../../services/externalServices";
 
 export const useGetFundData = (schemeCode) => {
   return useQuery({
-    queryKey: ["fund", schemeCode],
+    queryKey: ["fund", Number(schemeCode)],
     queryFn: () => fetchFund(schemeCode),
   });
 };
@@ -30,7 +31,7 @@ export const useIndexFunds = () => {
 
 export const useGetChart = (schemeCode) => {
   return useQuery({
-    queryKey: ["chartData", schemeCode],
+    queryKey: ["chartData", Number(schemeCode)],
     queryFn: () => fetchChartData(schemeCode),
   });
 };
@@ -50,7 +51,15 @@ export const useGetCategories = () => {
   return useQuery({ queryKey: ["categories"], queryFn: fetchCategories });
 };
 
-export const useFilteredFunds = (filters) => {
+export const useGetFundsByFilter = (filters, limit) => {
+  return useQuery({
+    queryKey: ["fundByFilter", filters, limit],
+    queryFn: () => fetchFundsByFilter(filters, limit),
+  });
+};
+
+// for pagination
+export const useGetFilteredFunds = (filters) => {
   const LIMIT = 20;
   return useInfiniteQuery({
     queryKey: ["filteredFunds", filters],

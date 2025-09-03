@@ -1,16 +1,22 @@
 import Logo from "@/components/Logo";
-import ProfileSheet from "@/components/ProfileSheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/mode-togle";
 import { useGetUserData } from "@/hooks/queries/internalQueries";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { BellIcon, SearchIcon } from "lucide-react";
+import { lazy } from "react";
 import MediaQuery from "react-responsive";
 import { NavLink, useLocation, useNavigate } from "react-router";
-import Desktopsearch from "../features/search/DesktopSearch";
+const ProfileSheet = lazy(() => import("@/components/ProfileSheet"));
+const DesktopSearch = lazy(() => import("../features/search/DesktopSearch"));
 
-const allowedRoutes = new Set(["/mutual-funds", "/stocks", "/gold"]);
+const allowedRoutes = new Set([
+  "/mutual-funds",
+  "/mutual-funds/",
+  "/stocks",
+  "/gold",
+]);
 
 function Navbar() {
   const isMobile = useIsMobile();
@@ -22,13 +28,13 @@ function Navbar() {
 
   return (
     <nav className="bg-background z-50 flex items-center justify-between gap-8 px-4 pt-4 pb-2 sm:px-12 sm:py-2 xl:px-0">
-      <div className="flex items-center gap-0 sm:gap-4">
+      <div className="flex items-center gap-2 sm:gap-4">
         <Logo />
         <NavLinks />
       </div>
 
       <MediaQuery minWidth={1100}>
-        <Desktopsearch />
+        <DesktopSearch />
       </MediaQuery>
 
       {/* ========= Right side buttons ============ */}
@@ -45,9 +51,18 @@ function Navbar() {
         <Button aria-label="cart" variant="ghost" size="icon">
           <BellIcon className="size-5.5" />
         </Button>
+
         {!isMobile && <ModeToggle />}
-        <ProfileSheet>
-          <Avatar className="size-8.5">
+
+        {isMobile ? (
+          <Avatar
+            onClick={() =>
+              navigate("/profile", {
+                replace: true,
+              })
+            }
+            className="size-8.5"
+          >
             <AvatarImage
               referrerPolicy="no-referrer"
               src={user?.avatar}
@@ -57,7 +72,20 @@ function Navbar() {
               {user?.name.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
-        </ProfileSheet>
+        ) : (
+          <ProfileSheet>
+            <Avatar className="size-8.5">
+              <AvatarImage
+                referrerPolicy="no-referrer"
+                src={user?.avatar}
+                alt="User Profile Picture"
+              />
+              <AvatarFallback>
+                {user?.name.charAt(0).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+          </ProfileSheet>
+        )}
       </div>
     </nav>
   );
@@ -67,15 +95,15 @@ export default Navbar;
 
 function NavLinks() {
   return (
-    <div className="mt-2 hidden text-sm sm:mt-0 sm:flex sm:text-lg">
-      <NavLink
+    <div className="flex sm:text-lg">
+      {/* <NavLink
         to="/coming-soon"
         className={({ isActive }) =>
           `${isActive ? "sm:text-foreground" : "text-muted-foreground hidden sm:inline-block"} shrink-0 rounded-md p-2 font-semibold`
         }
       >
         Stocks
-      </NavLink>
+      </NavLink> */}
 
       <NavLink
         to="/mutual-funds#explore"

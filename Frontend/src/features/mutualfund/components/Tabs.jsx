@@ -5,9 +5,8 @@ import { useLocation } from "react-router";
 const TABS = [
   { name: "Explore", hash: "#explore" },
   { name: "Investments", hash: "#investments" },
-  { name: "SIPs", hash: "#sip" },
+  { name: "SIPs", hash: "#sips" },
   { name: "Watchlist", hash: "#watchlist" },
-  { name: "Orders", hash: "#orders" },
 ];
 
 function Tabs() {

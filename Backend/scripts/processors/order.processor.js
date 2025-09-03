@@ -1,21 +1,19 @@
-import {
-  tnxRepo,
-  walletRepo,
-} from "../../src/shared/repositories/index.repository.js";
-import { fifoRedemption } from "../../src/mutualfund/services/fifo.service.js";
 import { db } from "../../config/db.config.js";
 import {
   holdingRepo,
   orderRepo,
   portfolioRepo,
 } from "../../src/mutualfund/repositories/index.repository.js";
-import { fetchFundData } from "../external/fetchFundData.js";
-import { fetchNavByDate } from "../external/fetchNavByDate.js";
+import { fifoRedemption } from "../../src/mutualfund/services/fifo.service.js";
 import {
   calcPortfolioAfterInvestment,
   calcPortfolioAfterRedemption,
 } from "../../src/mutualfund/utils/calculateUpdatedPortfolio.utils.js";
-import { getMainDomain } from "../utils/getMainDomain.utils.js";
+import {
+  tnxRepo,
+  userRepo,
+} from "../../src/shared/repositories/index.repository.js";
+import { fetchNavByDate } from "../external/fetchNavByDate.js";
 
 export const processInvestmentOrder = async (orderData) => {
   let {
@@ -25,6 +23,9 @@ export const processInvestmentOrder = async (orderData) => {
     fundName,
     amount,
     navDate,
+    fundType,
+    fundHouseDomain,
+    shortName,
   } = orderData;
   amount = amount.toNumber();
 
@@ -34,12 +35,6 @@ export const processInvestmentOrder = async (orderData) => {
 
   const nav = await fetchNavByDate(schemeCode, navDate);
   const units = amount / nav;
-
-  // Fetch fundData only if needed
-  let fundData;
-  if (!prevInv) {
-    fundData = await fetchFundData(schemeCode);
-  }
 
   //  Prisma transaction
   await db.$transaction(async (tx) => {
@@ -51,12 +46,12 @@ export const processInvestmentOrder = async (orderData) => {
           userId,
           schemeCode,
           fundName,
-          fundType: fundData.fund_type.toUpperCase(),
+          shortName,
+          fundType,
           units,
           current: amount,
           invested: amount,
-          website: getMainDomain(fundData.detail_info),
-          shortName: fundData.short_name,
+          fundHouseDomain,
         },
         tx
       );
@@ -150,7 +145,7 @@ export const processRedemptionOrder = async (orderData) => {
         }
       );
 
-      const updatedBalance = await walletRepo.creditBalance(
+      const updatedBalance = await userRepo.creditBalance(
         userId,
         fund.current.toNumber(),
         tx
@@ -177,7 +172,7 @@ export const processRedemptionOrder = async (orderData) => {
         tx
       );
 
-      const updatedBalance = await walletRepo.creditBalance(userId, amount, tx);
+      const updatedBalance = await userRepo.creditBalance(userId, amount, tx);
 
       await orderRepo.update(
         { id: orderId },

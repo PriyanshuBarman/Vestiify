@@ -150,3 +150,27 @@ function parseChartDate(dateString) {
 
   return new Date(year, month, parseInt(day));
 }
+
+export function calcFutureValues(type, amount, annualReturn, years) {
+  const calculateLumpsum = () => {
+    const r = annualReturn / 100; // yearly rate in decimal
+    const fv = amount * Math.pow(1 + r, years);
+    return fv;
+  };
+
+  const calculateSIP = () => {
+    const r = annualReturn / 100 / 12;
+    const n = years * 12;
+
+    const fv = amount * (((Math.pow(1 + r, n) - 1) / r) * (1 + r));
+    return fv;
+  };
+
+  const invested = type === "sip" ? amount * (years * 12) : amount;
+  const fv = type === "sip" ? calculateSIP() : calculateLumpsum();
+  return {
+    invested,
+    estReturn: fv - invested,
+    futureValue: fv,
+  };
+}

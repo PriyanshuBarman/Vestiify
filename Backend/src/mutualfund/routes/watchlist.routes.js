@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { isAuthenticated } from "../../shared/middlewares/authMiddleware.js";
+import { authenticate } from "../../shared/middlewares/auth.middleware.js";
 import * as watchlistService from "../controllers/watchlist.controller.js";
 
 export const watchlistRoutes = Router();
 
-watchlistRoutes.get("/", isAuthenticated, watchlistService.getWatchlist);
-watchlistRoutes.post("/add", isAuthenticated, watchlistService.addToWatchlist);
+watchlistRoutes.post("/", authenticate, watchlistService.addToWatchlist);
 watchlistRoutes.delete(
-  "/remove",
-  isAuthenticated,
+  "/:schemeCode",
+  authenticate,
   watchlistService.removeFromWatchlist
 );
+watchlistRoutes.get("/", authenticate, watchlistService.getWatchlist);

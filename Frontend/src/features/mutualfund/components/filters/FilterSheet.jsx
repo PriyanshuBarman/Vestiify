@@ -5,7 +5,7 @@ import { XIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
-import { useFilteredFunds } from "../../hooks/queries/externalQueries";
+import { useGetFilteredFunds } from "../../hooks/queries/externalQueries";
 import { getActiveFilterCount } from "../../utils/filterUtils";
 import FilterCategoriesTab from "./FilterCategoriesTab";
 import FilterFundHouseTab from "./FilterFundHouseTab";
@@ -31,7 +31,7 @@ function FilterSheet({ onClose }) {
   const activeFilterCount = getActiveFilterCount(filters);
   const [activeTab, setActiveTab] = useState("Sort by");
 
-  const { data, isFetching } = useFilteredFunds(filters);
+  const { data, isFetching } = useGetFilteredFunds(filters);
   const totalCount = data?.pages[0].totalCount;
 
   const handleClose = () => {

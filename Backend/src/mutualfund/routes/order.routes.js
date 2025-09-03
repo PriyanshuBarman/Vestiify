@@ -1,25 +1,28 @@
 import { Router } from "express";
-import { isAuthenticated } from "../../shared/middlewares/authMiddleware.js";
+import { authenticate } from "../../shared/middlewares/auth.middleware.js";
 import * as orderController from "../controllers/order.controller.js";
 import {
   validateRedemptionOrder,
   validateInvestmentOrder,
 } from "../validators/order.validator.js";
+import { verifyPin } from "../../shared/middlewares/verifyPin.middleware.js";
 
 export const orderRoutes = Router();
 
 orderRoutes.post(
   "/invest",
-  isAuthenticated,
+  authenticate,
   validateInvestmentOrder,
+  verifyPin,
   orderController.placeInvestmentOrder
 );
 
 orderRoutes.put(
   "/redeem",
-  isAuthenticated,
+  authenticate,
   validateRedemptionOrder,
   orderController.placeRedemptionOrder
 );
 
-orderRoutes.get("/", isAuthenticated, orderController.getOrders);
+orderRoutes.get("/", authenticate, orderController.getAllOrders);
+orderRoutes.get("/:orderId", authenticate, orderController.getOrderDetail);

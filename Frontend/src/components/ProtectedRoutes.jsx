@@ -4,23 +4,20 @@ import { toast } from "sonner";
 import LoadingState from "./LoadingState";
 
 function ProtectedRoutes({ children }) {
-  const { isPending, isSuccess, error } = useGetUserData();
+  const { data, isPending } = useGetUserData();
 
-  return children;
-  if (isPending)
-    return (
-      <LoadingState
-        isLoading={true}
-        className="absolute inset-0 flex items-center justify-center"
-      />
-    );
+  if (isPending) {
+    return <LoadingState fullPage />;
+  }
 
-  if (isSuccess) {
-    return children;
-  } else {
-    console.log(error);
-    toast.error(error?.response?.data.message || "An error occurred");
+  if (!data) {
+    toast.error("Please Login");
     return <Navigate to="/auth/login" />;
+  } else if (!data.pin) {
+    toast.error("Please Setup your pin");
+    return <Navigate to="/auth/pin-setup" />;
+  } else {
+    return children;
   }
 }
 

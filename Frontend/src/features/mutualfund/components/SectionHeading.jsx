@@ -1,8 +1,14 @@
-function SectionHeading({ heading, subHeading }) {
+import { Link } from "react-router";
+
+function SectionHeading({ heading, subHeading, navigateTo }) {
   return (
-    <div className="Section-Heading flex items-center justify-between sm:mb-4 mb-2 px-4 sm:px-0">
+    <div className="Section-Heading mb-2 flex items-center justify-between px-4 sm:mb-4 sm:px-0">
       <h2 className="font-medium sm:text-xl sm:font-semibold">{heading}</h2>
-      <h3 className="text-primary text-[0.8rem] font-medium sm:text-base">{subHeading}</h3>
+      <Link to={navigateTo}>
+        <h3 className="text-primary text-[0.8rem] font-medium sm:text-base">
+          {subHeading}
+        </h3>
+      </Link>
     </div>
   );
 }

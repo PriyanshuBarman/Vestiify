@@ -4,7 +4,7 @@ import { selectFilters, setFilters } from "@/store/slices/mutualFundSlice";
 import { ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useFilteredFunds } from "../../hooks/queries/externalQueries";
+import { useGetFilteredFunds } from "../../hooks/queries/externalQueries";
 import { getActiveFilterButtons } from "../../utils/filterUtils";
 import FundRating from "../FundRating";
 import FilterCategoriesTab from "./FilterCategoriesTab";
@@ -26,7 +26,7 @@ function ActiveFilterButtons() {
   const [frozenButtons, setFrozenButtons] = useState([]);
   const dispatch = useDispatch();
   const filters = useSelector(selectFilters);
-  const { data, isFetching } = useFilteredFunds(filters);
+  const { data, isFetching } = useGetFilteredFunds(filters);
   const totalCount = data?.pages[0].totalCount;
 
   const activeButtons = getActiveFilterButtons(filters);

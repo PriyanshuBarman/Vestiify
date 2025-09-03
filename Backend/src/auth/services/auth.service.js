@@ -39,3 +39,14 @@ export const loginUser = async (email, password) => {
 
   return token;
 };
+
+export const setPin = async (userId, pin) => {
+  const hashPin = await bcrypt.hash(pin, 10);
+
+  await userRepo.update(
+    {
+      id: userId,
+    },
+    { pin: hashPin }
+  );
+};

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { isAuthenticated } from "../../shared/middlewares/authMiddleware.js";
+import { authenticate } from "../../shared/middlewares/auth.middleware.js";
 import * as sellController from "../controllers/sell.controller.js";
 import {
   validateSellAllQty,
@@ -10,14 +10,14 @@ export const sellRoutes = Router();
 
 sellRoutes.put(
   "/",
-  isAuthenticated,
+  authenticate,
   validateSellSomeQty,
   sellController.sellSomeQty
 );
 
 sellRoutes.delete(
   "/",
-  isAuthenticated,
+  authenticate,
   validateSellAllQty,
   sellController.sellAllQty
 );

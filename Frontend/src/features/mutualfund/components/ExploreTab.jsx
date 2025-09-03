@@ -8,9 +8,9 @@ import YourInvestments from "./YourInvestments";
 
 function ExploreTab() {
   return (
-    <div className="flex sm:gap-6">
-      <div className="flex w-full max-w-[800px] flex-col space-y-8 lg:space-y-14">
-        <StartSip />
+    <div className="flex justify-between sm:gap-6">
+      <div className="flex w-full max-w-[820px] flex-col space-y-8 lg:space-y-14">
+        {/* <StartSip /> */}
         <PopularFunds />
         <Collections />
         <IndexFunds />

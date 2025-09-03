@@ -6,17 +6,27 @@ function ThemeProvider({ children }) {
   const theme = useSelector(selectTheme);
 
   useEffect(() => {
-    const root = window.document.documentElement;
-
+    const root = document.documentElement;
     root.classList.remove("light", "dark");
 
+    // figure out the actual theme to apply
+    let activeTheme = theme;
     if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-      root.classList.add(systemTheme);
-      return;
+      activeTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
     }
 
-    root.classList.add(theme);
+    root.classList.add(activeTheme);
+
+    // update the <meta name="theme-color">
+    const metaTheme = document.querySelector("meta[name=theme-color]");
+    if (metaTheme) {
+      metaTheme.setAttribute(
+        "content",
+        activeTheme === "dark" ? "#131313" : "#ffffff",
+      );
+    }
   }, [theme]);
 
   return children;

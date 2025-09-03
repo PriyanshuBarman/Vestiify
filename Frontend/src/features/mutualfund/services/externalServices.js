@@ -58,6 +58,27 @@ export const fetchAMCs = async () => {
   return data.amcs;
 };
 
+export const fetchFundsByFilter = async (filters, LIMIT) => {
+  const params = [];
+
+  for (const [key, value] of Object.entries(filters)) {
+    if (!value || (Array.isArray(value) && value.length === 0)) continue;
+
+    if (Array.isArray(value)) {
+      params.push(`${key}=${value.join(",")}`);
+    } else {
+      params.push(`${key}=${encodeURIComponent(value)}`);
+    }
+  }
+
+  params.push(`limit=${LIMIT}`);
+
+  const queryString = `?${params.join("&")}`;
+  const { data } = await axios.get(`${VITE_MF_API_BASE_URL}${queryString}`);
+
+  return data.funds;
+};
+
 export const fetchFilteredFunds = async ({ pageParam = 0, filters, LIMIT }) => {
   const params = [];
 

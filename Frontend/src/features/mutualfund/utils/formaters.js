@@ -1,3 +1,6 @@
+import { tz } from "@date-fns/tz";
+import { format, setDate } from "date-fns";
+
 /*
  * Formates Number to INR ex: 12555.12 -> ₹12,555
  */
@@ -21,4 +24,11 @@ export function formatFundCategory(category) {
     "Value Fund",
   ];
   return arr.includes(category) ? category : category?.replace(/\bFund\b/, "");
+}
+
+export function addSuffix(date) {
+  if (!date) return "";
+  return format(setDate(new Date(), date), "do", {
+    in: tz("Asia/Kolkata"),
+  });
 }

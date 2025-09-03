@@ -4,7 +4,7 @@ import { db } from "../../../config/db.config.js";
 import { MF_API_BASE_URL } from "../../../config/env.config.js";
 import {
   tnxRepo,
-  walletRepo,
+  userRepo,
 } from "../../shared/repositories/index.repository.js";
 import { orderRepo, portfolioRepo } from "../repositories/index.repository.js";
 import { calcPortfolioAfterRedemption } from "../utils/calculateUpdatedPortfolio.utils.js";
@@ -62,7 +62,7 @@ export const instantRedemption = async (fund, amount) => {
       tx
     );
 
-    await walletRepo.creditBalance(userId, amount, tx);
+    await userRepo.creditBalance(userId, amount, tx);
   });
 };
 

@@ -17,9 +17,10 @@ export const fetchPortfolio = async (data) => {
   return formatPortfolio(portfolio);
 };
 
-export const fetchFund = async (userId, fundCode) => {
+export const fetchFundPortfolio = async (userId, schemeCode) => {
+  schemeCode = parseInt(schemeCode);
   const fund = await portfolioRepo.findUnique({
-    userId_fundCode: { userId, fundCode },
+    userId_schemeCode: { userId, schemeCode },
   });
 
   if (!fund) throw new ApiError(404, "Fund not found in portfolio.");

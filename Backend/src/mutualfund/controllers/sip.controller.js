@@ -2,41 +2,58 @@ import { ApiError } from "../../shared/utils/apiError.utils.js";
 import { asyncHandler } from "../../shared/utils/asyncHandler.utils.js";
 import * as sipService from "../services/sip.service.js";
 
-export const startSip = asyncHandler(async (req, res) => {
+export const createSip = asyncHandler(async (req, res) => {
   const { userId } = req.user;
-  const { amount, fundName, fundCategory, schemeCode, dateOfMonth } = req.body;
-
-  await sipService.startSip({
-    userId,
+  const {
     amount,
+    sipDate,
     fundName,
+    shortName,
     fundCategory,
     schemeCode,
-    dateOfMonth,
+    fundHouseDomain,
+    fundType,
+  } = req.body;
+
+  await sipService.createSip({
+    userId,
+    amount,
+    sipDate,
+    fundName,
+    shortName, // required for order placement
+    fundCategory,
+    schemeCode,
+    fundHouseDomain,
+    fundType, // required for order placement
   });
 
-  res.status(200).json({ success: true, message: "SIP started successfully" });
+  return res
+    .status(200)
+    .json({ success: true, message: "SIP created successfully" });
 });
 
 export const editSip = asyncHandler(async (req, res) => {
   const { userId } = req.user;
-  const { sipId, amount, dateOfMonth } = req.body;
+  const { sipId } = req.params;
+  const { amount, sipDate } = req.body;
 
   if (!sipId || sipId === "") {
     throw new ApiError(400, "sipId is required");
   }
-  if (!amount || !dateOfMonth) {
-    throw new ApiError(400, "amount or dateOfMonth one is required");
+  if (!amount || !sipDate) {
+    throw new ApiError(400, "amount or sipDate one is required");
   }
 
   await sipService.editSip({
     userId,
     sipId,
     amount,
-    dateOfMonth,
+    sipDate,
   });
 
-  res.status(200).json({ success: true, message: "SIP edit request placed" });
+  return res
+    .status(200)
+    .json({ success: true, message: "SIP edit request placed" });
 });
 
 export const skipSip = asyncHandler(async (req, res) => {
@@ -49,13 +66,49 @@ export const skipSip = asyncHandler(async (req, res) => {
 
   await sipService.skipSip(userId, sipId);
 
-  res.status(200).json({ success: true, message: "SIP Skipped Successfully" });
+  return res
+    .status(200)
+    .json({ success: true, message: "SIP Skipped Successfully" });
+});
+
+export const cancelSip = asyncHandler(async (req, res) => {
+  const { sipId } = req.params;
+
+  if (!sipId || sipId === "") {
+    throw new ApiError(400, `sipId is required`);
+  }
+
+  await sipService.cancelSip(sipId);
+
+  return res
+    .status(200)
+    .json({ success: true, message: "SIP Cancelled Successfully" });
 });
 
 export const getAllSips = asyncHandler(async (req, res) => {
   const { userId } = req.user;
 
-  const result = await sipService.getAllSips(userId);
+  const data = await sipService.getAllSips(userId);
 
-  res.status(200).json({ success: true, result });
+  return res.status(200).json({
+    success: true,
+    sips: data.allSips,
+    totalActiveSipAmount: data.totalActiveSipAmount,
+  });
+});
+
+export const getSipDetail = asyncHandler(async (req, res) => {
+  const { sipId } = req.params;
+
+  if (!sipId) {
+    throw new ApiError(400, "sipId is required");
+  }
+
+  const data = await sipService.getSipDetail(sipId);
+
+  return res.status(200).json({
+    success: true,
+    sip: data.sipDetail,
+    installments: data.installments,
+  });
 });
