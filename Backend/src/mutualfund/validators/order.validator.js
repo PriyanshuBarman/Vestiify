@@ -1,17 +1,30 @@
 import { ApiError } from "../../shared/utils/apiError.utils.js";
 
 export const validateInvestmentOrder = (req, res, next) => {
-  const { amount, schemeCode, fundName, fundCategory } = req.body;
+  const {
+    amount,
+    schemeCode,
+    fundName,
+    shortName,
+    fundType,
+    fundCategory,
+    fundHouseDomain,
+  } = req.body;
 
-  if (!schemeCode || schemeCode === "") {
-    throw new ApiError(400, "Scheme code is required");
-  }
+  const requiredFields = [
+    "amount",
+    "schemeCode",
+    "fundName",
+    "shortName",
+    "fundType",
+    "fundCategory",
+    "fundHouseDomain",
+  ];
 
-  if (!fundName || fundName === "") {
-    throw new ApiError(400, "fundName is required");
-  }
-  if (!fundCategory) {
-    throw new ApiError(400, "fundCategory is required");
+  for (const field of requiredFields) {
+    if (!req.body[field] || req.body[field] == "") {
+      throw new ApiError(400, `${field} is required`);
+    }
   }
 
   if (!amount || amount <= 0 || isNaN(amount)) {

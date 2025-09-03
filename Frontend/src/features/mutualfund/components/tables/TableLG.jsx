@@ -21,6 +21,7 @@ import { Link } from "react-router";
 import { formatToINR } from "../../utils/formaters";
 import FundLogo from "../FundLogo";
 import LoadingState from "@/components/LoadingState";
+import { getMainDomain } from "../../utils/getMainDomain";
 
 /**
  *  Reusable Large screen table with pagination support
@@ -122,7 +123,7 @@ function TableLG({
           {funds?.map((fund) => (
             <TableRow key={fund.scheme_code}>
               <TableCell className="flex items-center gap-8 py-4 pl-8">
-                <FundLogo logoCode={fund.short_code} />
+                <FundLogo fundHouseDomain={getMainDomain(fund.detail_info)} />
                 <div>
                   <Link to={`/mutual-funds/${fund.scheme_code}`}>
                     <h4 className="text-base text-wrap">{fund.short_name}</h4>

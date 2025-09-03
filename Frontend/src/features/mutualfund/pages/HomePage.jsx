@@ -8,10 +8,9 @@ import { useDispatch, useSelector } from "react-redux";
 import "swiper/css";
 import { HashNavigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import OrdersTab from "../components/OrdersTab";
 
 const InvestmentsTab = lazy(() => import("../components/InvestmentsTab"));
-const SipTab = lazy(() => import("../components/SipTab"));
+const SipsTab = lazy(() => import("../components/SipsTab"));
 const WatchlistTab = lazy(() => import("../components/WatchlistTab"));
 const ExploreTab = lazy(() => import("../components/ExploreTab"));
 
@@ -54,7 +53,7 @@ function HomePage() {
       <SwiperSlide data-hash="sip" className="min-h-svh">
         {activeTabIndex === 2 && (
           <Suspense fallback={<LoadingState isLoading={true} />}>
-            <SipTab />
+            <SipsTab />
           </Suspense>
         )}
       </SwiperSlide>
@@ -63,14 +62,6 @@ function HomePage() {
         {activeTabIndex === 3 && (
           <Suspense fallback={<LoadingState isLoading={true} />}>
             <WatchlistTab />
-          </Suspense>
-        )}
-      </SwiperSlide>
-
-      <SwiperSlide data-hash="orders" className="min-h-svh">
-        {activeTabIndex === 4 && (
-          <Suspense fallback={<LoadingState isLoading={true} />}>
-            <OrdersTab />
           </Suspense>
         )}
       </SwiperSlide>

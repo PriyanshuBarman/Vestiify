@@ -1,6 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import FundLogo from "@/features/mutualfund/components/FundLogo";
-import { ChartCandlestickIcon } from "lucide-react";
 
 function CompanyLogo({ searchType, item }) {
   return (

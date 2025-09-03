@@ -5,6 +5,6 @@ import * as sipController from "../controllers/sip.controller.js";
 
 export const sipRoutes = Router();
 
-sipRoutes.post("/", isAuthenticated, validateSip, sipController.startSip);
+sipRoutes.post("/", isAuthenticated, validateSip, sipController.createSip);
 sipRoutes.put("/edit", isAuthenticated, sipController.editSip);
 sipRoutes.get("/", isAuthenticated, sipController.getAllSips);

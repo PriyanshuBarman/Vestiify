@@ -11,7 +11,11 @@ export const routes = createBrowserRouter([
   authRoutes,
   {
     index: true,
-    element: <Home />,
+    element: (
+      <ProtectedRoutes>
+        <Home />
+      </ProtectedRoutes>
+    ),
   },
   {
     path: "/search",
@@ -21,7 +25,6 @@ export const routes = createBrowserRouter([
       </ProtectedRoutes>
     ),
   },
-  { path: "/coming-soon", element: <ComingSoonPage /> },
   {
     path: "/",
     element: (
@@ -29,6 +32,9 @@ export const routes = createBrowserRouter([
         <Layout />
       </ProtectedRoutes>
     ),
-    children: [mutualFundRoutes],
+    children: [
+      mutualFundRoutes,
+      { path: "/coming-soon", element: <ComingSoonPage /> },
+    ],
   },
 ]);

@@ -1,3 +1,4 @@
+import ProtectedRoutes from "@/components/ProtectedRoutes";
 import AuthLayout from "./AuthLayout";
 import LoginPage from "./pages/LoginPage";
 import LogoutPage from "./pages/LogoutPage";
@@ -9,6 +10,13 @@ export const authRoutes = {
   children: [
     { path: "login", element: <LoginPage /> },
     { path: "signup", element: <SignupPage /> },
-    { path: "logout", element: <LogoutPage /> },
+    {
+      path: "logout",
+      element: (
+        <ProtectedRoutes>
+          <LogoutPage />
+        </ProtectedRoutes>
+      ),
+    },
   ],
 };

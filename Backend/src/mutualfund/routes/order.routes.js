@@ -22,4 +22,5 @@ orderRoutes.put(
   orderController.placeRedemptionOrder
 );
 
-orderRoutes.get("/", isAuthenticated, orderController.getOrders);
+orderRoutes.get("/", isAuthenticated, orderController.getAllOrders);
+orderRoutes.get("/:orderId", isAuthenticated, orderController.getOrderDetail);

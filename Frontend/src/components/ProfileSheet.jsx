@@ -15,6 +15,7 @@ import { selectTheme, setTheme } from "@/store/slices/themeSlice";
 import {
   ArrowLeftRightIcon,
   LogOut,
+  LogsIcon,
   MoonIcon,
   Settings,
   SlidersHorizontal,
@@ -23,8 +24,8 @@ import {
   WalletMinimalIcon,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { Separator } from "./ui/separator";
 import { useNavigate } from "react-router";
+import { Separator } from "./ui/separator";
 
 const themeMapping = [
   { name: "system", icon: SlidersHorizontal },
@@ -72,26 +73,32 @@ function ProfileSheet({ children }) {
             </div>
           </div>
           <Separator className="my-6" />
+
           {/* =============== Menu Items =============== */}
           <div className="space-y-8 text-[0.94rem] sm:font-medium">
-            <div tabIndex={0} className="flex">
+            <div className="flex">
               <div className="flex">
                 <WalletMinimalIcon />
                 <span className="ml-4">Balance : ₹ {balance}</span>
               </div>
             </div>
 
-            <div tabIndex={0} className="flex">
+            <div className="flex">
+              <LogsIcon />
+              <span className="ml-4">All Orders</span>
+            </div>
+
+            <div className="flex">
               <UserIcon />
               <span className="ml-4">Account Details</span>
             </div>
 
-            <div tabIndex={0} className="flex">
+            <div className="flex">
               <ArrowLeftRightIcon />
               <span className="ml-4">Transactions</span>
             </div>
 
-            <div tabIndex={0} className="flex">
+            <div className="flex">
               <Settings />
               <span className="ml-4">Settings</span>
             </div>

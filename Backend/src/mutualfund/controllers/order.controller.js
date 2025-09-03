@@ -3,14 +3,25 @@ import * as orderService from "../services/order.service.js";
 
 export const placeInvestmentOrder = asyncHandler(async (req, res) => {
   const { userId } = req.user;
-  const { amount, fundName, schemeCode, fundCategory } = req.body;
+  const {
+    amount,
+    schemeCode,
+    fundName,
+    shortName,
+    fundType,
+    fundCategory,
+    fundHouseDomain,
+  } = req.body;
 
   await orderService.placeInvestmentOrder({
     userId,
     amount,
     schemeCode,
     fundName,
+    shortName,
+    fundType,
     fundCategory,
+    fundHouseDomain,
   });
 
   return res.status(201).json({
@@ -27,17 +38,28 @@ export const placeRedemptionOrder = asyncHandler(async (req, res) => {
 
   return res.status(201).json({
     success: true,
-    message: "Redeem Order Placed",
+    message: "Redemption Order Placed",
   });
 });
 
-export const getOrders = asyncHandler(async (req, res) => {
+export const getAllOrders = asyncHandler(async (req, res) => {
   const { userId } = req.user;
-
-  const orders = await orderService.getOrders(userId);
+  
+  const orders = await orderService.getAllOrders(userId);
 
   return res.status(200).json({
     success: true,
-    data: orders,
+    orders,
+  });
+});
+
+export const getOrderDetail = asyncHandler(async (req, res) => {
+  const { orderId } = req.params;
+
+  const order = await orderService.getOrderDetail(orderId);
+
+  return res.status(200).json({
+    success: true,
+    order,
   });
 });

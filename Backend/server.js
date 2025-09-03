@@ -9,7 +9,6 @@ import { errorHandler } from "./src/shared/middlewares/errorHandler.js";
 import { notFoundHandler } from "./src/shared/middlewares/notFoundHandler.js";
 import { stockRoutes } from "./src/stock/routes/index.routes.js";
 import { userRoutes } from "./src/user/routes/user.routes.js";
-import { walletRoutes } from "./src/wallet/routes/index.routes.js";
 
 const app = express();
 
@@ -20,7 +19,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/wallet", walletRoutes);
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/mutual-funds", mutualFundRoutes);
 app.use("/api/v1/stock", stockRoutes);

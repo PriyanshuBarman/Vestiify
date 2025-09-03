@@ -7,7 +7,6 @@ const TABS = [
   { name: "Investments", hash: "#investments" },
   { name: "SIPs", hash: "#sip" },
   { name: "Watchlist", hash: "#watchlist" },
-  { name: "Orders", hash: "#orders" },
 ];
 
 function Tabs() {

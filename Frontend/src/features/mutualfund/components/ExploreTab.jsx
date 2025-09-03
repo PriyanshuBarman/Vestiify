@@ -10,7 +10,7 @@ function ExploreTab() {
   return (
     <div className="flex sm:gap-6">
       <div className="flex w-full max-w-[800px] flex-col space-y-8 lg:space-y-14">
-        <StartSip />
+        {/* <StartSip /> */}
         <PopularFunds />
         <Collections />
         <IndexFunds />

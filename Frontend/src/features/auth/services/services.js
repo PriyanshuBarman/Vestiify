@@ -45,7 +45,6 @@ export const logoutUser = async () => {
     const { data } = await axios.get(`${VITE_BACKEND_BASE_URL}/auth/logout`, {
       withCredentials: true,
     });
-    if (data.success) return data;
   } catch (error) {
     console.error(error);
     const message = error?.response?.data?.message || "Something went wrong.";

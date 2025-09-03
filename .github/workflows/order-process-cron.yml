@@ -1,13 +1,17 @@
-name: Portfolio Updater Cron
+name: Order Processor Cron
 
 on:
   schedule:
-    - cron: "30 22 * * *" # 4:00 AM IST
-    - cron: "30 23 * * *" # 5:00 AM IST
+    - cron: "30 0 * * *" # 6:00 AM IST
+    - cron: "0 1 * * *" # 6:30 AM IST
   workflow_dispatch: # Allow manual trigger
 
+defaults:
+  run:
+    working-directory: Backend
+
 jobs:
-  portfolio-updater-cron:
+  order-processor-cron:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,6 +23,7 @@ jobs:
         with:
           node-version: 20
           cache: "npm"
+          cache-dependency-path: "./Backend/package-lock.json"
 
       - name: Install dependencies
         run: npm ci
@@ -26,9 +31,11 @@ jobs:
       - name: Generate Prisma client
         run: npx prisma generate
 
-      - name: Portfolio Updater
+      - name: Order Processor
         id: update-script
-        run: node scripts/tasks/updatePortfolio.task.js
+        run: node scripts/tasks/processOrders.task.js
         env:
+          NODE_ENV: cron
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          MF_HELPER_API_BASE_URL: ${{ secrets.MF_HELPER_API_BASE_URL }}
           MF_API_BASE_URL: ${{ secrets.MF_API_BASE_URL }}

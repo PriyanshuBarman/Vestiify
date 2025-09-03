@@ -4,10 +4,13 @@ export const validateSip = (req, res, next) => {
   const amount = req.body.amount;
   const requiredFields = [
     "amount",
+    "sipDate",
     "schemeCode",
     "fundName",
+    "shortName", // required for order placement
     "fundCategory",
-    "dateOfMonth",
+    "fundHouseDomain",
+    "fundType", // required for order placement
   ];
 
   for (const field of requiredFields) {

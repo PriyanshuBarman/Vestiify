@@ -1,12 +1,15 @@
 import { useIsMobile } from "@/hooks/useIsMobile";
+import ScrollToTop from "@/layouts/ScrollToTop";
 import { useEffect, useState } from "react";
-import { useGetPortfolio } from "../hooks/queries/internalQueries";
+import {
+  useGetPortfolio
+} from "../hooks/queries/internalQueries";
+import { sortPortfolio } from "../utils/investmentTabHelper";
 import SortByButton from "./filters/SortByButton";
+import SectionCards from "./PortfolioSummary";
 import PortfolioTableLG from "./tables/PortfolioTableLG";
 import PortfolioTableSM from "./tables/PortfolioTableSM";
-import SectionCards from "./PortfolioSummary";
-import { sortPortfolio } from "../utils/investmentTabHelper";
-import ScrollToTop from "@/layouts/ScrollToTop";
+import PendingOrders from "./PendingOrders";
 
 const sortOptions = {
   current: "Current",
@@ -43,23 +46,32 @@ function InvestmentsTab() {
   return (
     <div className="space-y-4">
       <ScrollToTop />
-      <SectionCards />
+      <PendingOrders />
 
-      <SortByButton
-        sortOptions={sortOptions}
-        activeSortBy={sortBy}
-        onSortChange={handleSortChange}
-        onOrderChange={handleOrderChange}
-        order={orderBy}
-      />
-
-      {isMobile ? (
-        <PortfolioTableSM portfolio={portfolio || []} />
+      {!portfolio ? (
+        <h2 className="text-center">Fund Not Available On Portfolio</h2>
       ) : (
-        <PortfolioTableLG portfolio={portfolio || []} />
+        <>
+          <SectionCards />
+          <SortByButton
+            sortOptions={sortOptions}
+            activeSortBy={sortBy}
+            onSortChange={handleSortChange}
+            onOrderChange={handleOrderChange}
+            order={orderBy}
+          />
+
+          {isMobile ? (
+            <PortfolioTableSM portfolio={portfolio} />
+          ) : (
+            <PortfolioTableLG portfolio={portfolio} />
+          )}
+        </>
       )}
     </div>
   );
 }
 
 export default InvestmentsTab;
+
+

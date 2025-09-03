@@ -1,9 +1,10 @@
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
+import { cn } from "@/lib/utils";
 
-function Logo() {
+function Logo({ className }) {
   return (
-    <Avatar className="sm:size-9">
-      <AvatarImage src="logo.png" className="" alt="Logo" />
+    <Avatar className={cn("size-8.5 shadow sm:size-10", className)}>
+      <AvatarImage src="/logo.png" alt="Logo" />
       <AvatarFallback />
     </Avatar>
   );

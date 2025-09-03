@@ -14,7 +14,7 @@ function Collections() {
             <div className="flex flex-col items-center justify-between">
               <div className="Collection-Card sm:shadow sm:bg-accent flex h-18 w-24 items-center justify-center rounded-xl sm:h-20 sm:w-30">
                 <img
-                  src={`${collection}.svg`}
+                  src={`/${collection}.svg`}
                   alt={`${collection} logo`}
                   loading="lazy"
                   className="size-[70%] dark:mix-blend-hard-light"

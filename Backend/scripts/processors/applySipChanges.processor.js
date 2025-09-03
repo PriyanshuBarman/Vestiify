@@ -2,7 +2,7 @@ import { db } from "../../config/db.config.js";
 import {
   pendingSipChangeRepo,
   sipRepo,
-} from "../repositories/index.repository.js";
+} from "../../src/mutualfund/repositories/index.repository.js";
 
 export const applySipChanges = async (data) => {
   const { id, sipId, amount, dateOfMonth, nextInstallmentDate } = data;

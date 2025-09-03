@@ -17,6 +17,6 @@ export const MF_API_BASE_URL = process.env.MF_API_BASE_URL;
   ["MF_HELPER_API_BASE_URL", MF_HELPER_API_BASE_URL],
   ["MF_API_BASE_URL", MF_API_BASE_URL],
 ].forEach(([key, value]) => {
-  if (!value)
+  if (!value && NODE_ENV !== "cron")
     throw new Error(`${key} is not defined in environment variables!`);
 });

@@ -11,28 +11,16 @@ import {
   selectActiveColumn,
   selectFilters,
   setActiveColumn,
-  setFilters,
 } from "@/store/slices/mutualFundSlice";
 import { ChevronRightIcon, ChevronsLeftRight } from "lucide-react";
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { useFilteredFunds } from "../hooks/queries/externalQueries";
 import { columnsConfig, getNextColumn } from "../utils/similarFundsTable";
 import FundLogo from "./FundLogo";
 import FundRating from "./FundRating";
 import FilterBtns from "./filters/FilterBtns";
-
-const sortOptions = {
-  popularity: "Popularity",
-  return_1y: "1Y Returns",
-  return_3y: "3Y Returns",
-  return_5y: "5Y Returns",
-  fund_rating: "Rating",
-  expense_ratio: "Expense Ratio",
-  aum: "Fund Size",
-  lump_min: "Min Lumpsum",
-};
+import { getMainDomain } from "../utils/getMainDomain";
 
 function AllFunds() {
   const dispatch = useDispatch();
@@ -78,7 +66,10 @@ function AllFunds() {
           {funds?.map((fund) => (
             <TableRow key={fund.scheme_code}>
               <TableCell className="flex items-center gap-4 py-4 pl-4">
-                <FundLogo logoCode={fund.short_code} className="size-8.5" />
+                <FundLogo
+                  fundHouseDomain={getMainDomain(fund.detail_info)}
+                  className="size-8.5"
+                />
                 <div>
                   <Link to={`/mutual-funds/${fund.scheme_code}`}>
                     <h4 className="Fund-Name text-foreground text-wrap">

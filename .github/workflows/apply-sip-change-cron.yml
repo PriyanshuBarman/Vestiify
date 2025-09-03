@@ -6,6 +6,10 @@ on:
     - cron: "0 20 * * *" # 1:30 AM IST
   workflow_dispatch: # Allow manual trigger
 
+defaults:
+  run:
+    working-directory: Backend
+
 jobs:
   apply-sip-change-cron:
     runs-on: ubuntu-latest
@@ -19,6 +23,7 @@ jobs:
         with:
           node-version: 20
           cache: "npm"
+          cache-dependency-path: "./Backend/package-lock.json"
 
       - name: Install dependencies
         run: npm ci
@@ -28,6 +33,7 @@ jobs:
 
       - name: Apply SIP Change
         id: update-script
-        run: node scripts/tasks/applySipChange.task.js
+        run: node scripts/tasks/applyPendingSipChanges.task.js
         env:
+          NODE_ENV: cron
           DATABASE_URL: ${{ secrets.DATABASE_URL }}

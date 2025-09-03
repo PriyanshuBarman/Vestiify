@@ -1,6 +1,12 @@
-import { Link } from "react-router";
+import { Link, Navigate } from "react-router";
+import { useGetUserData } from "./hooks/queries/internalQueries";
 
 function Home() {
+  const { data } = useGetUserData();
+  if (data) {
+    return <Navigate to="/mutual-funds/#explore" />;
+  }
+
   return (
     <div className="bg-background flex h-screen flex-col items-center justify-center">
       <ul className="flex flex-col gap-4 font-medium sm:text-xl">

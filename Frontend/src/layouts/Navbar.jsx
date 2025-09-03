@@ -22,7 +22,7 @@ function Navbar() {
 
   return (
     <nav className="bg-background z-50 flex items-center justify-between gap-8 px-4 pt-4 pb-2 sm:px-12 sm:py-2 xl:px-0">
-      <div className="flex items-center gap-0 sm:gap-4">
+      <div className="flex items-center gap-2 sm:gap-4">
         <Logo />
         <NavLinks />
       </div>
@@ -45,7 +45,9 @@ function Navbar() {
         <Button aria-label="cart" variant="ghost" size="icon">
           <BellIcon className="size-5.5" />
         </Button>
+
         {!isMobile && <ModeToggle />}
+
         <ProfileSheet>
           <Avatar className="size-8.5">
             <AvatarImage
@@ -67,7 +69,7 @@ export default Navbar;
 
 function NavLinks() {
   return (
-    <div className="mt-2 hidden text-sm sm:mt-0 sm:flex sm:text-lg">
+    <div className="text-md flex sm:text-lg">
       <NavLink
         to="/coming-soon"
         className={({ isActive }) =>

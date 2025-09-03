@@ -1,6 +1,6 @@
 import {
   tnxRepo,
-  walletRepo,
+  userRepo,
 } from "../../shared/repositories/index.repository.js";
 import { ApiError } from "../../shared/utils/apiError.utils.js";
 import {
@@ -14,7 +14,7 @@ import { calculateUpdatedPortfolio } from "../utils/purchase.utils.js";
 export const processPurchase = async (data) => {
   const { userId, symbol, stockName, price, quantity } = data;
 
-  const balance = await walletRepo.checkBalance(userId);
+  const balance = await userRepo.checkBalance(userId);
 
   const invested = quantity * price;
 
@@ -67,5 +67,5 @@ export const processPurchase = async (data) => {
     amount: invested,
   });
 
-  await walletRepo.debitBalance(userId, invested); // shared
+  await userRepo.debitBalance(userId, invested); // shared
 };

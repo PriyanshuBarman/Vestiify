@@ -1,13 +1,13 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 
-function FundLogo({ logoCode, className }) {
+function FundLogo({ fundHouseDomain, className }) {
   return (
-    <Avatar className={cn("rounded-md size-9 sm:size-10", className)}>
+    <Avatar className={cn("size-9 rounded-md sm:size-10", className)}>
       <AvatarImage
-        src={`https://assets-netstorage.groww.in/mf-assets/logos/${logoCode === "parag" ? "ppfas" : logoCode}_groww.png`}
+        src={`https://img.logo.dev/${fundHouseDomain}?token=pk_Rlq_iuMcQHGZ2xOrcVGX7g&retina=true`}
+        alt={`logo`}
         className="object-contain"
-        alt={`${logoCode} logo`}
       />
       <AvatarFallback className={cn("rounded-md sm:size-10", className)} />
     </Avatar>

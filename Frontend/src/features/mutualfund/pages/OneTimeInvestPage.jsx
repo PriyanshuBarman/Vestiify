@@ -5,18 +5,16 @@ import { useParams } from "react-router";
 import { toast } from "sonner";
 import { useMakeInvestment } from "../hooks/mutations/mutations";
 import { useGetFundData } from "../hooks/queries/externalQueries";
+import { Loader2Icon } from "lucide-react";
 
 function OneTimeInvestPage() {
   const { scheme_code } = useParams();
   const { data: fund = {} } = useGetFundData(scheme_code);
-  const [amount, setAmount] = useState(fund.sip_min);
+  const [amount, setAmount] = useState(0);
   const { mutate: invest, isPending } = useMakeInvestment();
 
-  useEffect(() => fund.sip_min && setAmount(fund.sip_min), [fund]);
-
   const handleNumberClick = (num) => {
-    if (!amount || amount === fund.sip_min) setAmount(num);
-    else setAmount((prev) => prev * 10 + num);
+    setAmount((prev) => prev * 10 + num);
   };
 
   const handleBackspace = () => setAmount((prev) => Math.floor(prev / 10));
@@ -29,8 +27,9 @@ function OneTimeInvestPage() {
     if (amount < fund.lump_min) return;
     invest({ amount, fund });
   };
+
   return (
-    <div className="flex h-svh flex-col justify-between">
+    <div className="flex h-lvh flex-col justify-between">
       {/* ================= Title ================= */}
       <div className="Title mt-4 flex items-center gap-4 px-4">
         <GoBackBtn />
@@ -41,7 +40,7 @@ function OneTimeInvestPage() {
       </div>
 
       {/* ================= Content ================= */}
-      <div className="mt-8 mb-auto space-y-8 px-4">
+      <div className="mt-8 mb-auto space-y-14 px-4">
         {/* Investment Amount */}
         <div className="relative text-center">
           <p className="text-muted-foreground text-sm">Investment amount</p>
@@ -51,7 +50,7 @@ function OneTimeInvestPage() {
               |
             </span>
           </h1>
-          {amount < fund.lump_min && (
+          {amount !== 0 && amount < fund.lump_min && (
             <p className="absolute mt-2 w-full text-center text-xs font-medium text-red-400">
               Min. ₹{fund.lump_min}{" "}
             </p>
@@ -59,7 +58,7 @@ function OneTimeInvestPage() {
         </div>
 
         {/* Add Extra Buttons */}
-        <div className="mb-6 flex justify-center gap-4">
+        <div className="flex justify-center gap-4">
           <Button
             variant="outline"
             className="rounded-full"
@@ -114,17 +113,14 @@ function OneTimeInvestPage() {
         </div>
 
         {/*======== Add-To-Cart & Invest Buttons ======== */}
-        <div className="mt-6 flex justify-evenly py-4">
-          <Button size="lg" className="text-primary bg-primary/15 w-[42%]">
-            Add To Cart
-          </Button>
+        <div className="mt-6 flex justify-evenly p-4">
           <Button
             disabled={isPending}
             size="lg"
             onClick={handleInvest}
-            className="w-[42%] text-white"
+            className="w-full text-white"
           >
-            {isPending ? "Processing..." : "Invest"}
+            {isPending ? <Loader2Icon className="animate-spin" /> : "Invest"}
           </Button>
         </div>
       </div>

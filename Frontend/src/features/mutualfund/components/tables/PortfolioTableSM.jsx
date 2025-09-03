@@ -6,10 +6,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ChevronsLeftRight } from "lucide-react";
+import { ChevronsLeftRightIcon } from "lucide-react";
 import { useState } from "react";
-import FundLogo from "../FundLogo";
 import { formatToINR } from "../../utils/formaters";
+import FundLogo from "../FundLogo";
 
 const columns = [
   {
@@ -68,7 +68,7 @@ function PortfolioTableSM({ portfolio }) {
 
           <TableHead onClick={handleNextColumn} className="w-[25%] pr-4">
             <div className="flex cursor-pointer items-center justify-end gap-2 transition-colors">
-              <ChevronsLeftRight className="size-3.5 shrink-0" />
+              <ChevronsLeftRightIcon className="size-3.5 shrink-0" />
               <span className="border-muted-foreground border-b border-dashed">
                 {activeColumn.label}
               </span>

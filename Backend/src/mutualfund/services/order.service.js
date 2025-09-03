@@ -1,11 +1,12 @@
 import { db } from "../../../config/db.config.js";
 import {
-  walletRepo,
+  userRepo,
   tnxRepo,
 } from "../../shared/repositories/index.repository.js";
 import { ApiError } from "../../shared/utils/apiError.utils.js";
 import { orderRepo } from "../repositories/order.repository.js";
 import { portfolioRepo } from "../repositories/portfolio.repository.js";
+import { getMainDomain } from "../utils/getMainDomain.utils.js";
 import {
   getNavAndProcessDateForInvestment,
   getNavAndProcessDateForRedemption,
@@ -17,10 +18,13 @@ export const placeInvestmentOrder = async ({
   amount,
   schemeCode,
   fundName,
+  shortName,
+  fundType,
   fundCategory,
+  fundHouseDomain,
   sipId, // Optional
 }) => {
-  const balance = await walletRepo.checkBalance(userId);
+  const balance = await userRepo.checkBalance(userId);
 
   if (amount > balance) {
     throw new ApiError(400, "Insufficient wallet balance");
@@ -37,6 +41,9 @@ export const placeInvestmentOrder = async ({
         amount,
         schemeCode,
         fundName,
+        shortName,
+        fundType: fundType.toUpperCase(),
+        fundHouseDomain: getMainDomain(fundHouseDomain),
         processDate,
         navDate,
         method: sipId ? "SIP" : "REGULAR",
@@ -46,7 +53,7 @@ export const placeInvestmentOrder = async ({
       tx
     );
 
-    const updatedBalance = await walletRepo.debitBalance(userId, amount, tx);
+    const updatedBalance = await userRepo.debitBalance(userId, amount, tx);
 
     await tnxRepo.create(
       {
@@ -92,6 +99,10 @@ export const placeRedemptionOrder = async (
     userId,
     schemeCode: fund.schemeCode,
     fundName: fund.fundName,
+    shortName: fund.shortName,
+    fundType: fund.fundType,
+    fundCategory: fund.fundCategory,
+    fundHouseDomain: fund.fundHouseDomain,
     method: "REGULAR",
     orderType: "REDEEM",
     amount: !isFullRedemption ? amount : null, // Store amount for partial-redemption
@@ -101,7 +112,7 @@ export const placeRedemptionOrder = async (
   });
 };
 
-export const getOrders = async (userId) => {
+export const getAllOrders = async (userId) => {
   const orders = await orderRepo.findMany(
     { userId },
     {
@@ -116,4 +127,8 @@ export const getOrders = async (userId) => {
   }
 
   return orders;
+};
+
+export const getOrderDetail = (orderId) => {
+  return orderRepo.findUnique({ id: orderId });
 };
