@@ -39,11 +39,8 @@ function QuickAccess() {
           </Link>
 
           {cardsMapping.map(({ label, img, to }) => (
-            <Link to={to}>
-              <Card
-                key={label}
-                className="w-36 cursor-pointer gap-2 p-3 sm:w-46 sm:min-w-40 sm:p-4 sm:transition-all sm:duration-500 sm:hover:scale-101"
-              >
+            <Link key={label} to={to}>
+              <Card className="w-36 cursor-pointer gap-2 p-3 sm:w-46 sm:min-w-40 sm:p-4 sm:transition-all sm:duration-500 sm:hover:scale-101">
                 <CardContent className="p-0">
                   <img
                     src={img}

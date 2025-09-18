@@ -154,9 +154,10 @@ export const processRedemptionOrder = async (orderData) => {
       await tnxRepo.create(
         {
           userId,
-          amount: fund.current.toNumber(),
-          mfOrderId: orderId,
-          tnxType: "CREDIT",
+          amount,
+          assetCategory: "MUTUAL_FUND",
+          assetOrderId: orderId,
+          type: "CREDIT",
           updatedBalance,
         },
         tx
@@ -187,8 +188,9 @@ export const processRedemptionOrder = async (orderData) => {
         {
           userId,
           amount,
-          mfOrderId: orderId,
-          tnxType: "CREDIT",
+          assetCategory: "MUTUAL_FUND",
+          assetOrderId: orderId,
+          type: "CREDIT",
           updatedBalance,
         },
         tx

@@ -16,8 +16,11 @@ export function SignupForm({ className, ...props }) {
 
   useEffect(() => {
     if (!data) return;
-    if (data?.success) navigate("/auth/pin-setup");
-    toast[data?.success ? "success" : "error"](data?.message);
+    if (data?.success) {
+      navigate("/auth/pin-setup");
+    } else {
+      toast.error(data?.message);
+    }
   }, [data]);
 
   return (

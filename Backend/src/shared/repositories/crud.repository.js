@@ -15,6 +15,16 @@ export class CrudRepository {
     }
   }
 
+  async createMany(data, client = db) {
+    try {
+      const result = await client[this.model].createMany({ data });
+      return result;
+    } catch (error) {
+      console.log(`❌ Error in create: ${error.message}`);
+      throw error;
+    }
+  }
+
   async findUnique(where, options = {}, client = db) {
     try {
       const result = await client[this.model].findUnique({ where, ...options });
@@ -39,9 +49,7 @@ export class CrudRepository {
     try {
       const result = await client[this.model].findMany({
         where,
-        orderBy: options.orderBy || undefined,
-        take: options.take || undefined,
-        skip: options.skip || undefined,
+        ...options,
       });
       return result;
     } catch (error) {

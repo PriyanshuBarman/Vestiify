@@ -30,10 +30,16 @@ const tabsMapping = [
     id: 4,
     name: "Wallet",
     icon: Wallet2Icon,
-    link: "/wallet",
+    link: "/upi",
   },
 ];
-const allowedRoutes = ["/mutual-funds", "/mutual-funds/", "/stocks", "/gold"];
+const allowedRoutes = [
+  "/mutual-funds",
+  "/mutual-funds/",
+  "/upi",
+  "/stocks",
+  "/gold",
+];
 
 function BottomNavbar() {
   const isMobile = useIsMobile();
@@ -47,7 +53,7 @@ function BottomNavbar() {
     <nav className="bg-background fixed inset-x-0 bottom-0 z-10 flex w-full justify-around border-t py-2">
       {tabsMapping.map((tab) => (
         <NavLink
-          to={`${tab.link === "/mutual-funds#explore" ? tab.link : "/coming-soon"}`}
+          to={`${["/mutual-funds#explore", "/upi"].includes(tab.link) ? tab.link : "/coming-soon"}`}
           key={tab.id}
           className={({ isActive }) =>
             `flex flex-col items-center gap-1 text-[0.65rem] font-medium transition-all duration-200 hover:scale-105 sm:text-xs ${isActive ? "text-primary font-semibold dark:text-white" : "text-zinc-500 dark:text-zinc-400"}`

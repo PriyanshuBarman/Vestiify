@@ -42,12 +42,15 @@ export const setPin = asyncHandler(async (req, res) => {
   const { pin } = req.body;
 
   if (!pin) {
-    throw new ApiError(400, "PIN is required");
+    throw new ApiError(400, "pin is required");
+  }
+  if (pin.toString().length !== 4) {
+    throw new ApiError(400, "pin must be 4 digits");
   }
 
   await authService.setPin(userId, pin);
 
   return res
     .status(200)
-    .json({ success: true, message: "PIN Set Successfully" });
+    .json({ success: true, message: "Pin Setup Successful" });
 });

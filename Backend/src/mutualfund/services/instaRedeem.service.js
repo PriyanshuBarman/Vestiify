@@ -34,7 +34,7 @@ export const instantRedemption = async (fund, amount) => {
       updatedValues,
       tx
     );
-
+    
     const order = await orderRepo.create(
       {
         userId,
@@ -51,18 +51,18 @@ export const instantRedemption = async (fund, amount) => {
       tx
     );
 
+    const updatedBalance = await userRepo.creditBalance(userId, amount, tx);
     await tnxRepo.create(
       {
         userId,
         amount,
-        mfOrderId: order.id,
-        tnxType: "CREDIT",
-        updatedBalance: balance + amount,
+        assetCategory: "MUTUAL_FUND",
+        assetOrderId: order.id,
+        type: "CREDIT",
+        updatedBalance,
       },
       tx
     );
-
-    await userRepo.creditBalance(userId, amount, tx);
   });
 };
 

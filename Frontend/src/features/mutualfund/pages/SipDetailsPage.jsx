@@ -30,8 +30,7 @@ function SipDetailsPage() {
   const sipDetail = data?.sip || {};
   const installments = data?.installments || [];
 
-  if (isPending) return <LoadingSkeleton />;
-  if (!data) return null;
+  if (isPending) return <LoadingSkeleton fullPage />;
 
   return (
     <div className="md:w-[50%]">

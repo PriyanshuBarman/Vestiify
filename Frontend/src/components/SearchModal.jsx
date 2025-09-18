@@ -6,7 +6,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useGetSearchResults } from "@/features/search/hooks/queries/useGetSearchResults";
 import { useDebounce } from "@/hooks/useDebounce";
-import { Loader2Icon, Search } from "lucide-react";
+import { Loader2Icon, SearchIcon } from "lucide-react";
 import { useState } from "react";
 
 export function SearchModal({ isOpen, onClose, onSelectFund }) {
@@ -21,8 +21,8 @@ export function SearchModal({ isOpen, onClose, onSelectFund }) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="fixed top-6 flex -translate-y-0 flex-col rounded-[1.25rem] p-2 sm:!max-w-[640px] [&>button:last-child]:hidden">
         <DialogHeader>
-          <div className="relative">
-            <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2 sm:size-6" />
+          <div className="SearchBar relative">
+            <SearchIcon className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2 sm:size-6" />
             <Input
               type="text"
               placeholder="Search Fund"

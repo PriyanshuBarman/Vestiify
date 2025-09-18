@@ -27,7 +27,6 @@ export const useMakeInvestment = () => {
         },
         replace: true,
       });
-      toast.success(data.message);
       queryClient.invalidateQueries({ queryKey: ["balance"] });
       queryClient.invalidateQueries({ queryKey: ["orders"] });
     },

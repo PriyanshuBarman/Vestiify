@@ -10,7 +10,7 @@ export function formatToINR(num, maxFracDigits = 0) {
   const formatted = new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
-    maximumFractionDigits: maxFracDigits,
+    // maximumFractionDigits: maxFracDigits,
   }).format(number);
 
   return formatted;

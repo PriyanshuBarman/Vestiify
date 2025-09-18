@@ -77,8 +77,9 @@ export const placeSipInstallmentOrder = async (data) => {
       {
         userId,
         amount,
-        mfOrderId: order.id,
-        tnxType: "DEBIT",
+        assetCategory: "MUTUAL_FUND",
+        assetOrderId: order.id,
+        type: "DEBIT",
         updatedBalance,
       },
       tx

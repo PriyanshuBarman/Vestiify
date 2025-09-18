@@ -21,7 +21,6 @@ export default function PinSetupPage() {
     mutationFn: (pin) => createPin(pin),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user"] });
-      toast.success("PIN has been set successfully!");
       navigate("/auth/avatar-setup");
     },
     onError: (error) => {

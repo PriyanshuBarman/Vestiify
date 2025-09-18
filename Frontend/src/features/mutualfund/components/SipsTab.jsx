@@ -13,11 +13,16 @@ import CardSM from "./CardSM";
 import FundLogo from "./FundLogo";
 import SectionHeading from "./SectionHeading";
 import { Link } from "react-router";
+import LoadingState from "@/components/LoadingState";
 
 function SipsTab() {
   const { data } = useGetSips();
-  const { data: funds } = useGetFundsByFilter({ sip_min: 100 }, 6);
+  const { data: funds, isPending } = useGetFundsByFilter({ sip_min: 100 }, 6);
   const isMobile = useIsMobile();
+
+  if (isPending) {
+    return <LoadingState />;
+  }
 
   if (!data) {
     return (

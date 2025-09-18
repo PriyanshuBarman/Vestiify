@@ -8,7 +8,7 @@ export const verifyPin = async (req, res, next) => {
     const { userId } = req.user;
 
     if (!pin) {
-      throw new ApiError(400, "Pin is required");
+      throw new ApiError(400, "pin is required");
     }
 
     const user = await userRepo.findUnique(
@@ -16,7 +16,11 @@ export const verifyPin = async (req, res, next) => {
       { select: { pin: true } }
     );
 
-    const isMatched = await bcrypt.compare(pin, user.pin);
+    if (!user.pin) {
+      throw new ApiError(400, "Please Setup Your Pin First");
+    }
+
+    const isMatched = await bcrypt.compare(pin.toString(), user.pin);
 
     if (!isMatched) {
       throw new ApiError(400, "Invalid Pin");

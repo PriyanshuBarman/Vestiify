@@ -14,7 +14,6 @@ function ProtectedRoutes({ children }) {
     toast.error("Please Login");
     return <Navigate to="/auth/login" />;
   } else if (!data.pin) {
-    toast.error("Please Setup your pin");
     return <Navigate to="/auth/pin-setup" />;
   } else {
     return children;

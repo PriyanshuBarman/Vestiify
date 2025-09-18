@@ -6,6 +6,7 @@ export const useGetBalance = () => {
   return useQuery({
     queryKey: ["balance"],
     queryFn: fetchBalance,
+    staleTime: 0,
   });
 };
 

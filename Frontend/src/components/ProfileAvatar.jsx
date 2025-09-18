@@ -8,11 +8,7 @@ function ProfileAvatar() {
   return (
     <div className="relative flex items-center justify-center">
       <Avatar className="size-20">
-        <AvatarImage
-          referrerPolicy="no-referrer"
-          src={user.avatar}
-          alt="User Profile Picture"
-        />
+        <AvatarImage src={user.avatar} alt="User Profile Picture" />
         <AvatarFallback className="text-3xl font-semibold text-shadow-lg">
           {user.name?.charAt(0).toUpperCase()}
         </AvatarFallback>
@@ -31,8 +27,9 @@ function ProfileAvatar() {
         </defs>
         <text fill="currentColor">
           <textPath href="#circlePath" startOffset="50%" textAnchor="middle">
-            • Growing Since {formatDate(user.createdAt, "MMM yy")} • Growing
-            Since {formatDate(user.createdAt, "MMM yy")}
+            • Growing Since{" "}
+            {user.createdAt && formatDate(user.createdAt, "MMM yy")} • Growing
+            Since {user.createdAt && formatDate(user.createdAt, "MMM yy")}
           </textPath>
         </text>
       </svg>

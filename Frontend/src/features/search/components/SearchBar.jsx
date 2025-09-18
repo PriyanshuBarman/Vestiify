@@ -5,7 +5,14 @@ import { setIsSearchOpen } from "@/store/slices/searchSlice";
 
 // Only used in DesktopSearch
 
-function SearchBar({displayQuery,onChange,isLoading,setQuery,setDisplayQuery,searchBarRef}) {
+function SearchBar({
+  displayQuery,
+  onChange,
+  isLoading,
+  setQuery,
+  setDisplayQuery,
+  searchBarRef,
+}) {
   const { isSearchOpen } = useSelector((state) => state.search);
   const dispatch = useDispatch();
 

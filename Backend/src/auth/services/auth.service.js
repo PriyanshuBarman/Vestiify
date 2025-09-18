@@ -4,6 +4,7 @@ import { ApiError } from "../../shared/utils/apiError.utils.js";
 import { userRepo } from "../../shared/repositories/index.repository.js";
 import { JWT_SECRET } from "../../../config/env.config.js";
 import { TOKEN_EXPIRY } from "../constants/auth.constants.js";
+import crypto from "crypto";
 
 export const signupUser = async (name, email, password) => {
   const existingUser = await userRepo.findUnique({ email });
@@ -11,13 +12,16 @@ export const signupUser = async (name, email, password) => {
   if (existingUser) throw new ApiError(400, "User Already Exists");
 
   const hashPassword = await bcrypt.hash(password, 10);
-  const newUser = await userRepo.create({
+  const username = await generateUniqueUsername(name);
+
+  const user = await userRepo.create({
     name,
     email,
     password: hashPassword,
+    username,
   });
 
-  const token = jwt.sign({ id: newUser.id }, JWT_SECRET, {
+  const token = jwt.sign({ id: user.id }, JWT_SECRET, {
     expiresIn: TOKEN_EXPIRY,
   });
 
@@ -50,3 +54,40 @@ export const setPin = async (userId, pin) => {
     { pin: hashPin }
   );
 };
+
+export async function generateUniqueUsername(fullName) {
+  const base = fullName.toLowerCase().replace(/\s+/g, "");
+  let username = base;
+
+  // First check if base username is available
+  const exists = await userRepo.findUnique({ username });
+  if (!exists) return username;
+
+  // Keep generating until we find a available username
+  while (true) {
+    // Generate 5 random candidates/usernames in a batch
+    const candidates = Array.from(
+      { length: 5 },
+      () => base + crypto.randomInt(1, 1000) // 4-digit random
+    );
+
+    // Fetch all usernames that already exist from this batch
+    const taken = await userRepo.findMany(
+      {
+        username: { in: candidates },
+      },
+      { select: { username: true } }
+    );
+
+    // Find the first candidate not taken
+    const available = candidates.find(
+      (u) => !taken.some((t) => t.username === u)
+    );
+
+    if (available) {
+      return available;
+    }
+
+    // If all taken, loop again and try another batch
+  }
+}

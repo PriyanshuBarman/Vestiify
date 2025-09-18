@@ -1,14 +1,11 @@
-import GoBackBar from "@/components/GoBackBar";
 import ProfileAvatar from "@/components/ProfileAvatar";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { useGetUserData } from "@/hooks/queries/internalQueries";
+import { formatToINR } from "@/features/mutualfund/utils/formaters";
+import { useGetBalance, useGetUserData } from "@/hooks/queries/internalQueries";
 import { selectTheme, setTheme } from "@/store/slices/themeSlice";
 import {
   ArrowLeftIcon,
   ArrowLeftRightIcon,
-  LogOut,
   LogsIcon,
   MoonIcon,
   Settings,
@@ -16,7 +13,6 @@ import {
   SunIcon,
   UserIcon,
   WalletIcon,
-  WalletMinimalIcon,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
@@ -33,6 +29,7 @@ function ProfilePage() {
   const dispatch = useDispatch();
 
   const { data: user = {} } = useGetUserData();
+  const { data: balance } = useGetBalance();
 
   return (
     <div className="h-dvh sm:min-w-md sm:rounded-l-2xl sm:pl-6">
@@ -60,7 +57,7 @@ function ProfilePage() {
           <div className="flex">
             <div className="flex">
               <WalletIcon className="text-muted-foreground" />
-              <span className="ml-4">Balance : ₹ {user.balance}</span>
+              <span className="ml-4">Balance : {formatToINR(balance, 2)}</span>
             </div>
           </div>
 
@@ -74,10 +71,10 @@ function ProfilePage() {
             <span className="ml-4">Account Details</span>
           </div>
 
-          <div className="flex">
+          <Link to="/upi/transactions" className="flex">
             <ArrowLeftRightIcon className="text-muted-foreground" />
             <span className="ml-4">Transactions</span>
-          </div>
+          </Link>
 
           <div className="flex">
             <Settings className="text-muted-foreground" />

@@ -16,6 +16,7 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 1000 * 60 * 60 * 6,
       gcTime: 1000 * 60 * 60 * 6,
+      retry: false,
     },
   },
 });
@@ -34,7 +35,7 @@ createRoot(document.getElementById("root")).render(
         >
           <ThemeProvider>
             <App />
-            <ReactQueryDevtools />
+            <ReactQueryDevtools buttonPosition="bottom-left" />
           </ThemeProvider>
         </PersistQueryClientProvider>
       </PersistGate>

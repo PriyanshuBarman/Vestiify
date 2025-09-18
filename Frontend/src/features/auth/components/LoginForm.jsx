@@ -16,7 +16,7 @@ export function LoginForm({ className, ...props }) {
 
   useEffect(() => {
     if (!data) return;
-    if (data?.success) navigate("/mutual-funds#explore");
+    if (data?.success) navigate("/mutual-funds#explore", { replace: true });
     toast[data?.success ? "success" : "error"](data?.message);
   }, [data]);
 

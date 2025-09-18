@@ -9,26 +9,27 @@ datasource db {
 }
 
 model User {
-  id                String             @id @default(uuid())
-  name              String
-  email             String             @unique
-  password          String?
-  pin               String?
-  isAdmin           Boolean            @default(false)
-  avatar            String?
-  balance           Decimal            @default(1000.00) @db.Decimal(10, 2)
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
-  transactions      Transaction[]
+  id             String    @id @default(uuid())
+  name           String
+  email          String    @unique
+  password       String?
+  username       String?   @unique
+  pin            String?
+  isAdmin        Boolean   @default(false)
+  avatar         String?
+  balance        Decimal   @default(0) @db.Decimal(10, 2)
+  lastRewardedAt DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
   mfPortfolio       MfPortfolio[]
   mfHolding         MfHolding[]
-  stockPortfolio    StockPortfolio[]
-  stockHoldings     StockHolding[]
   mfWatchlist       MfWatchlist[]
-  stockWatchlist    StockWatchlist[]
   mfOrders          MfOrder[]
   mfSips            MfSip[]
   pendingSipChanges PendingSipChange[]
+  transactions      Transaction[]      @relation("UserTransactions")
+  peerTransactions  Transaction[]      @relation("PeerTransactions")
 
   @@map("user")
 }
@@ -37,29 +38,37 @@ model User {
 model Transaction {
   id             String          @id @default(uuid())
   amount         Decimal         @db.Decimal(15, 2)
-  tnxType        TransactionType
-  method         TnxMethod       @default(REGULAR)
+  note           String?
+  type           TransactionType
   updatedBalance Decimal         @db.Decimal(15, 2)
   createdAt      DateTime        @default(now())
 
-  // relations
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  mfOrderId String?
-  mfOrder   MfOrder? @relation(fields: [mfOrderId], references: [id])
+  // Wallet owner
+  userId String
+  user   User   @relation("UserTransactions", fields: [userId], references: [id], onDelete: Restrict)
+
+  // For Peer-to-peer transactions
+  peerUserId String?
+  peerUser   User?   @relation("PeerTransactions", fields: [peerUserId], references: [id], onDelete: Restrict)
+
+  // For Asset-based transactions
+  assetCategory AssetCategory?
+  // assetId       String? // e.g. fund code, stock symbol, etc.
+  assetOrderId  String?
+  assetOrder    MfOrder?       @relation(fields: [assetOrderId], references: [id], onDelete: Restrict)
 
   @@map("transaction")
-}
-
-enum TnxMethod {
-  REGULAR
-  SIP
-  SWP
 }
 
 enum TransactionType {
   CREDIT
   DEBIT
+}
+
+enum AssetCategory {
+  MUTUAL_FUND
+  GOLD
+  STOCK
 }
 
 // =============================================== MUTUAL FUND ==============================================
@@ -73,7 +82,7 @@ model MfOrder {
   fundType        FundType
   orderType       OrderType
   status          Status    @default(PENDING)
-  amount          Decimal?  @db.Decimal(10, 2)
+  amount          Decimal?  @db.Decimal(15, 2)
   units           Decimal?  @db.Decimal(36, 18)
   method          TnxMethod @default(REGULAR)
   sipId           String?
@@ -89,6 +98,12 @@ model MfOrder {
   Transaction Transaction[]
 
   @@map("mf_order")
+}
+
+enum TnxMethod {
+  REGULAR
+  SIP
+  SWP
 }
 
 enum Status {
@@ -145,7 +160,7 @@ model MfHolding {
   schemeCode Int
   nav        Decimal  @db.Decimal(10, 4) // purchase/redeem nav
   units      Decimal  @db.Decimal(36, 18) // purchase/redeem units
-  amount     Decimal  @db.Decimal(10, 2)
+  amount     Decimal  @db.Decimal(15, 2)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
@@ -167,7 +182,7 @@ model MfSip {
   fundCategory        String
   fundType            FundType
   schemeCode          Int
-  amount              Int
+  amount              Decimal  @db.Decimal(15, 2)
   fundHouseDomain     String
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
@@ -188,7 +203,7 @@ enum SipStatus {
 
 model PendingSipChange {
   id                  String    @id @default(uuid())
-  amount              Int? // future amount
+  amount              Decimal?  @db.Decimal(15, 2) // future amount
   sipDate             Int?
   nextInstallmentDate DateTime? @db.Date
   applyDate           DateTime  @db.Date // when these changes should be applied
@@ -217,59 +232,3 @@ model MfWatchlist {
   @@unique([userId, schemeCode])
   @@map("mf_watchlist")
 }
-
-// ===============================================// MUTUAL FUND ==============================================
-
-// =============================================== STOCK ==============================================
-
-// ======== StockPortfolio =======
-model StockPortfolio {
-  id            String   @id @default(uuid())
-  userId        String
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  symbol        String
-  stockName     String
-  quantity      Int
-  latestPrice   Decimal? @db.Decimal(10, 2)
-  invested      Decimal  @db.Decimal(10, 2)
-  current       Decimal  @db.Decimal(10, 2)
-  pnl           Decimal  @default(0.00) @db.Decimal(10, 2)
-  returnPercent Decimal  @default(0.00) @db.Decimal(8, 2)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  @@unique([userId, symbol])
-  @@map("stock_portfolio")
-}
-
-// ======== StockHolding =======
-model StockHolding {
-  id           String   @id @default(uuid())
-  userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  symbol       String
-  stockName    String
-  amount       Int
-  quantity     Int      @default(0)
-  price        Decimal  @db.Decimal(10, 2)
-  purchaseDate DateTime @default(now())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  @@map("stock_holding")
-}
-
-// ======== StockWatchlist =======
-model StockWatchlist {
-  id        String   @id @default(uuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  symbol    String
-  stockName String
-  createdAt DateTime @default(now())
-
-  @@unique([userId, symbol])
-  @@map("stock_watchlist")
-}
-
-// ===============================================// STOCK ==============================================

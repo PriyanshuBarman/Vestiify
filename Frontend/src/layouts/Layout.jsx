@@ -1,15 +1,49 @@
-import { Outlet } from "react-router";
+import ReusableDialog from "@/components/ResueableDialog";
+import { useClaimDailyReward } from "@/hooks/mutations/mutation";
+import { isToday } from "date-fns";
+import { useEffect, useState } from "react";
+import { Outlet, useNavigate } from "react-router";
 import BottomNavbar from "./BottomNavbar";
 import Navbar from "./Navbar";
 import ScrollToTop from "./ScrollToTop";
 
 function Layout() {
+  const navigate = useNavigate();
+  const { mutate, data, isSuccess, error } = useClaimDailyReward();
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  useEffect(() => {
+    const lastRewardedAt = localStorage.getItem("lastRewardedAt");
+    if (!isToday(new Date(lastRewardedAt))) {
+      console.log("called");
+      mutate();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isSuccess) {
+      setDialogOpen(true);
+    }
+  }, [isSuccess]);
+
   return (
     <>
       <Navbar />
       <Outlet />
       <ScrollToTop />
       <BottomNavbar />
+      <ReusableDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        title="₹1000 Added!"
+        description="Your daily reward has been credited. Note: visit everyday to get 1000 reward daily"
+        icon={<img src="/Piggy bank-amico.svg" className="size-50" />}
+        // icon={<img src="/Savings-bro.svg" className="size-60" />}
+        // icon={<img src="/Piggy bank-bro.svg" className="size-60" />}
+        onConfirm={() => navigate("/comming-soon")}
+        confirmButtonText="Check Balance"
+        // dialogOnly
+      />
     </>
   );
 }

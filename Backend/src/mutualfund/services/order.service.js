@@ -59,8 +59,9 @@ export const placeInvestmentOrder = async ({
       {
         userId,
         amount,
-        mfOrderId: order.id,
-        tnxType: "DEBIT",
+        assetCategory: "MUTUAL_FUND",
+        assetOrderId: order.id,
+        type: "DEBIT",
         updatedBalance,
       },
       tx

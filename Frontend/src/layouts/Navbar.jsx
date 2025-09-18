@@ -14,6 +14,7 @@ const DesktopSearch = lazy(() => import("../features/search/DesktopSearch"));
 const allowedRoutes = new Set([
   "/mutual-funds",
   "/mutual-funds/",
+  "/upi",
   "/stocks",
   "/gold",
 ]);
@@ -55,14 +56,7 @@ function Navbar() {
         {!isMobile && <ModeToggle />}
 
         {isMobile ? (
-          <Avatar
-            onClick={() =>
-              navigate("/profile", {
-                replace: true,
-              })
-            }
-            className="size-8.5"
-          >
+          <Avatar onClick={() => navigate("/profile")} className="size-8.5">
             <AvatarImage
               referrerPolicy="no-referrer"
               src={user?.avatar}
@@ -104,6 +98,14 @@ function NavLinks() {
       >
         Stocks
       </NavLink> */}
+      <NavLink
+        to="/upi"
+        className={({ isActive }) =>
+          `${isActive ? "sm:text-foreground" : "text-muted-foreground hidden sm:inline-block"} shrink-0 rounded-md p-2 font-semibold`
+        }
+      >
+        UPI
+      </NavLink>
 
       <NavLink
         to="/mutual-funds#explore"

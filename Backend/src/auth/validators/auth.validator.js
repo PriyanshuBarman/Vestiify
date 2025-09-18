@@ -28,8 +28,6 @@ export const loginValidator = (req, res, next) => {
 
   if (!email) throw new ApiError(400, "Email required");
   if (!password) throw new ApiError(400, "Password required");
-  if (password.includes(" "))
-    throw new ApiError(400, "Password should not contain spaces");
 
   req.body.email = email;
   req.body.password = password;
