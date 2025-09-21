@@ -1,6 +1,7 @@
 import { formatDate } from "date-fns";
 import { db } from "../../../config/db.config.js";
 import {
+  profileRepo,
   tnxRepo,
   userRepo,
 } from "../../shared/repositories/index.repository.js";
@@ -15,9 +16,9 @@ export const sendMoney = async (userId, amount, note, receiverUsername) => {
     throw new ApiError(400, "Insufficient wallet balance");
   }
 
-  const { id: receiverId } = await userRepo.findUnique(
+  const { userId: receiverId } = await profileRepo.findUnique(
     { username: receiverUsername },
-    { select: { id: true } }
+    { select: { userId: true } }
   );
   if (!receiverId) {
     throw new ApiError(404, "Receiver not found");
@@ -64,8 +65,7 @@ export const fetchAllTnx = async (userId) => {
       include: {
         peerUser: {
           select: {
-            name: true,
-            avatar: true,
+            profile: true,
           },
         },
         assetOrder: true,

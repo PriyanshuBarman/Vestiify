@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 function PurchaseBtns({ fund, isPending }) {
   const navigate = useNavigate();
@@ -11,19 +11,20 @@ function PurchaseBtns({ fund, isPending }) {
         size="lg"
         disabled={isPending}
         onClick={() =>
-          navigate("/mutual-funds/invest/one-time", {
-            state: { schemeCode: fund.scheme_code },
+          navigate("/mutual-funds/invest", {
+            state: { orderType: "oneTime", schemeCode: fund.scheme_code },
           })
         }
       >
         ONE-TIME
       </Button>
+
       <Button
         size="lg"
         disabled={isPending}
         onClick={() =>
-          navigate(`/mutual-funds/invest/sip`, {
-            state: { schemeCode: fund.scheme_code },
+          navigate(`/mutual-funds/invest`, {
+            state: { orderType: "sip", schemeCode: fund.scheme_code },
           })
         }
         className="w-[42%]"

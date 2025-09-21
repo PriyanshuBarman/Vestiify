@@ -16,7 +16,7 @@ export const useGetUserData = () => {
     queryFn: fetchUserData,
 
     retry: false,
-    staleTime: Infinity,
+    staleTime: 0,
     gcTime: Infinity,
   });
 };

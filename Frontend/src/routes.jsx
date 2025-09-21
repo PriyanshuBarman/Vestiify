@@ -1,13 +1,13 @@
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
 import { createBrowserRouter, Navigate } from "react-router";
-import ProtectedRoutes from "./components/ProtectedRoutes";
+import AuthGuard from "./components/AuthGuard";
+import LoadingState from "./components/LoadingState";
 import { authRoutes } from "./features/auth/routes";
 import { mutualFundRoutes } from "./features/mutualfund/routes";
+import { walletRoutes } from "./features/wallet/routes";
 import Layout from "./layouts/Layout";
-import { upiRoutes } from "./features/upi/routes";
 
 const ComingSoonPage = lazy(() => import("./pages/ComingSoonPage"));
-const Home = lazy(() => import("./pages/HomePage"));
 const MobileSearchPage = lazy(
   () => import("./features/search/MobileSearchPage"),
 );
@@ -15,58 +15,64 @@ const AllOrdersPage = lazy(
   () => import("./features/mutualfund/pages/AllOrdersPage"),
 );
 const ProfilePage = lazy(() => import("./pages/ProfilePage"));
-const Upi = lazy(() => import("./components/Upi"));
 const PaymentSuccessPage = lazy(() => import("./pages/PaymentSuccessPage"));
 
 export const routes = createBrowserRouter([
   {
     path: "/",
     element: (
-      <ProtectedRoutes>
+      <AuthGuard>
         <Layout />
-      </ProtectedRoutes>
+      </AuthGuard>
     ),
     children: [
+      walletRoutes,
+      mutualFundRoutes,
       {
         index: true,
         element: <Navigate to="/mutual-funds#explore" replace />,
       },
-      upiRoutes,
-      mutualFundRoutes,
+      {
+        path: "/search",
+        element: (
+          <Suspense fallback={<LoadingState fullPage />}>
+            <MobileSearchPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/payment-success",
+        element: (
+          <Suspense fallback={<LoadingState fullPage />}>
+            <PaymentSuccessPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/orders",
+        element: (
+          <Suspense fallback={<LoadingState fullPage />}>
+            <AllOrdersPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/profile",
+        element: (
+          <Suspense fallback={<LoadingState fullPage />}>
+            <ProfilePage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/coming-soon",
+        element: (
+          <Suspense fallback={<LoadingState fullPage />}>
+            <ComingSoonPage />
+          </Suspense>
+        ),
+      },
     ],
   },
   authRoutes,
-  {
-    path: "/payment-success",
-    element: <PaymentSuccessPage />,
-  },
-  {
-    path: "/search",
-    element: (
-      <ProtectedRoutes>
-        <MobileSearchPage />
-      </ProtectedRoutes>
-    ),
-  },
-  {
-    path: "/orders",
-    element: (
-      <ProtectedRoutes>
-        <AllOrdersPage />
-      </ProtectedRoutes>
-    ),
-  },
-  {
-    path: "/profile",
-    element: (
-      <ProtectedRoutes>
-        <ProfilePage />
-      </ProtectedRoutes>
-    ),
-  },
-  {
-    path: "/pin",
-    element: <Upi />,
-  },
-  { path: "/coming-soon", element: <ComingSoonPage /> },
 ]);

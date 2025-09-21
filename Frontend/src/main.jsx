@@ -35,7 +35,7 @@ createRoot(document.getElementById("root")).render(
         >
           <ThemeProvider>
             <App />
-            <ReactQueryDevtools buttonPosition="bottom-left" />
+            <ReactQueryDevtools buttonPosition="top-left" />
           </ThemeProvider>
         </PersistQueryClientProvider>
       </PersistGate>

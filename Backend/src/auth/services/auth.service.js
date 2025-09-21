@@ -1,24 +1,32 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { ApiError } from "../../shared/utils/apiError.utils.js";
-import { userRepo } from "../../shared/repositories/index.repository.js";
+import {
+  profileRepo,
+  userRepo,
+} from "../../shared/repositories/index.repository.js";
 import { JWT_SECRET } from "../../../config/env.config.js";
 import { TOKEN_EXPIRY } from "../constants/auth.constants.js";
 import crypto from "crypto";
 
-export const signupUser = async (name, email, password) => {
+export const signupUser = async (fullName, email, password) => {
   const existingUser = await userRepo.findUnique({ email });
 
   if (existingUser) throw new ApiError(400, "User Already Exists");
 
   const hashPassword = await bcrypt.hash(password, 10);
-  const username = await generateUniqueUsername(name);
+  const username = await generateUniqueUsername(fullName);
 
   const user = await userRepo.create({
-    name,
     email,
     password: hashPassword,
-    username,
+
+    profile: {
+      create: {
+        fullName,
+        username,
+      },
+    },
   });
 
   const token = jwt.sign({ id: user.id }, JWT_SECRET, {
@@ -45,13 +53,13 @@ export const loginUser = async (email, password) => {
 };
 
 export const setPin = async (userId, pin) => {
-  const hashPin = await bcrypt.hash(pin, 10);
+  const hashPin = await bcrypt.hash(pin.toString(), 10);
 
   await userRepo.update(
     {
       id: userId,
     },
-    { pin: hashPin }
+    { pin: hashPin, hasPin: true }
   );
 };
 
@@ -60,7 +68,9 @@ export async function generateUniqueUsername(fullName) {
   let username = base;
 
   // First check if base username is available
-  const exists = await userRepo.findUnique({ username });
+  const exists = await profileRepo.findUnique({
+    username,
+  });
   if (!exists) return username;
 
   // Keep generating until we find a available username
@@ -72,7 +82,7 @@ export async function generateUniqueUsername(fullName) {
     );
 
     // Fetch all usernames that already exist from this batch
-    const taken = await userRepo.findMany(
+    const taken = await profileRepo.findMany(
       {
         username: { in: candidates },
       },

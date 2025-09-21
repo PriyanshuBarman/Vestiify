@@ -20,14 +20,14 @@ export const loginUser = async (previousState, formData) => {
 };
 
 export const signupUser = async (previousState, formData) => {
-  const name = formData.get("name");
+  const fullName = formData.get("fullName");
   const email = formData.get("email");
   const password = formData.get("password");
 
   try {
     const { data } = await axios.post(
       `${VITE_BACKEND_BASE_URL}/auth/signup`,
-      { name, email, password },
+      { fullName, email, password },
       { withCredentials: true },
     );
 
@@ -36,7 +36,7 @@ export const signupUser = async (previousState, formData) => {
     console.error(error);
     const message = error?.response?.data?.message || "Something went wrong.";
 
-    return { success: false, message, name, email, password };
+    return { success: false, message, fullName, email, password };
   }
 };
 

@@ -14,7 +14,7 @@ const DesktopSearch = lazy(() => import("../features/search/DesktopSearch"));
 const allowedRoutes = new Set([
   "/mutual-funds",
   "/mutual-funds/",
-  "/upi",
+  "/wallet",
   "/stocks",
   "/gold",
 ]);
@@ -59,11 +59,11 @@ function Navbar() {
           <Avatar onClick={() => navigate("/profile")} className="size-8.5">
             <AvatarImage
               referrerPolicy="no-referrer"
-              src={user?.avatar}
+              src={user?.profile?.avatar}
               alt="User Profile Picture"
             />
             <AvatarFallback>
-              {user?.name.charAt(0).toUpperCase()}
+              {user?.profile?.fullName.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
         ) : (
@@ -71,11 +71,11 @@ function Navbar() {
             <Avatar className="size-8.5">
               <AvatarImage
                 referrerPolicy="no-referrer"
-                src={user?.avatar}
+                src={user?.profile?.avatar}
                 alt="User Profile Picture"
               />
               <AvatarFallback>
-                {user?.name.charAt(0).toUpperCase()}
+                {user?.profile?.fullName.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
           </ProfileSheet>
@@ -98,14 +98,6 @@ function NavLinks() {
       >
         Stocks
       </NavLink> */}
-      <NavLink
-        to="/upi"
-        className={({ isActive }) =>
-          `${isActive ? "sm:text-foreground" : "text-muted-foreground hidden sm:inline-block"} shrink-0 rounded-md p-2 font-semibold`
-        }
-      >
-        UPI
-      </NavLink>
 
       <NavLink
         to="/mutual-funds#explore"
@@ -114,6 +106,14 @@ function NavLinks() {
         }
       >
         Mutual Funds
+      </NavLink>
+      <NavLink
+        to="/wallet"
+        className={({ isActive }) =>
+          `${isActive ? "sm:text-foreground" : "text-muted-foreground hidden sm:inline-block"} shrink-0 rounded-md p-2 font-semibold`
+        }
+      >
+        Wallet
       </NavLink>
     </div>
   );

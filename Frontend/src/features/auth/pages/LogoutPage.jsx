@@ -1,33 +1,29 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import { Navigate } from "react-router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { logoutUser } from "../services/services";
 
 function LogoutPage() {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [isLogoutSuccessful, setIsLogoutSuccessful] = useState(false);
 
-  const logout = async () => {
-    const data = await logoutUser();
-    if (data?.success) {
+  const { mutate: logout } = useMutation({
+    mutationFn: logoutUser,
+    onSuccess: () => {
       queryClient.clear();
       localStorage.clear();
-      toast.success(data.message);
-      setIsLogoutSuccessful(true);
-    } else {
-      toast.error(data?.message || "Something went wrong while logging out");
-    }
-  };
+      toast.success("Logged out successfully");
+      navigate("/auth/login", { replace: true });
+    },
+    onError: (error) => {
+      toast.error(error?.response?.data?.message || "Something went wrong");
+    },
+  });
 
   useEffect(() => {
     logout();
-  }, []);
-
-  // Navigate after successful logout
-  if (isLogoutSuccessful) {
-    return <Navigate to="/auth/login" replace />;
-  }
+  }, [logout]);
 
   return (
     <div className="fixed inset-0 grid place-items-center">Logging out...</div>

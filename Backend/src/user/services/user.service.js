@@ -1,23 +1,21 @@
-import { ApiError } from "../../shared/utils/apiError.utils.js";
+import { tz, TZDate } from "@date-fns/tz";
+import { isToday } from "date-fns";
+import { db } from "../../../config/db.config.js";
 import {
   tnxRepo,
   userRepo,
 } from "../../shared/repositories/index.repository.js";
-import { isBefore, isToday } from "date-fns";
-import { tz, TZDate } from "@date-fns/tz";
-import { db } from "../../../config/db.config.js";
+import { ApiError } from "../../shared/utils/apiError.utils.js";
 
-export const fetchUser = async (userId) => {
+export const getMe = async (userId) => {
   const user = await userRepo.findUnique(
     { id: userId },
     {
       select: {
-        name: true,
         email: true,
-        avatar: true,
-        balance: true,
-        pin: true,
+        hasPin: true,
         createdAt: true,
+        profile: true,
       },
     }
   );
@@ -67,21 +65,4 @@ export const dailyReward = async (userId) => {
   });
 
   return updatedBalance.toNumber();
-};
-
-export const search = async (query, limit) => {
-  return await userRepo.findMany(
-    {
-      OR: [{ name: { contains: query } }, { username: { contains: query } }],
-    },
-    {
-      select: {
-        name: true,
-        username: true,
-        avatar: true,
-      },
-
-      take: parseInt(limit),
-    }
-  );
 };

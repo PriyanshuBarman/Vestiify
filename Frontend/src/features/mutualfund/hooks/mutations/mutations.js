@@ -8,6 +8,7 @@ import {
   startSip,
 } from "../../services/internalServices";
 import { toast } from "sonner";
+import { formatToINR } from "../../utils/formaters";
 
 export const useMakeInvestment = () => {
   const navigate = useNavigate();
@@ -18,28 +19,22 @@ export const useMakeInvestment = () => {
 
     onSuccess: (data, variables) => {
       const { amount, fund } = variables;
-      navigate("/mutual-funds/payment-success", {
+      navigate("/payment-success", {
         state: {
           amount,
-          fundName: fund.name,
-          orderType: "Investment",
+          title: "Order Placed",
+          description: `Investment of ${formatToINR(amount)} in ${fund.short_name}.`,
           orderDetailsRoute: "/mutual-funds/#investments",
         },
         replace: true,
       });
+
       queryClient.invalidateQueries({ queryKey: ["balance"] });
       queryClient.invalidateQueries({ queryKey: ["orders"] });
     },
 
     onError: (error) => {
-      toast.error(error.response?.data?.message || "Something went wrong", {
-        className:
-          "!bg-white !border-none !text-black dark:!bg-white dark:!text-black",
-        iconTheme: {
-          primary: "#000",
-          secondary: "#fff",
-        },
-      });
+      toast.error(error.response?.data?.message || "Something went wrong");
     },
   });
 };
@@ -55,11 +50,11 @@ export const useStartSip = () => {
     onSuccess: (data, variables) => {
       const { amount, fund } = variables;
       toast.success(data.message);
-      navigate("/mutual-funds/payment-success", {
+      navigate("/payment-success", {
         state: {
           amount,
-          fundName: fund.name,
-          orderType: "SIP",
+          title: "SIP Order Placed",
+          description: `SIP of ${formatToINR(amount)} in ${fund.short_name}.`,
           orderDetailsRoute: "/mutual-funds/#sips",
         },
         replace: true,
@@ -71,14 +66,7 @@ export const useStartSip = () => {
     },
 
     onError: (error) => {
-      toast.error(error.response?.data?.message || "Something went wrong", {
-        className:
-          "!bg-white !border-none !text-black dark:!bg-white dark:!text-black",
-        iconTheme: {
-          primary: "#000",
-          secondary: "#fff",
-        },
-      });
+      toast.error(error.response?.data?.message || "Something went wrong");
     },
   });
 };

@@ -1,19 +1,19 @@
 import { ApiError } from "../../shared/utils/apiError.utils.js";
 
 export const signupValidator = (req, res, next) => {
-  let { name, email, password } = req.body;
+  let { fullName, email, password } = req.body;
 
-  name = name?.trim();
+  fullName = fullName?.trim();
   email = email?.trim().toLowerCase();
 
-  if (!name) throw new ApiError(400, "Name required");
-  if (!email) throw new ApiError(400, "Email required");
-  if (!password) throw new ApiError(400, "Password required");
+  if (!fullName) throw new ApiError(400, "fullName is required");
+  if (!email) throw new ApiError(400, "email is required");
+  if (!password) throw new ApiError(400, "password is required");
 
   if (password.includes(" "))
-    throw new ApiError(400, "Password should not contain spaces");
+    throw new ApiError(400, "password should not contain spaces");
 
-  req.body.name = name;
+  req.body.fullName = fullName;
   req.body.email = email;
   req.body.password = password;
 
@@ -26,8 +26,8 @@ export const loginValidator = (req, res, next) => {
   email = email?.trim();
   email = email?.trim().toLowerCase();
 
-  if (!email) throw new ApiError(400, "Email required");
-  if (!password) throw new ApiError(400, "Password required");
+  if (!email) throw new ApiError(400, "email is required");
+  if (!password) throw new ApiError(400, "password is required");
 
   req.body.email = email;
   req.body.password = password;

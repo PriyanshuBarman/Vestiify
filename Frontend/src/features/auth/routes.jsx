@@ -1,7 +1,7 @@
-import PrivateRoutes from "@/components/PrivateRoutes";
-import ProtectedRoutes from "@/components/ProtectedRoutes";
-import { lazy } from "react";
-const AuthLayout = lazy(() => import("./AuthLayout"));
+import AuthGuard from "@/components/AuthGuard";
+import LoadingState from "@/components/LoadingState";
+import { lazy, Suspense } from "react";
+
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const LogoutPage = lazy(() => import("./pages/LogoutPage"));
 const SignupPage = lazy(() => import("./pages/SignupPage"));
@@ -10,42 +10,55 @@ const AvatarSetUpPage = lazy(() => import("./pages/AvatarSetUpPage"));
 
 export const authRoutes = {
   path: "/auth",
-  element: <AuthLayout />,
   children: [
     {
       path: "login",
       element: (
-        <PrivateRoutes>
-          <LoginPage />
-        </PrivateRoutes>
+        <Suspense fallback={<LoadingState fullPage />}>
+          <AuthGuard mode="private">
+            <LoginPage />
+          </AuthGuard>
+        </Suspense>
       ),
     },
     {
       path: "signup",
       element: (
-        <PrivateRoutes>
-          <SignupPage />
-        </PrivateRoutes>
+        <Suspense fallback={<LoadingState fullPage />}>
+          <AuthGuard mode="private">
+            <SignupPage />
+          </AuthGuard>
+        </Suspense>
       ),
     },
     {
       path: "logout",
       element: (
-        <ProtectedRoutes>
-          <LogoutPage />
-        </ProtectedRoutes>
+        <Suspense fallback={<LoadingState fullPage />}>
+          <AuthGuard>
+            <LogoutPage />
+          </AuthGuard>
+        </Suspense>
       ),
     },
     {
       path: "pin-setup",
-      element: <PinSetupPage />,
+      element: (
+        <Suspense fallback={<LoadingState fullPage />}>
+          <AuthGuard mode="private">
+            <PinSetupPage />
+          </AuthGuard>
+        </Suspense>
+      ),
     },
     {
       path: "avatar-setup",
       element: (
-        <ProtectedRoutes>
-          <AvatarSetUpPage />
-        </ProtectedRoutes>
+        <Suspense fallback={<LoadingState fullPage />}>
+          <AuthGuard>
+            <AvatarSetUpPage />
+          </AuthGuard>
+        </Suspense>
       ),
     },
   ],

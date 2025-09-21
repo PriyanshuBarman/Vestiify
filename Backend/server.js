@@ -8,7 +8,7 @@ import { mutualFundRoutes } from "./src/mutualfund/routes/index.routes.js";
 import { errorHandler } from "./src/shared/middlewares/error.middleware.js";
 import { notFoundHandler } from "./src/shared/middlewares/notFound.middleware.js";
 import { upiRoutes } from "./src/upi/routes/upi.routes.js";
-import { userRoutes } from "./src/user/routes/user.routes.js";
+import userRoutes from "./src/user/routes/index.routes.js";
 
 const app = express();
 
@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/upi", upiRoutes);
 app.use("/api/v1/mutual-funds", mutualFundRoutes);
 

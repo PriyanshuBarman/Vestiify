@@ -1,5 +1,4 @@
 import { claimDailyReward } from "@/services/userService";
-import { TZDate } from "@date-fns/tz";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { formatDate } from "date-fns";
 

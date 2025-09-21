@@ -1,14 +1,13 @@
+import GoBackBar from "@/components/GoBackBar";
 import { Button } from "@/components/ui/button";
 import { CheckIcon } from "lucide-react";
 import { Link, useLocation } from "react-router";
-import GoBackBar from "@/components/GoBackBar";
 
 function PaymentSuccessPage() {
-  const { amount, title, description, orderDetailsRoute } =
-    useLocation().state ?? {};
+  const { title, description, orderDetailsRoute } = useLocation().state ?? {};
 
   return (
-    <div className="h-dvh md:mx-auto md:w-sm">
+    <div className="flex h-dvh flex-col sm:mx-auto sm:w-sm">
       <GoBackBar />
       <div className="mt-20 flex flex-col items-center justify-center gap-8">
         <div className="bg-primary animate-in zoom-in ring-primary/50 w-fit rounded-full ring-6 duration-500">
@@ -23,7 +22,7 @@ function PaymentSuccessPage() {
         </div>
       </div>
 
-      <div className="fixed bottom-0 flex w-full flex-col items-center justify-end gap-4 pb-10 md:h-1/4">
+      <div className="animate-in fade-in mt-auto flex w-full flex-col items-center justify-end gap-4 pb-10 duration-1000 sm:mt-16">
         <Button
           asChild
           size="lg"

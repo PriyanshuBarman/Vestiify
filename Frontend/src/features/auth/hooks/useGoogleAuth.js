@@ -1,3 +1,4 @@
+import { useState } from "react";
 import axios from "axios";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router";
@@ -6,17 +7,26 @@ import { VITE_BACKEND_BASE_URL } from "@/config/env";
 
 export const useGoogleAuth = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const fnc = useGoogleLogin({
     onSuccess: async ({ code }) => {
-      const { data } = await axios.post(
-        `${VITE_BACKEND_BASE_URL}/auth/google`,
-        { code },
-        { withCredentials: true },
-      );
-      if (data.success) {
-        navigate("/mutual-funds");
-        toast.success(data.message);
+      try {
+        setIsLoading(true);
+        const { data } = await axios.post(
+          `${VITE_BACKEND_BASE_URL}/auth/google`,
+          { code },
+          { withCredentials: true },
+        );
+        if (data.success) {
+          navigate("/mutual-funds");
+          toast.success(data.message);
+        }
+      } catch (err) {
+        console.error("Login error:", err);
+        toast.error("Something went wrong.");
+      } finally {
+        setIsLoading(false);
       }
     },
     onError: (errorResponse) => {
@@ -26,5 +36,5 @@ export const useGoogleAuth = () => {
     flow: "auth-code",
   });
 
-  return fnc;
+  return { googleLogin: fnc, isLoading };
 };

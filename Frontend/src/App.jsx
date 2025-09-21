@@ -3,13 +3,12 @@ import { TZDate } from "@date-fns/tz";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useQueryClient } from "@tanstack/react-query";
 import { getDate } from "date-fns";
-import { Suspense, useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RouterProvider } from "react-router";
 import { Toaster } from "sonner";
 import { routes } from "./routes";
 import { selectTheme } from "./store/slices/themeSlice";
-import LoadingState from "./components/LoadingState";
 
 function App() {
   const queryClient = useQueryClient();
@@ -31,9 +30,7 @@ function App() {
 
   return (
     <GoogleOAuthProvider clientId={VITE_GOOGLE_CLIENT_ID}>
-      <Suspense fallback={<LoadingState fullPage />}>
-        <RouterProvider router={routes} />
-      </Suspense>
+      <RouterProvider router={routes} />
       <Toaster theme={theme} position="top-right" richColors />
     </GoogleOAuthProvider>
   );

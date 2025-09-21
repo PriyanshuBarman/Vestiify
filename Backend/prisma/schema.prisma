@@ -10,18 +10,18 @@ datasource db {
 
 model User {
   id             String    @id @default(uuid())
-  name           String
   email          String    @unique
   password       String?
-  username       String?   @unique
   pin            String?
-  isAdmin        Boolean   @default(false)
-  avatar         String?
-  balance        Decimal   @default(0) @db.Decimal(10, 2)
+  hasPin         Boolean   @default(false)
+  role           Role      @default(USER)
+  balance        Decimal   @default(0) @db.Decimal(18, 2)
   lastRewardedAt DateTime?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profile           Profile?
   mfPortfolio       MfPortfolio[]
   mfHolding         MfHolding[]
   mfWatchlist       MfWatchlist[]
@@ -34,28 +34,48 @@ model User {
   @@map("user")
 }
 
+enum Role {
+  ADMIN
+  USER
+}
+
+model Profile {
+  id       String  @id @default(uuid())
+  fullName String
+  username String  @unique
+  avatar   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+
+  @@map("profile")
+}
+
 // ======== Transaction =======
 model Transaction {
   id             String          @id @default(uuid())
-  amount         Decimal         @db.Decimal(15, 2)
+  amount         Decimal         @db.Decimal(18, 2)
   note           String?
   type           TransactionType
-  updatedBalance Decimal         @db.Decimal(15, 2)
+  updatedBalance Decimal         @db.Decimal(18, 2)
   createdAt      DateTime        @default(now())
 
   // Wallet owner
-  userId String
   user   User   @relation("UserTransactions", fields: [userId], references: [id], onDelete: Restrict)
+  userId String
 
   // For Peer-to-peer transactions
-  peerUserId String?
   peerUser   User?   @relation("PeerTransactions", fields: [peerUserId], references: [id], onDelete: Restrict)
+  peerUserId String?
 
   // For Asset-based transactions
   assetCategory AssetCategory?
   // assetId       String? // e.g. fund code, stock symbol, etc.
-  assetOrderId  String?
   assetOrder    MfOrder?       @relation(fields: [assetOrderId], references: [id], onDelete: Restrict)
+  assetOrderId  String?
 
   @@map("transaction")
 }
@@ -82,7 +102,7 @@ model MfOrder {
   fundType        FundType
   orderType       OrderType
   status          Status    @default(PENDING)
-  amount          Decimal?  @db.Decimal(15, 2)
+  amount          Decimal?  @db.Decimal(18, 2)
   units           Decimal?  @db.Decimal(36, 18)
   method          TnxMethod @default(REGULAR)
   sipId           String?
@@ -93,8 +113,9 @@ model MfOrder {
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 
-  userId      String
-  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
   Transaction Transaction[]
 
   @@map("mf_order")
@@ -119,7 +140,6 @@ enum OrderType {
   NEW_SIP
 }
 
-// ======== MfPortfolio =======
 model MfPortfolio {
   id               String   @id @default(uuid())
   schemeCode       Int
@@ -128,9 +148,9 @@ model MfPortfolio {
   fundType         FundType
   fundHouseDomain  String // it's need to get fund logo
   units            Decimal  @db.Decimal(36, 18)
-  invested         Decimal  @db.Decimal(10, 2)
-  current          Decimal  @db.Decimal(10, 2)
-  pnl              Decimal  @default(0.00) @db.Decimal(10, 2)
+  invested         Decimal  @db.Decimal(18, 2)
+  current          Decimal  @db.Decimal(18, 2)
+  pnl              Decimal  @default(0.00) @db.Decimal(18, 2)
   returnPercent    Decimal  @default(0.00) @db.Decimal(8, 2)
   dayChangePercent Decimal? @default(0.00) @db.Decimal(5, 2)
   dayChangeValue   Decimal? @default(0) @db.Decimal(10, 2)
@@ -154,25 +174,23 @@ enum FundType {
   SOLUTION_ORIENTED
 }
 
-// ======== MfHolding =======
 model MfHolding {
   id         String   @id @default(uuid())
   schemeCode Int
   nav        Decimal  @db.Decimal(10, 4) // purchase/redeem nav
   units      Decimal  @db.Decimal(36, 18) // purchase/redeem units
-  amount     Decimal  @db.Decimal(15, 2)
+  amount     Decimal  @db.Decimal(18, 2)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  userId      String
   user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  portfolioId String
+  userId      String
   mfPortfolio MfPortfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  portfolioId String
 
   @@map("mf_holding")
 }
 
-// ======== MfSip =======
 model MfSip {
   id                  String   @id @default(uuid())
   sipDate             Int
@@ -182,13 +200,13 @@ model MfSip {
   fundCategory        String
   fundType            FundType
   schemeCode          Int
-  amount              Decimal  @db.Decimal(15, 2)
+  amount              Decimal  @db.Decimal(18, 2)
   fundHouseDomain     String
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 
-  userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
   pendingChanges PendingSipChange[]
 
@@ -203,31 +221,31 @@ enum SipStatus {
 
 model PendingSipChange {
   id                  String    @id @default(uuid())
-  amount              Decimal?  @db.Decimal(15, 2) // future amount
+  amount              Decimal?  @db.Decimal(18, 2) // future amount
   sipDate             Int?
   nextInstallmentDate DateTime? @db.Date
   applyDate           DateTime  @db.Date // when these changes should be applied
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
 
-  sipId  String
   mfSip  MfSip  @relation(fields: [sipId], references: [id], onDelete: Cascade)
+  sipId  String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
-  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, sipId])
   @@map("pending_sip_changes")
 }
 
-// ======== MfWatchlist =======
 model MfWatchlist {
   id         String   @id @default(uuid())
-  userId     String
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   schemeCode Int
   fundName   String
   shortName  String
   createdAt  DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
   @@unique([userId, schemeCode])
   @@map("mf_watchlist")

@@ -1,41 +1,47 @@
 import GoBackBtn from "@/components/GoBackBtn";
 import Keypad from "@/components/Keypad";
+import ResponsivePinDialog from "@/components/ResponsivePinDialog";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router";
-import { toast } from "sonner";
-import { useGetFundData } from "../hooks/queries/externalQueries";
-import { formatToINR } from "../utils/formaters";
 import { TZDate } from "@date-fns/tz";
 import { getDate } from "date-fns";
+import { useState } from "react";
+import { useLocation } from "react-router";
 import DatePicker from "../components/DatePicker";
+import { useMakeInvestment, useStartSip } from "../hooks/mutations/mutations";
+import { useGetFundData } from "../hooks/queries/externalQueries";
+import { formatToINR } from "../utils/formaters";
+import { Label } from "@/components/ui/label";
+import { sanitizeAmount } from "@/utils/formatrs";
 
 function InvestPage() {
-  const navigate = useNavigate();
-  const schemeCode = useLocation().state?.schemeCode;
+  const [amount, setAmount] = useState("");
+  const [isPinDialogOpen, setIsPinDialogOpen] = useState(false);
+  const { schemeCode, orderType } = useLocation().state ?? {};
   const { data: fund = {} } = useGetFundData(schemeCode);
-  const [amount, setAmount] = useState(0);
-
-  const { orderType } = useParams();
   const isSip = orderType === "sip";
   const [sipDate, setSipDate] = useState(
     isSip ? getDate(TZDate.tz("Asia/Kolkata")) : null,
   );
 
-  const handleInvest = () => {
-    if (!amount) return toast.error("Please enter amount");
-    navigate(`/mutual-funds/upi`, {
-      state: {
-        amount,
-        schemeCode: schemeCode,
-        sipDate,
-        orderType,
-      },
-    });
+  const sipMutation = useStartSip();
+  const lumpsumMutation = useMakeInvestment();
+
+  const activeMutation = sipDate ? sipMutation : lumpsumMutation;
+
+  const { mutate: makePayment, isPending, isError } = activeMutation;
+
+  const handleInvest = (pin) => {
+    makePayment({ amount, sipDate, fund, pin });
+  };
+
+  const handleAddExtra = (value) => {
+    const amt = Number(amount || 0) + value;
+    const sanitized = sanitizeAmount(amt.toString());
+    setAmount(sanitized);
   };
 
   return (
-    <div className="flex h-dvh flex-col justify-between">
+    <div className="flex h-dvh flex-col">
       {/* ================= Title ================= */}
       <div className="Title mt-4 flex items-center gap-4 px-4">
         <GoBackBtn />
@@ -46,75 +52,85 @@ function InvestPage() {
       </div>
 
       {/* ================= Content ================= */}
-      <div className="mt-8 mb-auto flex flex-col items-center gap-y-12 px-4">
-        {/* Installment Amount */}
-        <div className="relative text-center">
-          <p className="text-muted-foreground text-sm">
-            {isSip ? "Installment amount" : "Investment amount"}
-          </p>
-          <h1 className="mt-2 text-4xl">
-            ₹ {amount?.toLocaleString()}
-            <span className="text-muted-foreground animate-[blink_1s_step-start_infinite] text-5xl font-thin ease-in-out">
-              |
-            </span>
-          </h1>
-          {amount !== 0 && amount < (isSip ? fund.sip_min : fund.lump_min) && (
-            <p className="mt-4 text-xs font-medium text-red-400">
-              The minimum amount for {isSip ? "SIP" : "Lumpsum"} is{" "}
-              {formatToINR(isSip ? fund.sip_min : fund.lump_min)}
-            </p>
-          )}
-        </div>
+      <div className="mt-8 flex flex-col items-center gap-6">
+        <p className="text-muted-foreground text-sm">
+          {isSip ? "Installment amount" : "Investment amount"}
+        </p>
+
+        {/*  Amount */}
+        <Label className="flex w-full justify-center text-4xl">
+          <span>₹</span>
+          <input
+            readOnly
+            autoComplete="off"
+            type="text"
+            inputMode="none"
+            value={amount}
+            placeholder="0"
+            onChange={(e) => setAmount(sanitizeAmount(e.target.value))}
+            className="field-sizing-content leading-0 outline-none"
+          />
+          <span className="Fake-Caret animate-caret-blink bg-foreground h-10 w-px duration-1000" />
+        </Label>
+
+        <p
+          className={`animate-in zoom-in-90 fade-in slide-in-from-bottom-0 text-xs font-medium duration-200 ${amount && amount < (isSip ? fund.sip_min : fund.lump_min) ? "" : "hidden"} text-red-400`}
+        >
+          The minimum amount for {isSip ? "SIP" : "Lumpsum"} is{" "}
+          {formatToINR(isSip ? fund.sip_min : fund.lump_min)}
+        </p>
 
         {/* Add Extra Buttons */}
         <div className="flex justify-center gap-4">
           <Button
             variant="outline"
-            className="rounded-full"
-            onClick={() =>
-              setAmount((prev) => (parseInt(prev) + 500).toString())
-            }
+            className="rounded-full text-xs"
+            onClick={() => handleAddExtra(500)}
           >
             + ₹500
           </Button>
           <Button
             variant="outline"
-            className="rounded-full"
-            onClick={() =>
-              setAmount((prev) => (parseInt(prev) + 1000).toString())
-            }
+            className="rounded-full text-xs"
+            onClick={() => handleAddExtra(1000)}
           >
             + ₹1,000
           </Button>
           <Button
             variant="outline"
-            className="rounded-full"
-            onClick={() =>
-              setAmount((prev) => (parseInt(prev) + 5000).toString())
-            }
+            className="rounded-full text-xs"
+            onClick={() => handleAddExtra(5000)}
           >
             + ₹5,000
           </Button>
         </div>
+
         {isSip && <DatePicker sipDate={sipDate} setSipDate={setSipDate} />}
       </div>
 
-      {/*=============== Keypad & Start SIP Button =============== */}
-      <div>
-        <Keypad setAmount={setAmount} />
+      {/*=============== Keypad & Invest/Submit Button =============== */}
+      <div className="mt-auto flex flex-col items-center gap-2">
+        <Keypad amount={amount} setAmount={setAmount} />
 
-        {/*========  Start SIP Button ======== */}
-        <div className="mt-6 flex justify-evenly p-4">
-          <Button
-            disabled={amount < (isSip ? fund.sip_min : fund.lump_min)}
-            size="lg"
-            onClick={handleInvest}
-            className="w-full"
-          >
-            {isSip ? "Start SIP" : "Invest"}
-          </Button>
-        </div>
+        <Button
+          onClick={() => setIsPinDialogOpen(true)}
+          size="lg"
+          disabled={amount < (isSip ? fund.sip_min : fund.lump_min)}
+          className="my-4 w-[88%] rounded-xl"
+        >
+          {isSip ? "Start SIP" : "Invest"}
+        </Button>
       </div>
+
+      <ResponsivePinDialog
+        isOpen={isPinDialogOpen}
+        setIsOpen={setIsPinDialogOpen}
+        amount={amount}
+        sendingTo={fund.short_name}
+        onSubmit={handleInvest}
+        isPending={isPending}
+        isError={isError}
+      />
     </div>
   );
 }

@@ -15,7 +15,6 @@ function Layout() {
   useEffect(() => {
     const lastRewardedAt = localStorage.getItem("lastRewardedAt");
     if (!isToday(new Date(lastRewardedAt))) {
-      console.log("called");
       mutate();
     }
   }, []);
@@ -38,11 +37,8 @@ function Layout() {
         title="₹1000 Added!"
         description="Your daily reward has been credited. Note: visit everyday to get 1000 reward daily"
         icon={<img src="/Piggy bank-amico.svg" className="size-50" />}
-        // icon={<img src="/Savings-bro.svg" className="size-60" />}
-        // icon={<img src="/Piggy bank-bro.svg" className="size-60" />}
-        onConfirm={() => navigate("/comming-soon")}
+        onConfirm={() => navigate("/wallet")}
         confirmButtonText="Check Balance"
-        // dialogOnly
       />
     </>
   );

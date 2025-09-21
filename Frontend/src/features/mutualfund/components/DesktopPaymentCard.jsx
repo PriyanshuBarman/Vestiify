@@ -1,20 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useGetUserData } from "@/hooks/queries/internalQueries";
+import ResponsivePinDialog from "@/components/ResponsivePinDialog";
+import { useGetBalance } from "@/hooks/queries/internalQueries";
 import { IndianRupeeIcon, Loader2Icon } from "lucide-react";
 import { useState } from "react";
 import { useMakeInvestment, useStartSip } from "../hooks/mutations/mutations";
 import { formatToINR } from "../utils/formaters";
 import DatePicker from "./DatePicker";
-import UpiDialog from "@/components/UpiDialog";
+import { sanitizeAmount } from "@/utils/formatrs";
 
 function DesktopPaymentCard({ fund }) {
+  const [isPinDialogOpen, setIsPinDialogOpen] = useState(false);
   const [amount, setAmount] = useState("");
   const [sipDate, setSipDate] = useState();
   const [activeTab, setActiveTab] = useState("lumpsum");
 
-  const { data: user = {} } = useGetUserData();
+  const { data: balance } = useGetBalance();
   const sipMutation = useStartSip();
   const lumpsumMutation = useMakeInvestment();
 
@@ -60,7 +62,7 @@ function DesktopPaymentCard({ fund }) {
                   type="number"
                   inputMode="numeric"
                   value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
+                  onChange={(e) => setAmount(sanitizeAmount(e.target.value))}
                   placeholder="Amount"
                   required
                   className="peer invest-input"
@@ -73,25 +75,28 @@ function DesktopPaymentCard({ fund }) {
             </div>
           </div>
 
-          <p className="mb-6 text-sm font-medium tabular-nums">
-            Available Balance: {formatToINR(user.balance)}
+          <p className="mb-4 text-sm font-medium tabular-nums">
+            Available Balance: {formatToINR(balance)}
           </p>
 
-          <UpiDialog
+          <Button
+            size="lg"
+            onClick={() => setIsPinDialogOpen(true)}
+            disabled={isPending || amount < fund.lump_min}
+            className="w-full"
+          >
+            {isPending ? <Loader2Icon className="animate-spin" /> : "Invest"}
+          </Button>
+
+          <ResponsivePinDialog
+            isOpen={isPinDialogOpen}
+            setIsOpen={setIsPinDialogOpen}
             amount={amount}
             sendingTo={fund.short_name}
             onSubmit={handleInvest}
             isPending={isPending}
             isError={isError}
-          >
-            <Button
-              disabled={isPending || amount < fund.lump_min}
-              size="lg"
-              className="w-full"
-            >
-              {isPending ? <Loader2Icon className="animate-spin" /> : "Invest"}
-            </Button>
-          </UpiDialog>
+          />
         </TabsContent>
 
         {/* =================== SIP Tab =================== */}
@@ -106,7 +111,7 @@ function DesktopPaymentCard({ fund }) {
                   type="number"
                   placeholder="SIP Amount"
                   value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
+                  onChange={(e) => setAmount(sanitizeAmount(e.target.value))}
                   required
                   className="peer invest-input"
                   min={fund?.sip_min}
@@ -123,31 +128,28 @@ function DesktopPaymentCard({ fund }) {
             </div>
           </div>
 
-          <p className="mb-2 space-y-2 text-sm font-medium tabular-nums">
-            Available Balance: {formatToINR(user.balance)}
+          <p className="mb-4 space-y-2 text-sm font-medium tabular-nums">
+            Available Balance: {formatToINR(balance)}
           </p>
 
-          <div className="pt-4">
-            <UpiDialog
-              amount={amount}
-              sendingTo={fund.short_name}
-              onSubmit={handleInvest}
-              isPending={isPending}
-              isError={isError}
-            >
-              <Button
-                disabled={isPending || amount < fund.sip_min || !sipDate}
-                size="lg"
-                className="w-full"
-              >
-                {isPending ? (
-                  <Loader2Icon className="animate-spin" />
-                ) : (
-                  "Start Sip"
-                )}
-              </Button>
-            </UpiDialog>
-          </div>
+          <Button
+            onClick={() => setIsPinDialogOpen(true)}
+            size="lg"
+            disabled={isPending || amount < fund.sip_min || !sipDate}
+            className="w-full"
+          >
+            {isPending ? <Loader2Icon className="animate-spin" /> : "Start Sip"}
+          </Button>
+
+          <ResponsivePinDialog
+            isOpen={isPinDialogOpen}
+            setIsOpen={setIsPinDialogOpen}
+            amount={amount}
+            sendingTo={fund.short_name}
+            onSubmit={handleInvest}
+            isPending={isPending}
+            isError={isError}
+          />
         </TabsContent>
       </Tabs>
     </div>

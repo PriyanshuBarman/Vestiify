@@ -57,7 +57,7 @@ function InvestmentsTab() {
       <ScrollToTop />
       <PendingOrders />
 
-      {!portfolio.length && !orders ? (
+      {!portfolio.length ? (
         <div className="flex flex-col items-center justify-center px-8">
           <img
             src="/StartInvesting.svg"

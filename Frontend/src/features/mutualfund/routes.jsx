@@ -1,4 +1,5 @@
-import { lazy } from "react";
+import LoadingState from "@/components/LoadingState";
+import { lazy, Suspense } from "react";
 const MutualFundLayout = lazy(() => import("./MutualFundLayout"));
 const SipDetailsPage = lazy(() => import("./pages/SipDetailsPage"));
 const EditSipPage = lazy(() => import("./pages/EditSipPage"));
@@ -7,9 +8,7 @@ const CollectionPage = lazy(() => import("./pages/CollectionPage"));
 const FundPage = lazy(() => import("./pages/FundPage"));
 const HomePage = lazy(() => import("./pages/HomePage"));
 const AllFundsPage = lazy(() => import("./pages/AllFundsPage"));
-const PaymentSuccessPage = lazy(() => import("./pages/PaymentSuccessPage"));
 const OrderDetailsPage = lazy(() => import("./pages/OrderDetailsPage"));
-const UpiPage = lazy(() => import("./pages/UpiPage"));
 const CompareFundsPage = lazy(() => import("./pages/CompareFundsPage"));
 const SipCalculatorPage = lazy(() => import("./pages/SipCalculatorPage"));
 
@@ -22,48 +21,76 @@ export const mutualFundRoutes = {
       element: <HomePage />,
     },
     {
+      path: "invest",
+      element: (
+        <Suspense fallback={<LoadingState fullPage />}>
+          <InvestPage />
+        </Suspense>
+      ),
+    },
+    {
       path: ":scheme_code",
-      element: <FundPage />,
+      element: (
+        <Suspense fallback={<LoadingState fullPage />}>
+          <FundPage />
+        </Suspense>
+      ),
     },
     {
       path: "compare-funds",
-      element: <CompareFundsPage />,
+      element: (
+        <Suspense fallback={<LoadingState fullPage />}>
+          <CompareFundsPage />
+        </Suspense>
+      ),
     },
     {
       path: "collections/:name",
-      element: <CollectionPage />,
+      element: (
+        <Suspense fallback={<LoadingState fullPage />}>
+          <CollectionPage />
+        </Suspense>
+      ),
     },
     {
       path: "all-funds",
-      element: <AllFundsPage />,
+      element: (
+        <Suspense fallback={<LoadingState fullPage />}>
+          <AllFundsPage />
+        </Suspense>
+      ),
     },
     {
       path: "order/:orderId",
-      element: <OrderDetailsPage />,
+      element: (
+        <Suspense fallback={<LoadingState fullPage />}>
+          <OrderDetailsPage />
+        </Suspense>
+      ),
     },
     {
       path: "sip/:sipId",
-      element: <SipDetailsPage />,
+      element: (
+        <Suspense fallback={<LoadingState fullPage />}>
+          <SipDetailsPage />
+        </Suspense>
+      ),
     },
     {
       path: "edit/sip/:sipId",
-      element: <EditSipPage />,
-    },
-    {
-      path: "payment-success",
-      element: <PaymentSuccessPage />,
-    },
-    {
-      path: "invest/:orderType",
-      element: <InvestPage />,
+      element: (
+        <Suspense fallback={<LoadingState fullPage />}>
+          <EditSipPage />
+        </Suspense>
+      ),
     },
     {
       path: "sip-calculator",
-      element: <SipCalculatorPage />,
-    },
-    {
-      path: "upi",
-      element: <UpiPage />,
+      element: (
+        <Suspense fallback={<LoadingState fullPage />}>
+          <SipCalculatorPage />
+        </Suspense>
+      ),
     },
   ],
 };

@@ -4,10 +4,9 @@ import * as userController from "../controllers/user.controller.js";
 
 export const userRoutes = Router();
 
-userRoutes.get("/search", authenticate, userController.search);
-userRoutes.get("/me", authenticate, userController.getUser);
+userRoutes.get("/", authenticate, userController.getMe);
 userRoutes.patch(
-  "/me/claim-daily-reward",
+  "/claim-daily-reward",
   authenticate,
   userController.dailyReward
 );

@@ -1,20 +1,28 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { sanitizeAmount } from "@/utils/formatrs";
+import { DeleteIcon } from "lucide-react";
 
-function Keypad({ setAmount, className }) {
+function Keypad({ amount, setAmount, className }) {
   const handleNumberClick = (num) => {
-    setAmount((prev) => prev * 10 + num);
+    setAmount(sanitizeAmount((amount || "") + num.toString()));
   };
 
-  const handleBackspace = () => setAmount((prev) => Math.floor(prev / 10));
+  const handleBackspace = () =>
+    setAmount(amount && amount.length > 0 ? amount.slice(0, -1) : "");
 
   return (
-    <div className={cn("KeyPad grid grid-cols-3 gap-6", className)}>
+    <div
+      className={cn(
+        "KeyPad mx-4 grid grid-cols-3 place-items-center gap-x-10 tabular-nums",
+        className,
+      )}
+    >
       {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num, idx) => (
         <Button
           key={idx}
           variant="ghost"
-          className="active:bg-input text-2xl font-normal"
+          className="active:bg-accent h-14 w-24 rounded-2xl text-2xl font-semibold"
           onClick={() => handleNumberClick(num)}
         >
           {num}
@@ -23,20 +31,24 @@ function Keypad({ setAmount, className }) {
 
       <Button
         variant="ghost"
-        onClick={() => setAmount(0)}
-        className={"text-lg font-normal"}
+        onClick={() => handleNumberClick(".")}
+        className="active:bg-accent h-14 w-24 rounded-2xl text-2xl font-semibold"
       >
-        AC
+        .
       </Button>
       <Button
         variant="ghost"
-        className="active:bg-input text-2xl font-normal"
+        className="active:bg-accent h-14 w-24 rounded-2xl text-2xl font-semibold"
         onClick={() => handleNumberClick(0)}
       >
         0
       </Button>
-      <Button variant="ghost" onClick={handleBackspace} className="text-2xl">
-        ⌫
+      <Button
+        variant="ghost"
+        onClick={handleBackspace}
+        className="active:bg-accent h-14 w-24 rounded-2xl"
+      >
+        <DeleteIcon className="size-10 stroke-1" />
       </Button>
     </div>
   );

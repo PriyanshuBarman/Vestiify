@@ -29,7 +29,17 @@ export const googleAuth = asyncHandler(async (req, res) => {
 
   if (!user) {
     const username = await generateUniqueUsername(name);
-    user = await userRepo.create({ name, email, avatar: picture, username });
+    user = await userRepo.create({
+      email,
+      profile: {
+        create: {
+          username,
+          fullName: name,
+          avatar: picture,
+        },
+      },
+    });
+
     isNewUser = true;
   }
 

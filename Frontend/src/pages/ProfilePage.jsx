@@ -47,7 +47,7 @@ function ProfilePage() {
           <ProfileAvatar />
           <div>
             <h3 className="text-center text-lg font-semibold capitalize">
-              {user.name}
+              {user.profile.fullName}
             </h3>
           </div>
         </div>
@@ -57,7 +57,7 @@ function ProfilePage() {
           <div className="flex">
             <div className="flex">
               <WalletIcon className="text-muted-foreground" />
-              <span className="ml-4">Balance : {formatToINR(balance, 2)}</span>
+              <span className="ml-4">Balance : {formatToINR(balance)}</span>
             </div>
           </div>
 

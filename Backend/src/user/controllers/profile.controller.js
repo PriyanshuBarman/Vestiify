@@ -1,0 +1,20 @@
+import { asyncHandler } from "../../shared/utils/asyncHandler.utils.js";
+import * as profileService from "../services/profile.service.js";
+
+export const getProfile = asyncHandler(async (req, res) => {
+  const { username } = req.params;
+
+  const profile = await profileService.fetchProfile(username);
+
+  return res.status(200).json({ success: true, profile });
+});
+
+export const searchProfile = asyncHandler(async (req, res) => {
+  const { userId } = req.user;
+  const { limit } = req.query;
+  const { query } = req.query;
+
+  const profiles = await profileService.searchProfile(userId, query, limit);
+
+  return res.status(200).json({ success: true, profiles });
+});
