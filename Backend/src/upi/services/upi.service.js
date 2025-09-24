@@ -10,18 +10,10 @@ export const fetchBalance = async (userId) => {
   return await userRepo.checkBalance(userId);
 };
 
-export const sendMoney = async (userId, amount, note, receiverUsername) => {
+export const sendMoney = async (userId, amount, note, receiverId) => {
   const balance = await userRepo.checkBalance(userId);
   if (amount > balance) {
     throw new ApiError(400, "Insufficient wallet balance");
-  }
-
-  const { userId: receiverId } = await profileRepo.findUnique(
-    { username: receiverUsername },
-    { select: { userId: true } }
-  );
-  if (!receiverId) {
-    throw new ApiError(404, "Receiver not found");
   }
 
   return await db.$transaction(async (tx) => {

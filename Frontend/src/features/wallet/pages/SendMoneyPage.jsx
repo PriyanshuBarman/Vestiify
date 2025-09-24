@@ -54,16 +54,17 @@ function SendMoneyPage() {
           <ul className="space-y-2">
             {searchResult.map((profile) => (
               <li
+                key={profile.userId}
                 onClick={() =>
                   navigate("/wallet/enter-amount", {
                     state: {
-                      fullName: profile.fullName,
-                      username: profile.username,
-                      avatar: profile.avatar,
+                      receiverId: profile.userId,
+                      receiverName: profile.fullName,
+                      receiverUsername: profile.username,
+                      receiverAvatar: profile.avatar,
                     },
                   })
                 }
-                key={profile.username}
                 className="flex cursor-pointer gap-4 p-3"
               >
                 <Avatar className="size-12">

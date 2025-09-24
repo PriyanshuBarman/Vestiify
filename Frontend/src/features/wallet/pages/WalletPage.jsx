@@ -15,11 +15,15 @@ import { Link, useNavigate } from "react-router";
 import { useGetAllTnx } from "../hooks/queries/internalQueries";
 import { assetConfig } from "../utils/constants";
 import { getLatestTnx } from "../utils/getLatestTnx";
+import QrReader from "../components/QrReader";
+import { useState } from "react";
+import { toast } from "sonner";
 
 function WalletPage() {
   const navigate = useNavigate();
   const { data: balance } = useGetBalance();
   const { data: tnxHistory } = useGetAllTnx();
+  const [isScannerOpen, setIsScannerOpen] = useState(false);
 
   return (
     <div className="mt-4 space-y-8 px-4 sm:mx-auto sm:w-2xl sm:space-y-12">
@@ -47,7 +51,9 @@ function WalletPage() {
         </div>
 
         <div className="Slot flex flex-col items-center justify-center">
+          <QrReader isOpen={isScannerOpen} setIsOpen={setIsScannerOpen} />
           <Button
+            onClick={() => setIsScannerOpen(true)}
             size="lg"
             variant="outline"
             className="h-16 w-22 rounded-xl sm:h-22 sm:w-38"

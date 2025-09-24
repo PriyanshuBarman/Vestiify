@@ -67,7 +67,7 @@ function InvestmentsTab() {
           <h3 className="text-foreground-secondary mt-4 text-center font-medium sm:text-lg">
             You haven't invested yet.
           </h3>
-          <p className="mt-2 text-xs sm:text-sm">
+          <p className="text-muted-foreground mt-2 text-xs sm:text-sm">
             When you invest in a fund, it will appear here
           </p>
 

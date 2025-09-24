@@ -23,13 +23,13 @@ export const fetchAllTnx = async (query) => {
 
 // Mutations
 
-export const sendMoney = async (amount, note, receiverUsername, pin) => {
+export const sendMoney = async (amount, note, receiverId, pin) => {
   const { data } = await axios.post(
     `${VITE_BACKEND_BASE_URL}/upi/send`,
     {
       amount,
       note,
-      receiverUsername,
+      receiverId,
       pin,
     },
     { withCredentials: true },

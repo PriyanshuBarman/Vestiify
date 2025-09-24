@@ -43,8 +43,8 @@ body {
   /* --primary: #10be41; */
 
   --primary-foreground: oklch(0.985 0 0);
-  /* --secondary: oklch(0.97 0 0); */
-  --secondary: #c4f0e5;
+  --secondary: oklch(0.97 0 0);
+  /* --secondary: #c4f0e5; */
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
@@ -226,5 +226,3 @@ input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-
-

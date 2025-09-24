@@ -37,7 +37,10 @@ function Layout() {
         title="₹1000 Added!"
         description="Your daily reward has been credited. Note: visit everyday to get 1000 reward daily"
         icon={<img src="/Piggy bank-amico.svg" className="size-50" />}
-        onConfirm={() => navigate("/wallet")}
+        onConfirm={() => {
+          navigate("/wallet");
+          setDialogOpen(false);
+        }}
         confirmButtonText="Check Balance"
       />
     </>

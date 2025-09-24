@@ -1,28 +1,42 @@
 import GoBackBar from "@/components/GoBackBar";
+import ResponsivePinDialog from "@/components/ResponsivePinDialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { formatToINR } from "@/features/mutualfund/utils/formaters";
-import { ArrowRightIcon } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Navigate, useLocation, useNavigate } from "react-router";
-import { toast } from "sonner";
-import { useSendMoney } from "../hooks/mutations/mutations";
-import ResponsivePinDialog from "@/components/ResponsivePinDialog";
+import { useGetProfileById } from "@/hooks/queries/internalQueries";
 import { sanitizeAmount } from "@/utils/formatrs";
+import { ArrowRightIcon } from "lucide-react";
+import { useState } from "react";
+import { useLocation } from "react-router";
+import { useSendMoney } from "../hooks/mutations/mutations";
 
 function EnterAmountPage() {
-  const navigate = useNavigate();
   const [isPinDialogOpen, setIsPinDialogOpen] = useState(false);
-  const { fullName, username, avatar } = useLocation().state ?? {};
+  const location = useLocation();
   const [amount, setAmount] = useState("");
   const [note, setNote] = useState();
+
+  const receiverId = location.state.receiverId;
+
+  const { data: profile } = useGetProfileById(receiverId, location.state);
+
+  // Use profile data from API if not provided in state
+  const receiverName = location.state?.receiverName || profile?.fullName;
+  const receiverUsername =
+    location.state?.receiverUsername || profile?.username;
+  const receiverAvatar = location.state?.receiverAvatar || profile?.avatar;
 
   const { mutate: makePayment, isPending, isError } = useSendMoney();
 
   const handleSubmit = (pin) => {
-    makePayment({ amount, note, receiverUsername: username, pin, fullName });
+    makePayment({
+      amount,
+      note,
+      receiverId,
+      pin,
+      fullName: receiverName,
+    });
   };
 
   return (
@@ -31,14 +45,14 @@ function EnterAmountPage() {
 
       <div className="mt-8 w-full place-items-center space-y-4">
         <Avatar className="size-16">
-          <AvatarImage src={avatar} alt="profile-picture" />
+          <AvatarImage src={receiverAvatar} alt="profile-picture" />
           <AvatarFallback className="text-xl uppercase">
-            {fullName?.charAt(0)}
+            {receiverName?.charAt(0)}
           </AvatarFallback>
         </Avatar>
         <div>
-          <h3 className="font-medium capitalize">{fullName}</h3>
-          <p className="text-muted-foreground text-sm">@{username}</p>
+          <h3 className="font-medium capitalize">{receiverName}</h3>
+          <p className="text-muted-foreground text-sm">@{receiverUsername}</p>
         </div>
 
         <Label className="flex w-full justify-center text-5xl">
@@ -63,7 +77,7 @@ function EnterAmountPage() {
         />
       </div>
       <Button
-        disabled={!amount || !fullName || !username || isPending}
+        disabled={!amount || !receiverName || !receiverUsername || isPending}
         className="absolute right-6 bottom-6 rounded-2xl px-7 py-7"
         onClick={() => setIsPinDialogOpen(true)}
       >
@@ -74,7 +88,7 @@ function EnterAmountPage() {
         isOpen={isPinDialogOpen}
         setIsOpen={setIsPinDialogOpen}
         amount={amount}
-        sendingTo={fullName}
+        sendingTo={receiverName}
         onSubmit={handleSubmit}
         isPending={isPending}
         isError={isError}

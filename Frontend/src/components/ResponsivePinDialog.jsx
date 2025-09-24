@@ -115,21 +115,21 @@ function ResponsivePinDialog({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="flex h-full w-full max-w-full flex-col overflow-hidden rounded-none p-0 sm:h-fit sm:gap-8 sm:rounded-2xl sm:p-6">
         {isPending && (
-          <div className="absolute inset-0 z-10 grid place-items-center backdrop-blur-[2px]">
+          <div className="absolute inset-0 z-50 grid place-items-center">
             <Loader2Icon className="text-primary size-12 animate-spin sm:hidden" />
           </div>
         )}
 
-        <DialogHeader className="animate-in slide-in-from-top-16 fade-in-30 zoom-in-90 p-6 duration-500 sm:p-0">
+        <DialogHeader className="p-6 sm:p-0">
           <DialogTitle className="text sr-only">Confirm Payment</DialogTitle>
-          <DialogDescription className="bg-accent space-y-2 rounded-2xl px-6 py-4 font-medium shadow">
+          <DialogDescription className="bg-accent text-foreground space-y-2 rounded-2xl px-6 py-4 font-medium shadow">
             <div className="flex justify-between">
               Sending:
               <span className="tabular-nums">{formatToINR(amount)}</span>
             </div>
             <div className="flex justify-between">
               To:
-              <span className="bg-accent 2 ml-2 max-w-[900%]">{sendingTo}</span>
+              <span className="ml-2 max-w-[900%]">{sendingTo}</span>
             </div>
           </DialogDescription>
         </DialogHeader>

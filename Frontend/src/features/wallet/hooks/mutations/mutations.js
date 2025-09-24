@@ -9,8 +9,8 @@ export const useSendMoney = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ amount, note, receiverUsername, pin }) =>
-      sendMoney(amount, note, receiverUsername, pin),
+    mutationFn: ({ amount, note, receiverId, pin }) =>
+      sendMoney(amount, note, receiverId, pin),
 
     onSuccess: (balance, variables) => {
       const { amount, fullName } = variables;
@@ -21,6 +21,7 @@ export const useSendMoney = () => {
           title: "Payment Successful",
           description: `${formatToINR(amount)} has been successfully sent to ${fullName}.`,
           orderDetailsRoute: "/wallet/transactions",
+          doneRoute: "/wallet"
         },
         replace: true,
       });

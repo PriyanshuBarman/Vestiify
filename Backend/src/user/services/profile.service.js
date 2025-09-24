@@ -1,27 +1,14 @@
-import {
-  profileRepo,
-  userRepo,
-} from "../../shared/repositories/index.repository.js";
+import { profileRepo } from "../../shared/repositories/index.repository.js";
 import { ApiError } from "../../shared/utils/apiError.utils.js";
 
 export const fetchProfile = async (userId) => {
-  const user = await userRepo.findUnique(
-    { id: userId },
-    {
-      select: {
-        email: true,
-        hasPin: true,
-        createdAt: true,
-        profile: true,
-      },
-    }
-  );
+  const profile = await profileRepo.findUnique({ userId });
 
-  if (!user) {
-    throw new ApiError(404, "User not found");
+  if (!profile) {
+    throw new ApiError(404, "Profile not found");
   }
 
-  return user;
+  return profile;
 };
 
 export const searchProfile = async (userId, query, limit) => {
@@ -34,7 +21,6 @@ export const searchProfile = async (userId, query, limit) => {
             { username: { contains: query } },
           ],
         },
-        { userId: { not: userId } },
       ],
     },
     {

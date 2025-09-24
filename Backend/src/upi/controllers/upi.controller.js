@@ -5,7 +5,7 @@ import * as upiService from "../services/upi.service.js";
 export const sendMoney = asyncHandler(async (req, res) => {
   const { userId } = req.user;
 
-  const { amount, note, receiverUsername } = req.body;
+  const { amount, note, receiverId } = req.body;
 
   if (!amount) {
     throw new ApiError(400, "amount is required");
@@ -13,15 +13,15 @@ export const sendMoney = asyncHandler(async (req, res) => {
   if (amount <= 0) {
     throw new ApiError(400, "amount shouldn't be in negative");
   }
-  if (!receiverUsername) {
-    throw new ApiError(400, "receiverUsername is required");
+  if (!receiverId) {
+    throw new ApiError(400, "receiverId is required");
   }
 
   const balance = await upiService.sendMoney(
     userId,
     amount,
     note,
-    receiverUsername
+    receiverId
   );
 
   return res.status(201).json({

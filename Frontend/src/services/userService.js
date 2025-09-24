@@ -20,3 +20,14 @@ export const claimDailyReward = async () => {
 
   return data;
 };
+
+export const fetchProfileById = async (userId) => {
+  const { data } = await axios.get(
+    `${VITE_BACKEND_BASE_URL}/user/profiles/${userId}`,
+    {
+      withCredentials: true,
+    },
+  );
+
+  return data.profile;
+};

@@ -4,7 +4,8 @@ import { CheckIcon } from "lucide-react";
 import { Link, useLocation } from "react-router";
 
 function PaymentSuccessPage() {
-  const { title, description, orderDetailsRoute } = useLocation().state ?? {};
+  const { title, description, orderDetailsRoute, doneRoute } =
+    useLocation().state ?? {};
 
   return (
     <div className="flex h-dvh flex-col sm:mx-auto sm:w-sm">
@@ -34,7 +35,7 @@ function PaymentSuccessPage() {
           </Link>
         </Button>
         <Button asChild size="lg" className="w-[90%]">
-          <Link to="/" replace>
+          <Link to={doneRoute || "/"} replace>
             Done
           </Link>
         </Button>

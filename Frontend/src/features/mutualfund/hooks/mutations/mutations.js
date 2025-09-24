@@ -24,7 +24,8 @@ export const useMakeInvestment = () => {
           amount,
           title: "Order Placed",
           description: `Investment of ${formatToINR(amount)} in ${fund.short_name}.`,
-          orderDetailsRoute: "/mutual-funds/#investments",
+          orderDetailsRoute: "/mutual-funds#investments",
+          doneRoute: "/mutual-funds#investments",
         },
         replace: true,
       });
@@ -56,6 +57,7 @@ export const useStartSip = () => {
           title: "SIP Order Placed",
           description: `SIP of ${formatToINR(amount)} in ${fund.short_name}.`,
           orderDetailsRoute: "/mutual-funds/#sips",
+          doneRoute: "/mutual-funds#sips",
         },
         replace: true,
       });

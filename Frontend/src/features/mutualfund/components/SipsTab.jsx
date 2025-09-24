@@ -28,7 +28,7 @@ function SipsTab() {
     return (
       <div>
         <div className="flex flex-col items-center justify-center gap-2">
-          <img src="/sip.svg" alt="sip" />
+          <img src="/sip.svg" alt="sip" className="h-50" />
           <h3 className="text-foreground-secondary font-medium sm:text-lg">
             No Active SIP's
           </h3>
