@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import LoadingState from "@/components/LoadingState";
+import MyQrCodePage from "./components/MyQrCodeDrawer";
 
 const TnxHistoryPage = lazy(() => import("./pages/TnxHistoryPage"));
 const SendMoneyPage = lazy(() => import("./pages/SendMoneyPage"));
@@ -30,6 +31,14 @@ export const walletRoutes = {
       element: (
         <Suspense fallback={<LoadingState fullPage />}>
           <EnterAmountPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "my-qr-code",
+      element: (
+        <Suspense fallback={<LoadingState fullPage />}>
+          <MyQrCodePage />
         </Suspense>
       ),
     },

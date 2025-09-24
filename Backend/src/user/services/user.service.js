@@ -12,6 +12,7 @@ export const getMe = async (userId) => {
     { id: userId },
     {
       select: {
+        id: true,
         email: true,
         hasPin: true,
         createdAt: true,

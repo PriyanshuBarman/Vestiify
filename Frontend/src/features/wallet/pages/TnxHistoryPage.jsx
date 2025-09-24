@@ -29,11 +29,11 @@ function TnxHistoryPage() {
             </div>
 
             {/* Transactions */}
-            <ul>
+            <ul className="px-4">
               {monthGroup.transactions.map((tnx) => (
                 <li
                   key={tnx.id}
-                  className="hover:bg-accent flex cursor-pointer gap-4 border-b p-4"
+                  className="hover:bg-accent flex cursor-pointer gap-4 border-b py-4"
                 >
                   <Avatar className="size-9">
                     <AvatarImage
@@ -43,11 +43,11 @@ function TnxHistoryPage() {
                       }
                     />
                     <AvatarFallback className="text-sm uppercase">
-                      {tnx.peerUser?.profile?.fullName.charAt(0) ||
-                        tnx.assetCategory.charAt(0)}
+                      {tnx.peerUser?.profile?.fullName?.charAt(0) ||
+                        tnx.assetCategory?.charAt(0)}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="flex flex-col justify-between">
+                  <div className="flex flex-col justify-between gap-1.5">
                     <h3 className="text-sm font-medium capitalize">
                       {tnx.peerUser?.profile?.fullName ||
                         assetConfig[tnx.assetCategory]?.name}
@@ -57,9 +57,9 @@ function TnxHistoryPage() {
                     </p>
                   </div>
 
-                  <div className="ml-auto flex flex-col items-end justify-between">
+                  <div className="ml-auto flex flex-col items-end justify-between gap-1.5">
                     <div
-                      className={`${tnx.type === "CREDIT" && "text-positive"} text-sm font-medium tabular-nums`}
+                      className={`${tnx.type === "CREDIT" && "text-positive"} text-sm font-[550] tabular-nums`}
                     >
                       <span className="mr-0.5">
                         {tnx.type === "CREDIT" ? "+" : "-"}

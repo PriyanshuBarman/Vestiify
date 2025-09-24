@@ -5,19 +5,14 @@ import SectionHeading from "@/features/mutualfund/components/SectionHeading";
 import { formatToINR } from "@/features/mutualfund/utils/formaters";
 import { useGetBalance } from "@/hooks/queries/internalQueries";
 import { formatDate } from "date-fns";
-import {
-  ChevronRightIcon,
-  IndianRupeeIcon,
-  ScanLine,
-  UserIcon,
-} from "lucide-react";
+import { ChevronRightIcon, QrCodeIcon, ScanLineIcon } from "lucide-react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router";
+import MyQrCodeDrawer from "../components/MyQrCodeDrawer";
+import QrReader from "../components/QrReader";
 import { useGetAllTnx } from "../hooks/queries/internalQueries";
 import { assetConfig } from "../utils/constants";
 import { getLatestTnx } from "../utils/getLatestTnx";
-import QrReader from "../components/QrReader";
-import { useState } from "react";
-import { toast } from "sonner";
 
 function WalletPage() {
   const navigate = useNavigate();
@@ -43,7 +38,21 @@ function WalletPage() {
             variant="outline"
             className="h-16 w-22 rounded-xl sm:h-22 sm:w-38"
           >
-            <UserIcon className="text-primary size-6.5 stroke-[2.4px] sm:size-10" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              className="icon icon-tabler text-primary icons-tabler-outline icon-tabler-brand-telegram fill size-8 sm:size-10"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4" />
+            </svg>{" "}
           </Button>
           <p className="mt-3 text-center text-sm font-medium sm:mt-4 sm:text-base">
             Send Money
@@ -58,7 +67,7 @@ function WalletPage() {
             variant="outline"
             className="h-16 w-22 rounded-xl sm:h-22 sm:w-38"
           >
-            <ScanLine className="text-primary size-6.5 stroke-[2.4px] sm:size-10" />
+            <ScanLineIcon className="text-primary size-8 stroke-[2.4px] sm:size-10" />
           </Button>
           <p className="mt-3 text-center text-sm font-medium sm:mt-4 sm:text-base">
             Scan & Pay
@@ -66,15 +75,17 @@ function WalletPage() {
         </div>
 
         <div className="Slot flex flex-col items-center justify-center">
-          <Button
-            size="lg"
-            variant="outline"
-            className="h-16 w-22 rounded-xl sm:h-22 sm:w-38"
-          >
-            <IndianRupeeIcon className="text-primary size-6.5 stroke-[2.4px] sm:size-10" />
-          </Button>
+          <MyQrCodeDrawer>
+            <Button
+              size="lg"
+              variant="outline"
+              className="h-16 w-22 rounded-xl sm:h-22 sm:w-38"
+            >
+              <QrCodeIcon className="text-primary size-8.5 sm:size-10" />
+            </Button>
+          </MyQrCodeDrawer>
           <p className="mt-3 text-center text-sm font-medium sm:mt-4 sm:text-base">
-            Request Money
+            My QR Code
           </p>
         </div>
       </section>
@@ -97,7 +108,7 @@ function WalletPage() {
       </section>
 
       {tnxHistory && (
-        <section className="pb-20">
+        <section className="mt-20 pb-20">
           <SectionHeading
             heading="Recent Transactions"
             subHeading="View all"
@@ -123,7 +134,7 @@ function WalletPage() {
                       tnx.assetCategory?.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col justify-between">
+                <div className="flex flex-col justify-between gap-1.5">
                   <h3 className="text-sm font-medium capitalize">
                     {tnx.peerUser?.profile?.fullName ||
                       assetConfig[tnx.assetCategory]?.name}
@@ -133,9 +144,9 @@ function WalletPage() {
                   </p>
                 </div>
 
-                <div className="ml-auto flex flex-col items-end justify-between">
+                <div className="ml-auto flex flex-col items-end justify-between gap-1.5">
                   <div
-                    className={`${tnx.type === "CREDIT" && "text-positive"} text-sm font-medium tabular-nums`}
+                    className={`${tnx.type === "CREDIT" && "text-positive"} text-sm font-[550] tabular-nums`}
                   >
                     <span className="mr-0.5">
                       {tnx.type === "CREDIT" ? "+" : "-"}
