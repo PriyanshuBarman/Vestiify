@@ -10,6 +10,7 @@ function QrReader({ isOpen, setIsOpen }) {
   const scanner = useRef(null);
   const videoEl = useRef(null);
   const qrBoxEl = useRef(null);
+  const fileInputRef = useRef(null);
   const [isActive, setIsActive] = useState(false);
   const [isFlashOn, setIsFlashOn] = useState(false);
   const navigate = useNavigate();
@@ -23,32 +24,42 @@ function QrReader({ isOpen, setIsOpen }) {
   };
 
   const handleScanSuccess = (result) => {
-    console.log("QR Code detected:", result);
-    if (!result?.data.startsWith("vestify@")) {
-      toast.warning("Please Scan a Vestify QR code");
-    } else {
+    if (result?.startsWith("vestify@")) {
       navigate("/wallet/enter-amount", {
         state: {
-          receiverId: result?.data.replace("vestify@", ""),
+          receiverId: result?.replace("vestify@", ""),
         },
       });
+    } else {
+      toast.warning("Please Scan a Vestify QR code");
     }
 
     handleClose();
   };
 
-  const handleScanError = (err) => {
-    console.log("QR scan error:", err);
+  const handleToggleFlashlight = async () => {
+    try {
+      await scanner.current?.toggleFlash();
+      setIsFlashOn(scanner.current?.isFlashOn());
+    } catch (error) {
+      toast.warning(error);
+    }
   };
 
-  const handleToggleFlashlight = async () => {
-    if (!scanner.current) return;
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
     try {
-      await scanner.current.toggleFlash();
-      setIsFlashOn(scanner.current.isFlashOn());
+      const result = await QrScanner.scanImage(file);
+      handleScanSuccess(result);
     } catch (error) {
-      toast.error("Flashlight not supported on this device");
+      toast.warning(error);
     }
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
   };
 
   // 🔹 Scanner Lifecycle
@@ -56,13 +67,16 @@ function QrReader({ isOpen, setIsOpen }) {
     if (!isOpen) return;
 
     if (videoEl.current && !scanner.current) {
-      scanner.current = new QrScanner(videoEl.current, handleScanSuccess, {
-        onDecodeError: handleScanError,
-        preferredCamera: "environment",
-        highlightScanRegion: true,
-        highlightCodeOutline: true,
-        overlay: qrBoxEl.current || undefined,
-      });
+      scanner.current = new QrScanner(
+        videoEl.current,
+        (result) => handleScanSuccess(result.data),
+        {
+          preferredCamera: "environment",
+          highlightScanRegion: true,
+          highlightCodeOutline: true,
+          overlay: qrBoxEl.current || undefined,
+        },
+      );
 
       scanner.current
         .start()
@@ -72,7 +86,7 @@ function QrReader({ isOpen, setIsOpen }) {
           setIsActive(false);
           setIsOpen(false);
           toast.info(
-            "Camera is blocked or not accessible. Please allow camera in your browser permissions and reload.",
+            "Camera blocked or not accessible. Please allow in browser permissions & reload",
           );
         });
     }
@@ -115,21 +129,34 @@ function QrReader({ isOpen, setIsOpen }) {
       {/* 🔹 QR Frame Overlay */}
       <div
         ref={qrBoxEl}
-        className="pointer-events-none absolute inset-0 flex -translate-y-16 flex-col items-center justify-center gap-6"
+        className="pointer-events-none absolute inset-0 grid -translate-y-16 place-items-center"
       >
         <CustomQrFrame />
-        <p className="z-50 text-base text-white">Scan QR Code</p>
       </div>
+
+      <p className="absolute inset-0 z-50 grid translate-y-28 place-items-center text-base text-white sm:translate-y-36">
+        Scan QR Code
+      </p>
 
       {/* 🔹 Upload Button */}
       <div className="absolute bottom-12 left-1/2 z-50 -translate-x-1/2">
-        <Button
-          variant="secondary"
-          onClick={() => toast("Coming Soon")}
-          className="rounded-3xl bg-white !px-6 py-5 leading-0 font-normal text-black shadow"
-        >
-          <ImageUpIcon /> Upload Photo
-        </Button>
+        <>
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileUpload}
+            accept=".png, .jpeg, .jpg"
+            className="hidden"
+          />
+          <Button
+            variant="secondary"
+            onClick={handleUploadClick}
+            className="rounded-3xl bg-white !px-6 py-5 leading-0 font-normal text-black shadow hover:bg-white"
+            type="button"
+          >
+            <ImageUpIcon /> Upload Photo
+          </Button>
+        </>
       </div>
     </div>
   );

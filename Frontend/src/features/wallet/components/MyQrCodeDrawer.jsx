@@ -61,7 +61,7 @@ export default function MyQrCodeDrawer({ children }) {
 
   return (
     <Drawer>
-      <DrawerTrigger>{children}</DrawerTrigger>
+      <DrawerTrigger asChild>{children}</DrawerTrigger>
       <DrawerContent className="">
         <DrawerHeader>
           <DrawerTitle className="text-lg">My QR Code</DrawerTitle>
