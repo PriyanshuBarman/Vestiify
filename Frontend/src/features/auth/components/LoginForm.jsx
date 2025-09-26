@@ -2,31 +2,34 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { useActionState, useEffect } from "react";
-import { Link, useNavigate } from "react-router";
-import { toast } from "sonner";
+import { useState } from "react";
+import { Link } from "react-router";
 import { useGoogleAuth } from "../hooks/useGoogleAuth";
-import { loginUser } from "../services/services";
 import { Loader2Icon } from "lucide-react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useLogin } from "../hooks/useLogin";
 
 export function LoginForm({ className, ...props }) {
-  const queryClient = useQueryClient();
-  const [data, submitAction, isPending] = useActionState(loginUser);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
-  const navigate = useNavigate();
+  const { mutate: login, isPending } = useLogin();
   const { googleLogin, isLoading } = useGoogleAuth();
 
-  useEffect(() => {
-    if (!data) return;
-    if (data?.success) navigate("/mutual-funds#explore");
-    queryClient.setQueryData(["user"], data?.user);
-    toast[data?.success ? "success" : "error"](data?.message);
-  }, [data]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    login(formData);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   return (
     <form
-      action={submitAction}
+      onSubmit={handleSubmit}
       className={cn("flex flex-col gap-10", className)}
       {...props}
     >
@@ -35,19 +38,23 @@ export function LoginForm({ className, ...props }) {
           Login To Your Account
         </h1>
       </div>
+
       <div className="grid gap-6">
+        {/* Email */}
         <div className="grid gap-3">
           <Label htmlFor="email">Email</Label>
           <Input
-            defaultValue={data?.email}
-            id="email"
-            name="email"
-            type="email"
-            placeholder="m@example.com"
             required
+            type="email"
+            name="email"
+            placeholder="m@example.com"
             className="py-4.5"
+            value={formData.email}
+            onChange={handleChange}
           />
         </div>
+
+        {/* Password */}
         <div className="grid gap-3">
           <div className="flex items-center">
             <Label htmlFor="password">Password</Label>
@@ -59,14 +66,16 @@ export function LoginForm({ className, ...props }) {
             </a>
           </div>
           <Input
-            defaultValue={data?.password}
-            type="password"
-            id="password"
-            name="password"
             required
+            type="password"
+            name="password"
             className="py-4.5"
+            value={formData.password}
+            onChange={handleChange}
           />
         </div>
+
+        {/* Login Button */}
         <Button
           size="lg"
           disabled={isPending || isLoading}
@@ -79,11 +88,15 @@ export function LoginForm({ className, ...props }) {
             "Login"
           )}
         </Button>
+
+        {/* Divider */}
         <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
           <span className="bg-background text-muted-foreground relative z-10 px-2">
             Or continue with
           </span>
         </div>
+
+        {/* Google Login */}
         <Button
           size="lg"
           onClick={googleLogin}
@@ -127,6 +140,8 @@ export function LoginForm({ className, ...props }) {
           Login with Google
         </Button>
       </div>
+
+      {/* Sign up link */}
       <div className="text-center text-sm">
         Don&apos;t have an account?{" "}
         <Link to="/auth/signup" className="underline underline-offset-4">

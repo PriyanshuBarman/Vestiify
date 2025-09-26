@@ -1,43 +1,24 @@
 import axios from "axios";
 import { VITE_BACKEND_BASE_URL } from "@/config/env";
 
-export const loginUser = async (previousState, formData) => {
-  const email = formData.get("email");
-  const password = formData.get("password");
-  try {
-    const { data } = await axios.post(
-      `${VITE_BACKEND_BASE_URL}/auth/login`,
-      { email, password },
-      { withCredentials: true },
-    );
+export const loginUser = async ({ email, password }) => {
+  const { data } = await axios.post(
+    `${VITE_BACKEND_BASE_URL}/auth/login`,
+    { email, password },
+    { withCredentials: true },
+  );
 
-    if (data.success) return data;
-  } catch (error) {
-    console.error(error);
-    const message = error?.response?.data?.message || "Something went wrong.";
-    return { success: false, message, email, password };
-  }
+  return data?.user;
 };
 
-export const signupUser = async (previousState, formData) => {
-  const fullName = formData.get("fullName");
-  const email = formData.get("email");
-  const password = formData.get("password");
+export const signupUser = async ({ fullName, email, password }) => {
+  const { data } = await axios.post(
+    `${VITE_BACKEND_BASE_URL}/auth/signup`,
+    { fullName, email, password },
+    { withCredentials: true },
+  );
 
-  try {
-    const { data } = await axios.post(
-      `${VITE_BACKEND_BASE_URL}/auth/signup`,
-      { fullName, email, password },
-      { withCredentials: true },
-    );
-
-    if (data.success) return data;
-  } catch (error) {
-    console.error(error);
-    const message = error?.response?.data?.message || "Something went wrong.";
-
-    return { success: false, message, fullName, email, password };
-  }
+  return data?.user;
 };
 
 export const logoutUser = async () => {
@@ -59,6 +40,4 @@ export const createPin = async (pin) => {
     { pin },
     { withCredentials: true },
   );
-
-  return data;
 };

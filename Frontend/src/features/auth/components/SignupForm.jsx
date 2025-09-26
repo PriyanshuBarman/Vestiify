@@ -2,33 +2,35 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { useActionState, useEffect } from "react";
-import { Link, useNavigate } from "react-router";
-import { toast } from "sonner";
-import { useGoogleAuth } from "../hooks/useGoogleAuth";
-import { signupUser } from "../services/services";
 import { Loader2Icon } from "lucide-react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { Link } from "react-router";
+import { useGoogleAuth } from "../hooks/useGoogleAuth";
+import { useSignup } from "../hooks/useSignup";
 
 export function SignupForm({ className, ...props }) {
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
-  const [data, submitAction, isPending] = useActionState(signupUser);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+  });
+
+  const { mutate: signup, isPending } = useSignup();
   const { googleLogin, isLoading } = useGoogleAuth();
 
-  useEffect(() => {
-    if (!data) return;
-    if (data?.success) {
-      queryClient.setQueryData(["user"], data?.user);
-      navigate("/auth/pin-setup");
-    } else {
-      toast.error(data?.message);
-    }
-  }, [data]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    signup(formData);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   return (
     <form
-      action={submitAction}
+      onSubmit={handleSubmit}
       className={cn("flex flex-col gap-6", className)}
       {...props}
     >
@@ -41,33 +43,34 @@ export function SignupForm({ className, ...props }) {
         <div className="grid gap-3">
           <Label htmlFor="fullName">Name</Label>
           <Input
-            defaultValue={data?.fullName}
-            id="fullName"
-            name="fullName"
-            type="text"
-            placeholder="John Doe"
             required
+            type="text"
+            name="fullName"
+            placeholder="John Doe"
+            value={formData.fullName}
+            onChange={handleChange}
           />
         </div>
         <div className="grid gap-3">
           <Label htmlFor="email">Email</Label>
           <Input
-            defaultValue={data?.email}
-            id="email"
-            name="email"
-            type="email"
-            placeholder="m@example.com"
             required
+            type="email"
+            name="email"
+            placeholder="m@example.com"
+            value={formData.email}
+            onChange={handleChange}
           />
         </div>
         <div className="grid gap-3">
           <Label htmlFor="password">Password</Label>
           <Input
-            defaultValue={data?.password}
+            required
             type="password"
             id="password"
             name="password"
-            required
+            value={formData.password}
+            onChange={handleChange}
           />
         </div>
         <Button

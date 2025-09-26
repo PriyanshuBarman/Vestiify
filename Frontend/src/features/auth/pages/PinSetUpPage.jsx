@@ -4,36 +4,18 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useGetUserData } from "@/hooks/queries/internalQueries";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { Loader2Icon } from "lucide-react";
 import { useState } from "react";
-import { Navigate, useNavigate } from "react-router";
-import { toast } from "sonner";
-import { createPin } from "../services/services";
-import { useGetUserData } from "@/hooks/queries/internalQueries";
+import { Navigate } from "react-router";
+import { useSetPin } from "../hooks/useSetPin";
 
 function PinSetupPage() {
   const [pin, setPin] = useState("");
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: (pin) => createPin(pin),
-    onSuccess: () => {
-      queryClient.setQueryData(["user"], (prev) => {
-        return { ...prev, hasPin: true };
-      });
-      navigate("/");
-    },
-    onError: (error) => {
-      toast.error(error.response?.data?.message || "Something went wrong");
-    },
-  });
-
+  const { mutate, isPending } = useSetPin();
   const { data: user } = useGetUserData();
 
-  console.log(user, "at pinsetup")
   if (!user || user?.hasPin) return <Navigate to="/" />;
 
   return (

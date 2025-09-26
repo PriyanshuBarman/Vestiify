@@ -1,25 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { useNavigate } from "react-router";
-import { toast } from "sonner";
-import { logoutUser } from "../services/services";
+import { useLogout } from "../hooks/useLogout";
 
 function LogoutPage() {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
-  const { mutate: logout } = useMutation({
-    mutationFn: logoutUser,
-    onSuccess: () => {
-      queryClient.clear();
-      localStorage.clear();
-      toast.success("Logged out successfully");
-      navigate("/auth/login", { replace: true });
-    },
-    onError: (error) => {
-      toast.error(error?.response?.data?.message || "Something went wrong");
-    },
-  });
+  const { mutate: logout } = useLogout();
 
   useEffect(() => {
     logout();
