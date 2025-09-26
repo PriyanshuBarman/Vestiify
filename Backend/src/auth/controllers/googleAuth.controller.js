@@ -52,6 +52,7 @@ export const googleAuth = asyncHandler(async (req, res) => {
     .cookie("token", token, COOKIE_OPTIONS)
     .status(isNewUser ? 201 : 200)
     .json({
+      user,
       success: true,
       message: isNewUser ? "User Registered Successfully" : "Login Successful",
     });

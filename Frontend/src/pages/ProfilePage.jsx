@@ -109,13 +109,13 @@ function ProfilePage() {
             <div className="flex items-center justify-center">
               <img
                 src="/logo.png"
-                alt="Vestiify logo"
+                alt="Vestify logo"
                 className="size-5 rounded-full"
               />
-              <span className="ml-2 text-xs">Vestiify</span>
+              <span className="ml-2 text-xs">Vestify</span>
             </div>
             <p className="text-muted-foreground flex items-center text-center text-xs">
-              Copyright © 2025 Vestiify
+              Copyright © 2025 Vestify
             </p>
           </div> */}
         </div>

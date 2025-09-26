@@ -16,7 +16,7 @@ function LoginPage() {
         <div className="flex justify-center gap-2">
           <a href="#" className="flex items-center gap-2 font-medium">
             <Logo className="size-6 rounded-md sm:size-7" />
-            Vestiify
+            Vestify
           </a>
         </div>
         <div className="flex flex-1 items-center justify-center">

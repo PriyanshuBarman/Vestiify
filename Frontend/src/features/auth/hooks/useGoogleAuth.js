@@ -4,9 +4,11 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { VITE_BACKEND_BASE_URL } from "@/config/env";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const useGoogleAuth = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
 
   const fnc = useGoogleLogin({
@@ -19,8 +21,8 @@ export const useGoogleAuth = () => {
           { withCredentials: true },
         );
         if (data.success) {
-          navigate("/mutual-funds");
-          toast.success(data.message);
+          queryClient.setQueryData(["user"], data.user);
+          navigate("/");
         }
       } catch (err) {
         console.error("Login error:", err);

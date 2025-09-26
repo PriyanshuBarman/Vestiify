@@ -1,5 +1,4 @@
 import AuthGuard from "@/components/AuthGuard";
-import LoadingState from "@/components/LoadingState";
 import { lazy, Suspense } from "react";
 
 const LoginPage = lazy(() => import("./pages/LoginPage"));
@@ -14,47 +13,35 @@ export const authRoutes = {
     {
       path: "login",
       element: (
-        <Suspense fallback={<LoadingState fullPage />}>
-          <AuthGuard mode="private">
-            <LoginPage />
-          </AuthGuard>
-        </Suspense>
+        <AuthGuard mode="private">
+          <LoginPage />
+        </AuthGuard>
       ),
     },
     {
       path: "signup",
       element: (
-        <Suspense fallback={<LoadingState fullPage />}>
-          <AuthGuard mode="private">
-            <SignupPage />
-          </AuthGuard>
-        </Suspense>
+        <AuthGuard mode="private">
+          <SignupPage />
+        </AuthGuard>
       ),
     },
     {
       path: "logout",
       element: (
-        <Suspense fallback={<LoadingState fullPage />}>
-          <AuthGuard>
-            <LogoutPage />
-          </AuthGuard>
-        </Suspense>
+        <AuthGuard>
+          <LogoutPage />
+        </AuthGuard>
       ),
     },
     {
       path: "pin-setup",
-      element: (
-        <Suspense fallback={<LoadingState fullPage />}>
-          <AuthGuard mode="private">
-            <PinSetupPage />
-          </AuthGuard>
-        </Suspense>
-      ),
+      element: <PinSetupPage />,
     },
     {
       path: "avatar-setup",
       element: (
-        <Suspense fallback={<LoadingState fullPage />}>
+        <Suspense>
           <AuthGuard>
             <AvatarSetUpPage />
           </AuthGuard>

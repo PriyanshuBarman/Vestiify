@@ -6,6 +6,7 @@ import { authRoutes } from "./features/auth/routes";
 import { mutualFundRoutes } from "./features/mutualfund/routes";
 import { walletRoutes } from "./features/wallet/routes";
 import Layout from "./layouts/Layout";
+import ProfilePage from "./pages/ProfilePage";
 
 const ComingSoonPage = lazy(() => import("./pages/ComingSoonPage"));
 const MobileSearchPage = lazy(
@@ -14,7 +15,6 @@ const MobileSearchPage = lazy(
 const AllOrdersPage = lazy(
   () => import("./features/mutualfund/pages/AllOrdersPage"),
 );
-const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 const PaymentSuccessPage = lazy(() => import("./pages/PaymentSuccessPage"));
 
 export const routes = createBrowserRouter([
@@ -58,11 +58,7 @@ export const routes = createBrowserRouter([
       },
       {
         path: "/profile",
-        element: (
-          <Suspense fallback={<LoadingState fullPage />}>
-            <ProfilePage />
-          </Suspense>
-        ),
+        element: <ProfilePage />,
       },
       {
         path: "/coming-soon",

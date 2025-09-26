@@ -1,6 +1,6 @@
 {
-  "name": "Vestiify",
-  "short_name": "Vestiify",
+  "name": "Vestify",
+  "short_name": "Vestify",
   "start_url": "/?source=pwa",
   "scope": "/",
   "icons": [

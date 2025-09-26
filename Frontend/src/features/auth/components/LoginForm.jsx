@@ -20,9 +20,7 @@ export function LoginForm({ className, ...props }) {
   useEffect(() => {
     if (!data) return;
     if (data?.success) navigate("/mutual-funds#explore");
-    queryClient.invalidateQueries({
-      queryKey: ["user"],
-    });
+    queryClient.setQueryData(["user"], data?.user);
     toast[data?.success ? "success" : "error"](data?.message);
   }, [data]);
 

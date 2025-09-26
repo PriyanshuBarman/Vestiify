@@ -6,6 +6,7 @@ import { format, setDate } from "date-fns";
  */
 export function formatToINR(num, maxFracDigits = 2) {
   const number = Number(num);
+  if (isNaN(number)) return;
 
   const formatted = new Intl.NumberFormat("en-IN", {
     style: "currency",

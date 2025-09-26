@@ -33,7 +33,7 @@ export const signupUser = async (fullName, email, password) => {
     expiresIn: TOKEN_EXPIRY,
   });
 
-  return token;
+  return { token, user };
 };
 
 export const loginUser = async (email, password) => {
@@ -49,7 +49,7 @@ export const loginUser = async (email, password) => {
     expiresIn: TOKEN_EXPIRY,
   });
 
-  return token;
+  return { token, user: existingUser };
 };
 
 export const setPin = async (userId, pin) => {

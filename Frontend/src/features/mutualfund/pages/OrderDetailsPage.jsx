@@ -91,7 +91,7 @@ function OrderDetailsPage() {
               <div className="space-x-10">
                 <span>Paid Via:</span>
                 <span className="font-medium">
-                  Vestiify Wallet (Virtual Money)
+                  Vestify Wallet (Virtual Money)
                 </span>
               </div>
               <div className="space-x-10">

@@ -19,10 +19,8 @@ export function SignupForm({ className, ...props }) {
   useEffect(() => {
     if (!data) return;
     if (data?.success) {
+      queryClient.setQueryData(["user"], data?.user);
       navigate("/auth/pin-setup");
-      queryClient.invalidateQueries({
-        queryKey: ["user"],
-      });
     } else {
       toast.error(data?.message);
     }

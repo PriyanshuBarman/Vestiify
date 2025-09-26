@@ -1,18 +1,17 @@
-import PinKeypad from "@/components/PinKeypad";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Loader2Icon } from "lucide-react";
-import { useNavigate } from "react-router";
-import { toast } from "sonner";
-import { createPin } from "../services/services";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
+import { Loader2Icon } from "lucide-react";
 import { useState } from "react";
+import { Navigate, useNavigate } from "react-router";
+import { toast } from "sonner";
+import { createPin } from "../services/services";
+import { useGetUserData } from "@/hooks/queries/internalQueries";
 
 function PinSetupPage() {
   const [pin, setPin] = useState("");
@@ -31,6 +30,11 @@ function PinSetupPage() {
       toast.error(error.response?.data?.message || "Something went wrong");
     },
   });
+
+  const { data: user } = useGetUserData();
+
+  console.log(user, "at pinsetup")
+  if (!user || user?.hasPin) return <Navigate to="/" />;
 
   return (
     <div className="flex h-dvh flex-col sm:justify-center sm:gap-4">
@@ -62,19 +66,19 @@ function PinSetupPage() {
           >
             <InputOTPGroup className="gap-3">
               <InputOTPSlot
-                className="size-13  text-base font-medium shadow-xs first:rounded-xl"
+                className="size-13 text-base font-medium shadow-xs first:rounded-xl"
                 index={0}
               />
               <InputOTPSlot
-                className="size-13  rounded-xl text-base font-medium shadow-xs"
+                className="size-13 rounded-xl text-base font-medium shadow-xs"
                 index={1}
               />
               <InputOTPSlot
-                className="size-13  rounded-xl text-base font-medium shadow-xs"
+                className="size-13 rounded-xl text-base font-medium shadow-xs"
                 index={2}
               />
               <InputOTPSlot
-                className="size-13  text-base font-medium shadow-xs last:rounded-xl"
+                className="size-13 text-base font-medium shadow-xs last:rounded-xl"
                 index={3}
               />
             </InputOTPGroup>

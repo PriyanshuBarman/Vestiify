@@ -7,23 +7,27 @@ import { ApiError } from "../../shared/utils/apiError.utils.js";
 export const signup = asyncHandler(async (req, res) => {
   const { fullName, email, password } = req.body;
 
-  const token = await authService.signupUser(fullName, email, password);
+  const { token, user } = await authService.signupUser(
+    fullName,
+    email,
+    password
+  );
 
   return res
     .cookie("token", token, COOKIE_OPTIONS)
     .status(201)
-    .json({ success: true, message: "User Regestration Sucessfull" });
+    .json({ success: true, message: "User Regestration Sucessfull", user });
 });
 
 export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const token = await authService.loginUser(email, password);
+  const { token, user } = await authService.loginUser(email, password);
 
   return res
     .cookie("token", token, COOKIE_OPTIONS)
     .status(200)
-    .json({ success: true, message: "User Logged In Successfully" });
+    .json({ success: true, message: "User Logged In Successfully", user });
 });
 
 export const logout = (req, res) => {
