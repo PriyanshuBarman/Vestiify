@@ -1,10 +1,9 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useGetAllTnx } from "../hooks/queries/internalQueries";
-import { formatToINR } from "@/features/mutualfund/utils/formaters";
-import { PlusIcon } from "lucide-react";
 import GoBackBar from "@/components/GoBackBar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { formatToINR } from "@/utils/formatters";
 import { formatDate } from "date-fns";
 import { useNavigate } from "react-router";
+import { useGetAllTnx } from "../hooks/useGetAllTnx";
 import { assetConfig } from "../utils/constants";
 
 function TnxHistoryPage() {

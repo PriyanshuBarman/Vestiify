@@ -1,5 +1,5 @@
 import { Separator } from "@/components/ui/separator";
-import { formatToINR } from "../utils/formaters";
+import { formatToINR } from "@/utils/formatters";
 
 function FundDescription({ fund }) {
   let d = new Date(fund.nav?.date);

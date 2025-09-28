@@ -1,7 +1,7 @@
 import GoBackBtn from "@/components/GoBackBtn";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useKeyboardDismiss } from "@/features/search/hooks/useKeyboardDismis";
-import { useGetSearchResults } from "@/features/search/hooks/queries/useGetSearchResults";
+import { useGetSearchResults } from "@/features/search/hooks/useGetSearchResults";
 import { addToSearchHistory } from "@/store/slices/searchSlice";
 import { Loader2Icon, X } from "lucide-react";
 import { useRef, useState } from "react";

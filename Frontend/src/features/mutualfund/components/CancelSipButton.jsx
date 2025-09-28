@@ -21,11 +21,11 @@ import {
 } from "@/components/ui/drawer";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { Loader2Icon, MessageCircleXIcon } from "lucide-react";
-import { useCancelSip } from "../hooks/mutations/mutations";
+import { useDeleteSip } from "../hooks/useDeleteSip";
 
 function CancelSipButton({ sipId }) {
   const isMobile = useIsMobile();
-  const { mutate: cancelSip, isPending } = useCancelSip();
+  const { mutate: cancelSip, isPending } = useDeleteSip();
 
   const handleCancelSip = () => {
     cancelSip({ sipId });

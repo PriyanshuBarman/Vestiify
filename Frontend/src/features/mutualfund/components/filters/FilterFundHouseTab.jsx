@@ -1,4 +1,4 @@
-import { useGetAMCs } from "../../hooks/queries/externalQueries";
+import { useGetAMCs } from "../../hooks/useGetAMCs";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { useSelector, useDispatch } from "react-redux";

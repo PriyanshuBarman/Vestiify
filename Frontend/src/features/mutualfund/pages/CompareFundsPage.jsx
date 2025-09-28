@@ -9,10 +9,10 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { CirclePlusIcon } from "lucide-react";
 import { useState } from "react";
-import { fetchFund } from "../services/externalServices";
+import { fetchFund } from "../api/external";
 import { useQueryClient } from "@tanstack/react-query";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { formatToINR } from "../utils/formaters";
+import { formatToINR } from "@/utils/formatters";
 import { formatDate } from "date-fns";
 
 function CompareFundsPage() {

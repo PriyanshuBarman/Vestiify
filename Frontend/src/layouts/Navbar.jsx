@@ -2,7 +2,7 @@ import Logo from "@/components/Logo";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/mode-togle";
-import { useGetUserData } from "@/hooks/queries/internalQueries";
+import { useGetUser } from "@/hooks/useGetUser";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { BellIcon, SearchIcon } from "lucide-react";
 import { lazy } from "react";
@@ -23,7 +23,7 @@ function Navbar() {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   const location = useLocation();
-  const { data: user } = useGetUserData();
+  const { data: user } = useGetUser();
 
   if (!allowedRoutes.has(location.pathname) && isMobile) return;
 

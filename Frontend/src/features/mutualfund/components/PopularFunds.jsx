@@ -1,6 +1,6 @@
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { useGetPopularFunds } from "../hooks/queries/externalQueries";
+import { useGetPopularFunds } from "../hooks/useGetPopularFunds";
 import CardLG from "./CardLG";
 import CardSM from "./CardSM";
 import SectionHeading from "./SectionHeading";

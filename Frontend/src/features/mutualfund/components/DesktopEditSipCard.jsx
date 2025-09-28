@@ -1,4 +1,3 @@
-import LoadingState from "@/components/LoadingState";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,19 +10,19 @@ import { Input } from "@/components/ui/input";
 import { IndianRupeeIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { useEditSip } from "../hooks/mutations/mutations";
-import { useGetFundData } from "../hooks/queries/externalQueries";
+import { useGetFundData } from "../hooks/useGetFundData";
 import EditSipDatePicker from "./EditSipDatePicker";
+import { useEditSip } from "../hooks/useEditSip";
 
 function DesktopPaymentCard({ sipDetail }) {
   const { data: fund = {} } = useGetFundData(sipDetail.schemeCode);
   const [amount, setAmount] = useState();
   const [sipDate, setSipDate] = useState(sipDetail.sipDate);
-  const { mutate: editSip, isPending } = useEditSip();
+  const { mutate: updateSip, isPending } = useEditSip();
 
   const handleUpdateSip = () => {
     if (!amount) return toast.error("Please enter amount");
-    editSip({ sipId: sipDetail.id, amount, sipDate });
+    updateSip({ sipId: sipDetail.id, amount, sipDate });
   };
 
   return (

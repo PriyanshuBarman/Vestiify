@@ -10,8 +10,8 @@ import { Slider } from "@/components/ui/slider";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useMemo, useState } from "react";
 import CountUp from "react-countup";
-import { useGetChart } from "../hooks/queries/externalQueries";
-import { formatToINR } from "../utils/formaters";
+import { useGetChart } from "../hooks/useGetChart";
+import { formatToINR } from "@/utils/formatters";
 import {
   calculateAbsoluteReturn,
   calculateSIPReturns,

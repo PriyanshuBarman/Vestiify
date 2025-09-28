@@ -14,7 +14,7 @@ import {
   getNextColumn,
   sortPeersBy,
 } from "../../utils/similarFundsTable";
-import { formatToINR } from "../../utils/formaters";
+import { formatToINR } from "@/utils/formatters";
 
 function SimilarFundsTableMobile({ fund }) {
   const [activeColumn, setActiveColumn] = useState("return_1y");

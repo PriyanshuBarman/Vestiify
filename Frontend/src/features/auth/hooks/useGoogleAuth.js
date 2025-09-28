@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { VITE_BACKEND_BASE_URL } from "@/config/env";
 import { useQueryClient } from "@tanstack/react-query";
 
-export const useGoogleAuth = () => {
+export function useGoogleAuth() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
@@ -39,4 +39,4 @@ export const useGoogleAuth = () => {
   });
 
   return { googleLogin: fnc, isLoading };
-};
+}

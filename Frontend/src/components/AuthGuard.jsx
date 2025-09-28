@@ -1,8 +1,8 @@
-import { useGetUserData } from "@/hooks/queries/internalQueries";
+import { useGetUser } from "@/hooks/useGetUser";
 import { Navigate } from "react-router";
 
 function AuthGuard({ children, mode = "protected" }) {
-  const { data: user } = useGetUserData();
+  const { data: user } = useGetUser();
 
   // ----- Protected Mode -----
   if (mode === "protected") {

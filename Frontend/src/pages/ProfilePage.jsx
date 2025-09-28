@@ -1,7 +1,8 @@
 import ProfileAvatar from "@/components/ProfileAvatar";
 import { Button } from "@/components/ui/button";
-import { formatToINR } from "@/features/mutualfund/utils/formaters";
-import { useGetBalance, useGetUserData } from "@/hooks/queries/internalQueries";
+import { formatToINR } from "@/utils/formatters";
+import { useGetBalance } from "@/hooks/useGetBalance";
+import { useGetUser } from "@/hooks/useGetUser";
 import { selectTheme, setTheme } from "@/store/slices/themeSlice";
 import {
   ArrowLeftIcon,
@@ -28,7 +29,7 @@ function ProfilePage() {
   const currentTheme = useSelector(selectTheme);
   const dispatch = useDispatch();
 
-  const { data: user = {} } = useGetUserData();
+  const { data: user = {} } = useGetUser();
   const { data: balance } = useGetBalance();
 
   return (

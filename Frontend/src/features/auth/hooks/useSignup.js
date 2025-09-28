@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
-import { signupUser } from "../services/services";
+import { signupUser } from "../api/auth";
 
-export const useSignup = () => {
+export function useSignup() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -17,4 +17,4 @@ export const useSignup = () => {
       toast.error(error?.response?.data?.message || "Something went wrong.");
     },
   });
-};
+}

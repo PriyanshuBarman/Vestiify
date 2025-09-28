@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { formatToINR } from "@/features/mutualfund/utils/formaters";
+import { formatToINR } from "@/utils/formatters";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { cn } from "@/lib/utils";
 import { Loader2Icon, SendIcon } from "lucide-react";

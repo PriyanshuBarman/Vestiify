@@ -1,4 +1,4 @@
-import { useGetCategories } from "../../hooks/queries/externalQueries";
+import { useGetCategories } from "../../hooks/useGetCategories";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import {

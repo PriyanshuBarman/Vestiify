@@ -1,23 +1,19 @@
+import LoadingState from "@/components/LoadingState";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { format, getDate } from "date-fns";
-import { ChevronsLeftRightIcon } from "lucide-react";
-import {
-  useGetFundsByFilter,
-  useGetPopularFunds,
-} from "../hooks/queries/externalQueries";
-import { useGetSips } from "../hooks/queries/internalQueries";
-import { formatToINR } from "../utils/formaters";
+import { Link } from "react-router";
+import { useGetFundsByFilter } from "../hooks/useGetFundsByFilter";
+import { useGetSips } from "../hooks/useGetSips";
+import { formatToINR } from "@/utils/formatters";
 import CardLG from "./CardLG";
 import CardSM from "./CardSM";
 import FundLogo from "./FundLogo";
 import SectionHeading from "./SectionHeading";
-import { Link } from "react-router";
-import LoadingState from "@/components/LoadingState";
 
 function SipsTab() {
-  const { data } = useGetSips();
-  const { data: funds, isPending } = useGetFundsByFilter({ sip_min: 100 }, 6);
+  const { data, isPending } = useGetSips();
+  const { data: funds } = useGetFundsByFilter({ sip_min: 100 }, 6);
   const isMobile = useIsMobile();
 
   if (isPending) {
@@ -28,7 +24,7 @@ function SipsTab() {
     return (
       <div>
         <div className="flex flex-col items-center justify-center gap-2">
-          <img src="/sip.svg" alt="sip" className="h-50" />
+          <img src="/sip.svg" alt="sip" className="h-50 sm:h-70" />
           <h3 className="text-foreground-secondary font-medium sm:text-lg">
             No Active SIP's
           </h3>
@@ -37,7 +33,7 @@ function SipsTab() {
           </p>
         </div>
 
-        <section className="swiper-no-swiping mt-26">
+        <section className="swiper-no-swiping mt-26 sm:mt-12">
           <SectionHeading heading={"Start SIP with ₹100"} />
           <ScrollArea>
             <div className="flex justify-between gap-4 px-4 sm:m-0.5 sm:gap-3 sm:px-0">

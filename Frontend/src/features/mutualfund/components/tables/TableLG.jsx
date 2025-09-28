@@ -18,7 +18,7 @@ import {
 import FundRating from "@/features/mutualfund/components/FundRating";
 import { ChevronDownIcon } from "lucide-react";
 import { Link } from "react-router";
-import { formatToINR } from "../../utils/formaters";
+import { formatToINR } from "@/utils/formatters";
 import FundLogo from "../FundLogo";
 import LoadingState from "@/components/LoadingState";
 import { getMainDomain } from "../../utils/getMainDomain";

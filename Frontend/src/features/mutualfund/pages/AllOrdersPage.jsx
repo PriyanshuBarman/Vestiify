@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
-import { useGetAllOrders } from "../hooks/queries/internalQueries";
-import { formatToINR } from "../utils/formaters";
+import { useGetAllOrders } from "../hooks/useGetAllOrders";
+import { formatToINR } from "@/utils/formatters";
 import GoBackBar from "@/components/GoBackBar";
 
 const OrderTypeConfig = {

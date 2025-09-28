@@ -1,7 +1,7 @@
 import { Check, Minus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSelector } from "react-redux";
-import { useGetCategories } from "../hooks/queries/externalQueries";
+import { useGetCategories } from "../hooks/useGetCategories";
 import { selectFilters } from "@/store/slices/mutualFundSlice";
 
 const CustomCheckbox = ({ onChange, className, id, fundType, ...props }) => {

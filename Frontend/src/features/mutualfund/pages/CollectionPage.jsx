@@ -8,7 +8,7 @@ import {
   DEFAULT_COLUMNS,
 } from "../constants/collectionConstants";
 import { useEffect, useState } from "react";
-import { useGetCategoryFundList } from "../hooks/queries/externalQueries";
+import { useGetCategoryFundList } from "../hooks/useGetCategoryFundList";
 import {
   columnsConfig,
   getNextColumn,

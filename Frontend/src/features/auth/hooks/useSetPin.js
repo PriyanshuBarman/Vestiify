@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createPin } from "../services/services";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
+import { createPin } from "../api/auth";
 
-export const useSetPin = () => {
+export function useSetPin() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -19,4 +19,4 @@ export const useSetPin = () => {
       toast.error(error.response?.data?.message || "Something went wrong");
     },
   });
-};
+}

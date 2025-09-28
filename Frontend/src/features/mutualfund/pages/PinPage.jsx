@@ -1,7 +1,6 @@
-import Upi from "@/components/Upi";
 import { useLocation } from "react-router";
-import { useMakeInvestment, useStartSip } from "../hooks/mutations/mutations";
-import { useGetFundData } from "../hooks/queries/externalQueries";
+import { useCreateInvestOrder, useCreateSip } from "../hooks/useCreateInvestOrder";
+import { useGetFundData } from "../hooks/useGetFundData";
 import {
   InputOTP,
   InputOTPGroup,
@@ -18,8 +17,8 @@ function PinPage() {
   const { schemeCode, amount, sipDate } = location.state;
   const { data: fund } = useGetFundData(schemeCode);
 
-  const sipMutation = useStartSip();
-  const lumpsumMutation = useMakeInvestment();
+  const sipMutation = useCreateSip();
+  const lumpsumMutation = useCreateInvestOrder();
 
   const activeMutation = sipDate ? sipMutation : lumpsumMutation;
 

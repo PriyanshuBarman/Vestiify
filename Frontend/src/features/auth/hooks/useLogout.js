@@ -1,9 +1,9 @@
-import { useNavigate } from "react-router";
-import { logoutUser } from "../services/services";
-import { toast } from "sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router";
+import { toast } from "sonner";
+import { logoutUser } from "../api/auth";
 
-export const useLogout = () => {
+export function useLogout() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -18,4 +18,4 @@ export const useLogout = () => {
       toast.error(error?.response?.data?.message || "Something went wrong");
     },
   });
-};
+}

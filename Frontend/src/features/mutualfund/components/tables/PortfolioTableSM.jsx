@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/table";
 import { ChevronsLeftRightIcon } from "lucide-react";
 import { useState } from "react";
-import { formatToINR } from "../../utils/formaters";
+import { formatToINR } from "@/utils/formatters";
 import FundLogo from "../FundLogo";
 
 const columns = [

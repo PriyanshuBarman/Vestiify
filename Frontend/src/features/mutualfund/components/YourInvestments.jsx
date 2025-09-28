@@ -1,8 +1,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useMediaQuery } from "react-responsive";
-import { useGetPortfolioSummary } from "../hooks/queries/internalQueries";
+import { useGetPortfolioSummary } from "../hooks/useGetPortfolioSummary";
 import SectionHeading from "./SectionHeading";
-import { formatToINR } from "../utils/formaters";
+import { formatToINR } from "@/utils/formatters";
 
 function YourInvestments() {
   const { data: portfolio = {} } = useGetPortfolioSummary();

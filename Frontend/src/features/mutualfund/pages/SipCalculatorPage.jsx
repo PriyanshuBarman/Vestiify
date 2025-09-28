@@ -4,7 +4,7 @@ import { Slider } from "@/components/ui/slider";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useMemo, useState } from "react";
 import FutureValuePieChart from "../components/chart/FutureValuePieChart";
-import { formatToINR } from "../utils/formaters";
+import { formatToINR } from "@/utils/formatters";
 import { calcFutureValues } from "../utils/returnCalculatorHelper";
 
 function SipCalculatorPage() {

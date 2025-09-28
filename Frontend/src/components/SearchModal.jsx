@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { useGetSearchResults } from "@/features/search/hooks/queries/useGetSearchResults";
+import { useGetSearchResults } from "@/features/search/hooks/useGetSearchResults";
 import { useDebounce } from "@/hooks/useDebounce";
 import { Loader2Icon, SearchIcon } from "lucide-react";
 import { useState } from "react";

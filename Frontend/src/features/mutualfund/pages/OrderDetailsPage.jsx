@@ -1,16 +1,15 @@
 import GoBackBar from "@/components/GoBackBar";
-import { CheckCircle, ChevronRightIcon, Clock, Clock4Icon } from "lucide-react";
-import { Link, useParams } from "react-router";
-import { useGetOrderDetail } from "../hooks/queries/internalQueries";
-import { formatToINR } from "../utils/formaters";
-import { Separator } from "@/components/ui/separator";
-import { format } from "date-fns";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { formatToINR } from "@/utils/formatters";
+import { format } from "date-fns";
+import { CheckCircle, ChevronRightIcon, Clock, Clock4Icon } from "lucide-react";
+import { Link, useParams } from "react-router";
+import { useGetOrderDetail } from "../hooks/useGetOrderDetail";
 
 const helperConfig = {
   ONE_TIME: "One-Time",

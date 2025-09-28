@@ -2,15 +2,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import SectionHeading from "@/features/mutualfund/components/SectionHeading";
-import { formatToINR } from "@/features/mutualfund/utils/formaters";
-import { useGetBalance } from "@/hooks/queries/internalQueries";
+import { formatToINR } from "@/utils/formatters";
+import { useGetBalance } from "@/hooks/useGetBalance";
 import { formatDate } from "date-fns";
 import { ChevronRightIcon, QrCodeIcon, ScanLineIcon } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import MyQrCodeDrawer from "../components/MyQrCodeDrawer";
 import QrReader from "../components/QrReader";
-import { useGetAllTnx } from "../hooks/queries/internalQueries";
+import { useGetAllTnx } from "../hooks/useGetAllTnx";
 import { assetConfig } from "../utils/constants";
 import { getLatestTnx } from "../utils/getLatestTnx";
 

@@ -1,5 +1,5 @@
 import { Link, Navigate } from "react-router";
-import { useGetUserData } from "@/hooks/queries/internalQueries";
+import { useGetUserData } from "@/hooks/useGetUserData";
 
 function Home() {
   const { data } = useGetUserData();

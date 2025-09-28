@@ -1,8 +1,8 @@
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { useGetPopularFunds } from "@/features/mutualfund/hooks/queries/externalQueries";
+import { useGetPopularFunds } from "@/features/mutualfund/hooks/useGetPopularFunds";
 import { useCtrlKSearchToggle } from "@/features/search/hooks/useCtrlKSearchToggle";
 import { useDebounce } from "@/hooks/useDebounce";
-import { useGetSearchResults } from "@/features/search/hooks/queries/useGetSearchResults";
+import { useGetSearchResults } from "@/features/search/hooks/useGetSearchResults";
 import {
   addToSearchHistory,
   setIsSearchOpen,
@@ -153,6 +153,6 @@ function DesktopSearch() {
       )}
     </>
   );
-};
+}
 
 export default DesktopSearch;

@@ -13,7 +13,7 @@ import FilterBtns from "../components/filters/FilterBtns";
 import TableLG from "../components/tables/TableLG";
 import TableSM from "../components/tables/TableSM";
 import { DEFAULT_COLUMNS } from "../constants/collectionConstants";
-import { useGetFilteredFunds } from "../hooks/queries/externalQueries";
+import { useGetFilteredFunds } from "../hooks/useGetFilteredFunds";
 import {
   columnsConfig,
   getNewOrder,

@@ -1,6 +1,6 @@
-import { useGetFundPortfolio } from "../hooks/queries/internalQueries";
+import { useGetFundPortfolio } from "../hooks/useGetFundPortfolio";
 import { Card, CardContent } from "@/components/ui/card";
-import { formatToINR } from "../utils/formaters";
+import { formatToINR } from "@/utils/formatters";
 
 function FundPortfolioPreview({ schemeCode }) {
   const { data: fundPortfolio } = useGetFundPortfolio(schemeCode);

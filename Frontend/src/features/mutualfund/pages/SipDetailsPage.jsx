@@ -19,8 +19,8 @@ import { Link, useNavigate, useParams } from "react-router";
 import CancelSipButton from "../components/CancelSipButton";
 import DesktopEditSipCard from "../components/DesktopEditSipCard";
 import SkipSipButton from "../components/SkipSipButton";
-import { useGetSipDetail } from "../hooks/queries/internalQueries";
-import { formatToINR } from "../utils/formaters";
+import { useGetSipDetail } from "../hooks/useGetSipDetail";
+import { formatToINR } from "@/utils/formatters";
 
 function SipDetailsPage() {
   const { sipId } = useParams();

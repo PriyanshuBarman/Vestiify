@@ -1,19 +1,17 @@
+import LoadingState from "@/components/LoadingState";
+import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import ScrollToTop from "@/layouts/ScrollToTop";
 import { useEffect, useState } from "react";
-import {
-  useGetAllOrders,
-  useGetPortfolio,
-} from "../hooks/queries/internalQueries";
+import { Link } from "react-router";
+import { useGetAllOrders } from "../hooks/useGetAllOrders";
+import { useGetPortfolio } from "../hooks/useGetPortfolio";
 import { sortPortfolio } from "../utils/investmentTabHelper";
 import SortByButton from "./filters/SortByButton";
+import PendingOrders from "./PendingOrders";
 import SectionCards from "./PortfolioSummary";
 import PortfolioTableLG from "./tables/PortfolioTableLG";
 import PortfolioTableSM from "./tables/PortfolioTableSM";
-import PendingOrders from "./PendingOrders";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router";
-import LoadingState from "@/components/LoadingState";
 
 const sortOptions = {
   current: "Current",

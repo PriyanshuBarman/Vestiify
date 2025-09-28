@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/table";
 import { useNavigate } from "react-router";
 import FundLogo from "../FundLogo";
-import { formatToINR } from "../../utils/formaters";
+import { formatToINR } from "@/utils/formatters";
 
 function PortfolioTableLG({ portfolio }) {
   const navigate = useNavigate();

@@ -4,8 +4,8 @@ import {
   TrendingDownIcon,
   TrendingUpIcon,
 } from "lucide-react";
-import { useGetPortfolioSummary } from "../hooks/queries/internalQueries";
-import { formatToINR } from "../utils/formaters";
+import { useGetPortfolioSummary } from "../hooks/useGetPortfolioSummary";
+import { formatToINR } from "@/utils/formatters";
 
 function PortFolioSummary() {
   const { data = {} } = useGetPortfolioSummary();

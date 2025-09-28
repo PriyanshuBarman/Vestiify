@@ -8,11 +8,11 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Link } from "react-router";
 import FundLogo from "./FundLogo";
 import SectionHeading from "./SectionHeading";
-import { useIndexFunds } from "../hooks/queries/externalQueries";
+import { useGetIndexFunds } from "../hooks/useGetIndexFunds";
 import { getMainDomain } from "../utils/getMainDomain";
 
 function IndexFunds() {
-  const { data: funds } = useIndexFunds();
+  const { data: funds } = useGetIndexFunds();
 
   return (
     <section className="swiper-no-swiping">

@@ -7,11 +7,12 @@ import { getDate } from "date-fns";
 import { useState } from "react";
 import { useLocation } from "react-router";
 import DatePicker from "../components/DatePicker";
-import { useMakeInvestment, useStartSip } from "../hooks/mutations/mutations";
-import { useGetFundData } from "../hooks/queries/externalQueries";
-import { formatToINR } from "../utils/formaters";
 import { Label } from "@/components/ui/label";
-import { sanitizeAmount } from "@/utils/formatrs";
+import { sanitizeAmount } from "@/utils/formatters";
+import { useCreateInvestOrder } from "../hooks/useCreateInvestOrder";
+import { useCreateSip } from "../hooks/useCreateSip";
+import { useGetFundData } from "../hooks/useGetFundData";
+import { formatToINR } from "@/utils/formatters";
 
 function InvestPage() {
   const [amount, setAmount] = useState("");
@@ -23,8 +24,8 @@ function InvestPage() {
     isSip ? getDate(TZDate.tz("Asia/Kolkata")) : null,
   );
 
-  const sipMutation = useStartSip();
-  const lumpsumMutation = useMakeInvestment();
+  const sipMutation = useCreateSip();
+  const lumpsumMutation = useCreateInvestOrder();
 
   const activeMutation = sipDate ? sipMutation : lumpsumMutation;
 

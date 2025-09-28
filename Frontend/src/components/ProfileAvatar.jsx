@@ -1,9 +1,9 @@
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { useGetUserData } from "@/hooks/queries/internalQueries";
+import { useGetUser } from "@/hooks/useGetUser";
 import { formatDate } from "date-fns";
 
 function ProfileAvatar() {
-  const { data: user = {} } = useGetUserData();
+  const { data: user = {} } = useGetUser();
 
   return (
     <div className="relative flex items-center justify-center">

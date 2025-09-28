@@ -4,7 +4,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { useGetUserData } from "@/hooks/queries/internalQueries";
+import { useGetUser } from "@/hooks/useGetUser";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { Loader2Icon } from "lucide-react";
 import { useState } from "react";
@@ -14,7 +14,7 @@ import { useSetPin } from "../hooks/useSetPin";
 function PinSetupPage() {
   const [pin, setPin] = useState("");
   const { mutate, isPending } = useSetPin();
-  const { data: user } = useGetUserData();
+  const { data: user } = useGetUser();
 
   if (!user || user?.hasPin) return <Navigate to="/" />;
 

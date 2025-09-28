@@ -4,8 +4,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { AccordionItem } from "@radix-ui/react-accordion";
-import { useGetAllOrders } from "../hooks/queries/internalQueries";
-import { formatToINR } from "../utils/formaters";
+import { useGetAllOrders } from "../hooks/useGetAllOrders";
+import { formatToINR } from "@/utils/formatters";
 import { Link, useNavigate } from "react-router";
 import { ChevronRightIcon } from "lucide-react";
 
@@ -26,7 +26,7 @@ function PendingOrders() {
   return (
     <Accordion type="single" collapsible>
       <AccordionItem value="item-1" className="px-4">
-        <AccordionTrigger className="pt-0 text-sm sm:text-lg sm:font-semibold">
+        <AccordionTrigger className="pt-0 text-base sm:text-lg sm:font-semibold">
           Orders ({pendingOrders?.length})
         </AccordionTrigger>
 

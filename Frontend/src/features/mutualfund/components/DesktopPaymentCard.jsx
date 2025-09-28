@@ -1,14 +1,15 @@
+import ResponsivePinDialog from "@/components/ResponsivePinDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ResponsivePinDialog from "@/components/ResponsivePinDialog";
-import { useGetBalance } from "@/hooks/queries/internalQueries";
+import { useGetBalance } from "@/hooks/useGetBalance";
 import { IndianRupeeIcon, Loader2Icon } from "lucide-react";
 import { useState } from "react";
-import { useMakeInvestment, useStartSip } from "../hooks/mutations/mutations";
-import { formatToINR } from "../utils/formaters";
+import { sanitizeAmount } from "@/utils/formatters";
+import { useCreateInvestOrder } from "../hooks/useCreateInvestOrder";
+import { useCreateSip } from "../hooks/useCreateSip";
+import { formatToINR } from "@/utils/formatters";
 import DatePicker from "./DatePicker";
-import { sanitizeAmount } from "@/utils/formatrs";
 
 function DesktopPaymentCard({ fund }) {
   const [isPinDialogOpen, setIsPinDialogOpen] = useState(false);
@@ -17,8 +18,8 @@ function DesktopPaymentCard({ fund }) {
   const [activeTab, setActiveTab] = useState("lumpsum");
 
   const { data: balance } = useGetBalance();
-  const sipMutation = useStartSip();
-  const lumpsumMutation = useMakeInvestment();
+  const sipMutation = useCreateSip();
+  const lumpsumMutation = useCreateInvestOrder();
 
   const activeMutation = activeTab === "sip" ? sipMutation : lumpsumMutation;
 

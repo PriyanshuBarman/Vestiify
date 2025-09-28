@@ -5,7 +5,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { Loader2Icon, SearchIcon, XIcon } from "lucide-react";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
-import { useSearchProfile } from "../hooks/queries/internalQueries";
+import { useSearchProfile } from "../hooks/useSearchProfile";
 
 function SendMoneyPage() {
   const navigate = useNavigate();

@@ -11,7 +11,7 @@ import FundDescription from "../components/FundDescription";
 import FundLogo from "../components/FundLogo";
 import FundPortfolioPreview from "../components/fundPortfolioPreview";
 import RecentlyViewed from "../components/RecentlyViewed";
-import { useGetFundData } from "../hooks/queries/externalQueries";
+import { useGetFundData } from "../hooks/useGetFundData";
 import { formatFundCategory } from "../utils/formaters";
 import { getMainDomain } from "../utils/getMainDomain";
 import { lazy } from "react";

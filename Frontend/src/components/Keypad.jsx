@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { sanitizeAmount } from "@/utils/formatrs";
+import { sanitizeAmount } from "@/utils/formatters";
 import { DeleteIcon } from "lucide-react";
 
 function Keypad({ amount, setAmount, className }) {

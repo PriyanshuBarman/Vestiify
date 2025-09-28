@@ -1,9 +1,8 @@
-import { useGetUserData } from "@/hooks/queries/internalQueries";
+import { useGetUser } from "@/hooks/useGetUser";
 import { Navigate } from "react-router";
 
 function AvatarSetUpPage() {
-  const { data } = useGetUserData();
-  console.log(data);
+  const { data } = useGetUser();
 
   if (!data) return <Navigate to="/login" />;
 

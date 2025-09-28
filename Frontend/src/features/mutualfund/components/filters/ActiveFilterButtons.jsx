@@ -4,7 +4,7 @@ import { selectFilters, setFilters } from "@/store/slices/mutualFundSlice";
 import { ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetFilteredFunds } from "../../hooks/queries/externalQueries";
+import { useGetFilteredFunds } from "../../hooks/useGetFilteredFunds";
 import { getActiveFilterButtons } from "../../utils/filterUtils";
 import FundRating from "../FundRating";
 import FilterCategoriesTab from "./FilterCategoriesTab";

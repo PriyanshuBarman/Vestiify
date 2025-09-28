@@ -1,5 +1,5 @@
 import ReusableDialog from "@/components/ResueableDialog";
-import { useClaimDailyReward } from "@/hooks/mutations/mutation";
+import { useClaimDailyReward } from "@/hooks/useClaimDailyReward";
 import { isToday } from "date-fns";
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";

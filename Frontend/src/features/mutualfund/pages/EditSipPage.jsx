@@ -5,12 +5,11 @@ import { Loader2Icon } from "lucide-react";
 import { useState } from "react";
 import { useParams } from "react-router";
 import { toast } from "sonner";
-import DatePicker from "../components/DatePicker";
-import { useEditSip, useSkipSip } from "../hooks/mutations/mutations";
-import { useGetFundData } from "../hooks/queries/externalQueries";
-import { useGetSipDetail } from "../hooks/queries/internalQueries";
 import EditSipDatePicker from "../components/EditSipDatePicker";
-import { formatToINR } from "../utils/formaters";
+import { useGetFundData } from "../hooks/useGetFundData";
+import { useGetSipDetail } from "../hooks/useGetSipDetail";
+import { useEditSip } from "../hooks/useEditSip";
+import { formatToINR } from "@/utils/formatters";
 
 function EditSipPage() {
   const { sipId } = useParams();

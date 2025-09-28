@@ -4,12 +4,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useGetProfileById } from "@/hooks/queries/internalQueries";
-import { sanitizeAmount } from "@/utils/formatrs";
+import { useGetProfileById } from "@/hooks/useGetProfileById";
+import { sanitizeAmount } from "@/utils/formatters";
 import { ArrowRightIcon } from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "react-router";
-import { useSendMoney } from "../hooks/mutations/mutations";
+import { useSendMoney } from "../hooks/useSendMoney";
 
 function EnterAmountPage() {
   const [isPinDialogOpen, setIsPinDialogOpen] = useState(false);

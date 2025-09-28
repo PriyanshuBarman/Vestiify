@@ -24,7 +24,7 @@ import { tz } from "@date-fns/tz";
 import { addMonths, differenceInDays, format } from "date-fns";
 import { Loader2Icon, SkipForwardIcon } from "lucide-react";
 import { useState } from "react";
-import { useSkipSip } from "../hooks/mutations/mutations";
+import { useSkipSip } from "../hooks/useSkipSip";
 
 function SkipSipButton({ sipId, nextInstallmentDate }) {
   const isMobile = useIsMobile();

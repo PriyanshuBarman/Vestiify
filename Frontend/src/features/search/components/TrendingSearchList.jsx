@@ -1,4 +1,4 @@
-import { useGetPopularFunds } from "@/features/mutualfund/hooks/queries/externalQueries";
+import { useGetPopularFunds } from "@/features/mutualfund/hooks/useGetPopularFunds";
 import { TrendingUpIcon } from "lucide-react";
 
 function TrendingSearchList({ activeIdx, handleClick }) {

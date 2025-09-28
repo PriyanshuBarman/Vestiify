@@ -15,7 +15,7 @@ import {
 import { ChevronRightIcon, ChevronsLeftRight } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
-import { useGetFilteredFunds } from "../hooks/queries/externalQueries";
+import { useGetFilteredFunds } from "../hooks/useGetFilteredFunds";
 import { columnsConfig, getNextColumn } from "../utils/similarFundsTable";
 import FundLogo from "./FundLogo";
 import FundRating from "./FundRating";
