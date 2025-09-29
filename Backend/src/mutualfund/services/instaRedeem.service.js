@@ -2,11 +2,6 @@ import { TZDate } from "@date-fns/tz";
 import { parse } from "date-fns";
 import { db } from "../../../config/db.config.js";
 import { MF_API_BASE_URL } from "../../../config/env.config.js";
-import {
-  tnxRepo,
-  userRepo,
-} from "../../shared/repositories/index.repository.js";
-import { orderRepo, portfolioRepo } from "../repositories/index.repository.js";
 import { calcPortfolioAfterRedemption } from "../utils/calculateUpdatedPortfolio.utils.js";
 import { fifoRedemption } from "./fifo.service.js";
 
@@ -29,14 +24,13 @@ export const instantRedemption = async (fund, amount) => {
       units
     );
 
-    await portfolioRepo.update(
-      { userId_schemeCode: { userId, schemeCode } },
-      updatedValues,
-      tx
-    );
-    
-    const order = await orderRepo.create(
-      {
+    await tx.mfPortfolio.update({
+      where: { userId_schemeCode: { userId, schemeCode } },
+      data: updatedValues,
+    });
+
+    const order = await tx.mfOrder.create({
+      data: {
         userId,
         schemeCode,
         fundName,
@@ -48,21 +42,25 @@ export const instantRedemption = async (fund, amount) => {
         navDate: latestNavDate,
         status: "COMPLETE",
       },
-      tx
-    );
+    });
 
-    const updatedBalance = await userRepo.creditBalance(userId, amount, tx);
-    await tnxRepo.create(
-      {
+    const user  = await tx.user.update({
+      where: { id: userId },
+      data: {
+        balance: { increment: amount },
+      },
+    });
+
+    await tx.transaction.create({
+      data: {
         userId,
         amount,
         assetCategory: "MUTUAL_FUND",
         assetOrderId: order.id,
         type: "CREDIT",
-        updatedBalance,
+        updatedBalance: user.balance,
       },
-      tx
-    );
+    });
   });
 };
 

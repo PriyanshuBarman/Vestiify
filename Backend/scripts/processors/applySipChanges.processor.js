@@ -1,23 +1,18 @@
 import { db } from "../../config/db.config.js";
-import {
-  pendingSipChangeRepo,
-  sipRepo,
-} from "../../src/mutualfund/repositories/index.repository.js";
 
 export const applySipChanges = async (data) => {
   const { id, sipId, amount, dateOfMonth, nextInstallmentDate } = data;
 
   await db.$transaction(async (tx) => {
-    await sipRepo.update(
-      { id: sipId },
-      {
+    await db.mfSip.update({
+      where: { id: sipId },
+      data: {
         amount: amount || undefined,
         dateOfMonth: dateOfMonth || undefined,
         nextInstallmentDate: nextInstallmentDate || undefined,
       },
-      tx
-    );
+    });
 
-    await pendingSipChangeRepo.delete({ id }, tx);
+    await db.pendingSipChange.delete({ where: { id } });
   });
 };

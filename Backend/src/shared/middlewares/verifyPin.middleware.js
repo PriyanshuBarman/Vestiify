@@ -1,4 +1,4 @@
-import { userRepo } from "../repositories/user.repository.js";
+import { db } from "../../../config/db.config.js";
 import { ApiError } from "../utils/apiError.utils.js";
 import bcrypt from "bcrypt";
 
@@ -11,10 +11,10 @@ export const verifyPin = async (req, res, next) => {
       throw new ApiError(400, "pin is required");
     }
 
-    const user = await userRepo.findUnique(
-      { id: userId },
-      { select: { pin: true } }
-    );
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      select: { pin: true },
+    });
 
     if (!user.pin) {
       throw new ApiError(400, "Please Setup Your Pin First");

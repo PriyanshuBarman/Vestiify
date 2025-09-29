@@ -1,30 +1,29 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { ApiError } from "../../shared/utils/apiError.utils.js";
-import {
-  profileRepo,
-  userRepo,
-} from "../../shared/repositories/index.repository.js";
+
+import crypto from "crypto";
+import { db } from "../../../config/db.config.js";
 import { JWT_SECRET } from "../../../config/env.config.js";
 import { TOKEN_EXPIRY } from "../constants/auth.constants.js";
-import crypto from "crypto";
 
 export const signupUser = async (fullName, email, password) => {
-  const existingUser = await userRepo.findUnique({ email });
+  const existingUser = await db.user.findUnique({ where: { email } });
 
   if (existingUser) throw new ApiError(400, "User Already Exists");
 
   const hashPassword = await bcrypt.hash(password, 10);
   const username = await generateUniqueUsername(fullName);
 
-  const user = await userRepo.create({
-    email,
-    password: hashPassword,
-
-    profile: {
-      create: {
-        fullName,
-        username,
+  const user = await db.user.create({
+    data: {
+      email,
+      password: hashPassword,
+      profile: {
+        create: {
+          fullName,
+          username,
+        },
       },
     },
   });
@@ -37,7 +36,9 @@ export const signupUser = async (fullName, email, password) => {
 };
 
 export const loginUser = async (email, password) => {
-  const existingUser = await userRepo.findUnique({ email });
+  const existingUser = await db.user.findUnique({
+    where: { email },
+  });
 
   if (!existingUser) throw new ApiError(400, "Email or password is invalid");
 
@@ -55,12 +56,13 @@ export const loginUser = async (email, password) => {
 export const setPin = async (userId, pin) => {
   const hashPin = await bcrypt.hash(pin.toString(), 10);
 
-  await userRepo.update(
-    {
-      id: userId,
+  await db.user.update({
+    where: { id: userId },
+    data: {
+      pin: hashPin,
+      hasPin: true,
     },
-    { pin: hashPin, hasPin: true }
-  );
+  });
 };
 
 export async function generateUniqueUsername(fullName) {
@@ -68,9 +70,10 @@ export async function generateUniqueUsername(fullName) {
   let username = base;
 
   // First check if base username is available
-  const exists = await profileRepo.findUnique({
-    username,
+  const exists = await db.profile.findUnique({
+    where: { username },
   });
+
   if (!exists) return username;
 
   // Keep generating until we find a available username
@@ -82,12 +85,12 @@ export async function generateUniqueUsername(fullName) {
     );
 
     // Fetch all usernames that already exist from this batch
-    const taken = await profileRepo.findMany(
-      {
-        username: { in: candidates },
+    const taken = await db.profile.findMany({
+      where: { username: { in: candidates } },
+      select: {
+        username: true,
       },
-      { select: { username: true } }
-    );
+    });
 
     // Find the first candidate not taken
     const available = candidates.find(

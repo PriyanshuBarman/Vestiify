@@ -1,70 +1,68 @@
 import { formatDate } from "date-fns";
 import { db } from "../../../config/db.config.js";
-import {
-  profileRepo,
-  tnxRepo,
-  userRepo,
-} from "../../shared/repositories/index.repository.js";
-
-export const fetchBalance = async (userId) => {
-  return await userRepo.checkBalance(userId);
-};
+import { ApiError } from "../../shared/utils/apiError.utils.js";
 
 export const sendMoney = async (userId, amount, note, receiverId) => {
-  const balance = await userRepo.checkBalance(userId);
-  if (amount > balance) {
-    throw new ApiError(400, "Insufficient wallet balance");
-  }
-
   return await db.$transaction(async (tx) => {
-    const userUpdatedBalance = await userRepo.debitBalance(userId, amount, tx);
-    const receiverUpdatedBalance = await userRepo.creditBalance(
-      receiverId,
-      amount,
-      tx
-    );
+    // 1. Debit sender balance
+    const sender = await tx.user.update({
+      where: { id: userId },
+      data: {
+        balance: { decrement: amount },
+      },
+    });
 
-    // create transaction history for sender and receiver
-    await tnxRepo.createMany(
-      [
+    // 2. Ensure sender has enough balance
+    if (sender.balance < 0) {
+      throw new ApiError(400, "Insufficient Balance");
+    }
+
+    // 3. Credit receiver balance
+    const receiver = await tx.user.update({
+      where: { id: receiverId },
+      data: {
+        balance: { increment: amount },
+      },
+    });
+
+    // 4. Create transaction history for sender and receiver
+    await tx.transaction.createMany({
+      data: [
         {
           userId,
           amount,
           note,
           type: "DEBIT",
-          updatedBalance: userUpdatedBalance,
+          updatedBalance: sender.balance,
           peerUserId: receiverId,
         },
         {
           userId: receiverId,
           amount,
           type: "CREDIT",
-          updatedBalance: receiverUpdatedBalance,
+          updatedBalance: receiver.balance,
           peerUserId: userId,
         },
       ],
-      tx
-    );
+    });
 
-    return userUpdatedBalance;
+    return sender.balance;
   });
 };
 
 export const fetchAllTnx = async (userId) => {
-  const tnx = await tnxRepo.findMany(
-    { userId },
-    {
-      include: {
-        peerUser: {
-          select: {
-            profile: true,
-          },
+  const tnx = await db.transaction.findMany({
+    where: { userId },
+    include: {
+      peerUser: {
+        select: {
+          profile: true,
         },
-        assetOrder: true,
       },
-      orderBy: { createdAt: "desc" },
-    }
-  );
+      assetOrder: true,
+    },
+    orderBy: { createdAt: "desc" },
+  });
 
   if (!tnx.length) {
     throw new ApiError(404, "No transactions found");
@@ -96,4 +94,13 @@ export const fetchAllTnx = async (userId) => {
   }, []);
 
   return grouped;
+};
+
+export const fetchBalance = async (userId) => {
+  const { balance } = await db.user.findUnique({
+    where: { id: userId },
+    select: { balance: true },
+  });
+
+  return balance;
 };

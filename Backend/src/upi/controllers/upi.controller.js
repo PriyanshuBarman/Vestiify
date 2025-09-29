@@ -17,12 +17,7 @@ export const sendMoney = asyncHandler(async (req, res) => {
     throw new ApiError(400, "receiverId is required");
   }
 
-  const balance = await upiService.sendMoney(
-    userId,
-    amount,
-    note,
-    receiverId
-  );
+  const balance = await upiService.sendMoney(userId, amount, note, receiverId);
 
   return res.status(201).json({
     success: true,

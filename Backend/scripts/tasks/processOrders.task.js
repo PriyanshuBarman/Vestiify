@@ -1,6 +1,5 @@
 import { TZDate } from "@date-fns/tz";
 import { format } from "date-fns";
-import { orderRepo } from "../../src/mutualfund/repositories/index.repository.js";
 import { navCache } from "../external/fetchNavByDate.js";
 import {
   processInvestmentOrder,
@@ -13,17 +12,15 @@ async function processOrders() {
   navCache.clear();
 
   const today = new Date(format(TZDate.tz("Asia/Kolkata"), "yyyy-MM-dd"));
-  const orders = await orderRepo.findMany(
-    {
+  const orders = await db.mfOrder.findMany({
+    where: {
       status: "PENDING",
       processDate: today,
     },
-    {
-      orderBy: {
-        createdAt: "desc",
-      },
-    }
-  );
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 
   if (!orders.length) {
     return console.log("No Pending orders to process");

@@ -1,9 +1,7 @@
 import { tz } from "@date-fns/tz";
 import { addDays, addMonths, differenceInDays } from "date-fns";
+import { db } from "../../../config/db.config.js";
 import { ApiError } from "../../shared/utils/apiError.utils.js";
-import { orderRepo } from "../repositories/order.repository.js";
-import { pendingSipChangeRepo } from "../repositories/pendingSipChange.repository.js";
-import { sipRepo } from "../repositories/sip.repository.js";
 import { getMainDomain } from "../utils/getMainDomain.utils.js";
 import { getNextInstallmentDate } from "../utils/getNextInstallmentDate.utils.js";
 import * as orderService from "./order.service.js";
@@ -20,17 +18,19 @@ export const createSip = async ({
   fundType, // required for order placement
 }) => {
   //1. create/subscribe to new SIP
-  const { id: sipId } = await sipRepo.create({
-    userId,
-    amount,
-    sipDate,
-    schemeCode,
-    fundName,
-    shortName,
-    fundType: fundType.toUpperCase(),
-    fundCategory,
-    fundHouseDomain: getMainDomain(fundHouseDomain),
-    nextInstallmentDate: getNextInstallmentDate(sipDate),
+  const { id: sipId } = await db.mfSip.create({
+    data: {
+      userId,
+      amount,
+      sipDate,
+      schemeCode,
+      fundName,
+      shortName,
+      fundType: fundType.toUpperCase(),
+      fundCategory,
+      fundHouseDomain: getMainDomain(fundHouseDomain),
+      nextInstallmentDate: getNextInstallmentDate(sipDate),
+    },
   });
 
   //2. place initial investment order
@@ -49,7 +49,7 @@ export const createSip = async ({
 
 export const editSip = async ({ userId, sipId, amount, sipDate }) => {
   // Fetch the current SIP
-  const sip = await sipRepo.findUnique({ id: sipId, userId });
+  const sip = await db.mfSip.findUnique({ where: { id: sipId, userId } });
   if (!sip) {
     throw new ApiError(404, "SIP not found");
   }
@@ -64,36 +64,36 @@ export const editSip = async ({ userId, sipId, amount, sipDate }) => {
 
   // If next installment is more than 2 days away, update directly
   if (diffDays > 2) {
-    return await sipRepo.update(
-      { id: sipId },
-      {
+    return await db.mfSip.update({
+      where: { id: sipId },
+      data: {
         amount,
         sipDate,
         nextInstallmentDate: getNextInstallmentDate(sipDate),
-      }
-    );
+      },
+    });
   }
 
-  // Otherwise, update or create a pending change
-  await pendingSipChangeRepo.upsert(
-    { userId_sipId: { userId, sipId } },
-    {
-      amount,
-      sipDate,
-      applyDate: addDays(sip.nextInstallmentDate, 1), // apply the changes after the next installment
-    },
-    {
+  // Otherwise, create or update a pending change
+  await db.pendingSipChange.upsert({
+    where: { userId_sipId: { userId, sipId } },
+    create: {
       userId,
       sipId,
       amount,
       sipDate,
       applyDate: addDays(sip.nextInstallmentDate, 1), // apply the changes after the next installment
-    }
-  );
+    },
+    update: {
+      amount,
+      sipDate,
+      applyDate: addDays(sip.nextInstallmentDate, 1), // apply the changes after the next installment
+    },
+  });
 };
 
 export const skipSip = async (userId, sipId) => {
-  const sip = await sipRepo.findUnique({ id: sipId });
+  const sip = await db.mfSip.findUnique({ where: { id: sipId, userId } });
   if (!sip) {
     throw new ApiError(404, "SIP not found");
   }
@@ -104,33 +104,33 @@ export const skipSip = async (userId, sipId) => {
 
   // If next installment is more than 2 days away, update directly
   if (diffDays > 2) {
-    return await sipRepo.update(
-      { id: sipId },
-      {
+    return await db.mfSip.update({
+      where: { id: sipId },
+      data: {
         nextInstallmentDate: addMonths(sip.nextInstallmentDate, 1),
-      }
-    );
+      },
+    });
   }
 
-  // Otherwise, update or create a pending change
-  await pendingSipChangeRepo.upsert(
-    { userId_sipId: { userId, sipId } },
-    {
-      nextInstallmentDate: addMonths(sip.nextInstallmentDate, 1),
-      applyDate: addDays(sip.nextInstallmentDate, 1), // apply the changes after the next installment
-    },
-    {
+  // Otherwise, create or update a pending change
+  await db.pendingSipChange.upsert({
+    where: { userId_sipId: { userId, sipId } },
+    create: {
       userId,
       sipId,
       nextInstallmentDate: addMonths(sip.nextInstallmentDate, 1),
       applyDate: addDays(sip.nextInstallmentDate, 1), // apply the changes after the next installment
-    }
-  );
+    },
+    update: {
+      nextInstallmentDate: addMonths(sip.nextInstallmentDate, 1),
+      applyDate: addDays(sip.nextInstallmentDate, 1), // apply the changes after the next installment
+    },
+  });
 };
 
 export const cancelSip = async (sipId) => {
   // Fetch the current SIP
-  const sip = await sipRepo.findUnique({ id: sipId });
+  const sip = await db.mfSip.findUnique({ where: { id: sipId } });
   if (!sip) {
     throw new ApiError(404, "SIP not found");
   }
@@ -146,12 +146,15 @@ export const cancelSip = async (sipId) => {
     );
   }
 
-  await sipRepo.delete({ id: sipId });
+  await db.mfSip.delete({ where: { id: sipId } });
 };
 
 export const getAllSips = async (userId) => {
-  const allSips = await sipRepo.findMany({ userId });
-  const activeSipAmount = await sipRepo.getTotalActiveSipAmountByUser(userId);
+  const allSips = await db.mfSip.findMany({ where: { userId } });
+  const activeSipAmount = await db.mfSip.aggregate({
+    where: { userId },
+    _sum: { amount: true },
+  });
 
   if (!allSips.length) {
     throw new ApiError(404, "No Active SIP's Found");
@@ -164,10 +167,10 @@ export const getAllSips = async (userId) => {
 };
 
 export const getSipDetail = async (sipId) => {
-  const sipDetail = await sipRepo.findUnique({ id: sipId });
+  const sipDetail = await db.mfSip.findUnique({ where: { id: sipId } });
 
-  const installments = await orderRepo.findMany({
-    sipId,
+  const installments = await db.mfOrder.findMany({
+    where: { sipId },
   });
 
   return { sipDetail, installments };

@@ -1,14 +1,15 @@
 import { TZDate } from "@date-fns/tz";
 import { format } from "date-fns";
-import { sipRepo } from "../../src/mutualfund/repositories/index.repository.js";
 import { placeSipInstallmentOrder } from "../processors/placeSipInstallmentOrder.processor.js";
 import { printSummary } from "../utils/printSummary.utils.js";
 import { db } from "../../config/db.config.js";
 
 async function placeSipInstallmentOrders() {
   const today = new Date(format(TZDate.tz("Asia/Kolkata"), "yyyy-MM-dd"));
-  const activeSips = await sipRepo.findMany({
-    nextInstallmentDate: today,
+  const activeSips = await db.sip.findMany({
+    where: {
+      nextInstallmentDate: today,
+    },
   });
 
   if (!activeSips.length) {

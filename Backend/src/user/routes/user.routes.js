@@ -8,5 +8,5 @@ userRoutes.get("/", authenticate, userController.getMe);
 userRoutes.patch(
   "/claim-daily-reward",
   authenticate,
-  userController.dailyReward
+  userController.claimDailyReward
 );

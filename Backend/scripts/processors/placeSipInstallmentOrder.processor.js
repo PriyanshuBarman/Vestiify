@@ -1,13 +1,6 @@
 import { addMonths } from "date-fns";
 import { db } from "../../config/db.config.js";
-import {
-  tnxRepo,
-  userRepo,
-} from "../../src/shared/repositories/index.repository.js";
-import {
-  sipRepo,
-  orderRepo,
-} from "../../src/mutualfund/repositories/index.repository.js";
+
 import { getNavAndProcessDateForSip } from "../utils/getNavAndProcessDateForSip.utils.js";
 
 export const placeSipInstallmentOrder = async (data) => {
@@ -24,28 +17,6 @@ export const placeSipInstallmentOrder = async (data) => {
     nextInstallmentDate,
   } = data;
 
-  const balance = await userRepo.checkBalance(userId);
-  if (amount > balance) {
-    await orderRepo.create({
-      sipId,
-      userId,
-      amount,
-      schemeCode,
-      fundName,
-      shortName,
-      fundType,
-      fundHouseDomain,
-      processDate,
-      navDate,
-      method: "SIP",
-      orderType: "SIP_INSTALLMENT",
-      status: "FAILED",
-      failureReason: "Insufficient wallet balance",
-    });
-    console.log("Insufficient wallet balance");
-    return;
-  }
-
   const { processDate, navDate } = getNavAndProcessDateForSip(
     nextInstallmentDate,
     fundCategory
@@ -53,8 +24,46 @@ export const placeSipInstallmentOrder = async (data) => {
 
   // prisma $transaction
   await db.$transaction(async (tx) => {
-    const order = await orderRepo.create(
-      {
+    // 1. Fetch user balance
+    const user = await tx.user.findUnique({
+      where: { id: userId },
+      select: { balance: true },
+    });
+    if (!user) throw new Error("User not found");
+
+    // 2. Create FAILED order for insufficient balance
+    if (amount > user.balance) {
+      await tx.mfOrder.create({
+        data: {
+          sipId,
+          userId,
+          amount,
+          schemeCode,
+          fundName,
+          shortName,
+          fundType,
+          fundHouseDomain,
+          processDate,
+          navDate,
+          method: "SIP",
+          orderType: "SIP_INSTALLMENT",
+          status: "FAILED",
+          failureReason: "Insufficient balance",
+        },
+      });
+      // Early return to exit the transaction
+      return;
+    }
+
+    // 3. Deduct balance
+    const { balance: updatedBalance } = await tx.user.update({
+      where: { id: userId },
+      data: { balance: { decrement: amount } },
+    });
+
+    // 4. Create/Place order
+    const order = await tx.mfOrder.create({
+      data: {
         sipId,
         userId,
         amount,
@@ -68,13 +77,11 @@ export const placeSipInstallmentOrder = async (data) => {
         method: "SIP",
         orderType: "SIP_INSTALLMENT",
       },
-      tx
-    );
+    });
 
-    const updatedBalance = await userRepo.debitBalance(userId, amount, tx);
-
-    await tnxRepo.create(
-      {
+    // 5. Create transaction
+    await tx.transaction.create({
+      data: {
         userId,
         amount,
         assetCategory: "MUTUAL_FUND",
@@ -82,14 +89,12 @@ export const placeSipInstallmentOrder = async (data) => {
         type: "DEBIT",
         updatedBalance,
       },
-      tx
-    );
+    });
 
-    // Update next installmentDate
-    await sipRepo.update(
-      { id: sipId },
-      { nextInstallmentDate: addMonths(nextInstallmentDate, 1) },
-      tx
-    );
+    // 6. Update next installment date
+    await tx.mfSip.update({
+      where: { id: sipId },
+      data: { nextInstallmentDate: addMonths(nextInstallmentDate, 1) },
+    });
   });
 };

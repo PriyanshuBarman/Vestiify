@@ -1,9 +1,18 @@
 import { db } from "../../config/db.config.js";
+import {
+  holdingRepo,
+  orderRepo,
+  portfolioRepo,
+} from "../../src/mutualfund/repositories/index.repository.js";
 import { fifoRedemption } from "../../src/mutualfund/services/fifo.service.js";
 import {
   calcPortfolioAfterInvestment,
   calcPortfolioAfterRedemption,
 } from "../../src/mutualfund/utils/calculateUpdatedPortfolio.utils.js";
+import {
+  tnxRepo,
+  userRepo,
+} from "../../src/shared/repositories/index.repository.js";
 import { fetchNavByDate } from "../external/fetchNavByDate.js";
 
 export const processInvestmentOrder = async (orderData) => {
@@ -87,44 +96,79 @@ export const processInvestmentOrder = async (orderData) => {
   });
 };
 
-
-// Process Redemption Order
-
+// Redemption Order
 export const processRedemptionOrder = async (orderData) => {
   let { id: orderId, userId, schemeCode, amount, units, navDate } = orderData;
   amount = amount.toNumber();
 
-  //Fetch fund portfolio
   const fund = await db.mfPortfolio.findUnique({
-    where: { userId_schemeCode: { userId, schemeCode } },
+    where: {
+      userId_schemeCode: { userId, schemeCode },
+    },
   });
 
-  // Validate and mark order FAILED if invalid
-  const isValid = await validateAndFailOrder(orderId, fund, amount);
-  if (!isValid) return; // return if invalid
+  // -------------------- Validations
+  if (fund.current.toNumber() === 0) {
+    await tx.mfPortfolio.delete({
+      where: { id: fund.id },
+    });
+  }
 
-  // Fetch NAV after passing validation
+  if (!fund) {
+    return await db.$transaction(async (tx) => {
+      await tx.mfOrder.update({
+        where: { id: orderId },
+        data: {
+          status: "FAILED",
+          failureReason: "Fund not available in your portfolio.",
+        },
+      });
+    });
+  }
+
+  if (amount > fund.current.toNumber()) {
+    return await db.$transaction(async (tx) => {
+      await tx.mfOrder.update({
+        where: { id: orderId },
+        data: {
+          status: "FAILED",
+          failureReason: "Fund don’t have enough units",
+        },
+      });
+    });
+  }
+  // ---------------------------// Validations
+
   const nav = await fetchNavByDate(schemeCode, navDate);
 
-  let redemptionUnits = units || amount / nav;
-  const isFullRedemption = units || amount === fund.current.toNumber();
-
-  return db.$transaction(async (tx) => {
-    if (isFullRedemption) {
-      // 1. Delete portfolio
-      await tx.mfPortfolio.delete({ where: { id: fund.id } });
-
-      // 2. Credit Balance
-      const user = await tx.user.update({
-        where: { id: userId },
-        data: { balance: { increment: fund.current.toNumber() } },
+  await db.$transaction(async (tx) => {
+    // if there is units that means it's full redemption else partial
+    if (units) {
+      await tx.mfPortfolio.delete({
+        where: { id: fund.id },
       });
 
-      // 3. Log transaction
+      await tx.mfOrder.update({
+        where: { id: orderId },
+        data: {
+          status: "COMPLETED",
+          nav,
+        },
+      });
+
+      const user = await tx.user.update({
+        where: { id: userId },
+        data: {
+          balance: {
+            increment: fund.current.toNumber(),
+          },
+        },
+      });
+
       await tx.transaction.create({
         data: {
           userId,
-          amount: fund.current.toNumber(),
+          amount,
           assetCategory: "MUTUAL_FUND",
           assetOrderId: orderId,
           type: "CREDIT",
@@ -132,32 +176,33 @@ export const processRedemptionOrder = async (orderData) => {
         },
       });
     } else {
-      // 1. Calculate cost basis
-      const costBasis = await fifoRedemption(
-        userId,
-        schemeCode,
-        redemptionUnits,
-        tx
-      );
+      // partial-redemption
+      const units = amount / nav; // Redemption Units
+      const costBasis = await fifoRedemption(userId, schemeCode, units, tx);
 
-      // 2. Update portfolio
       await tx.mfPortfolio.update({
         where: { id: fund.id },
-        data: calcPortfolioAfterRedemption(
-          fund,
-          costBasis,
-          amount,
-          redemptionUnits
-        ),
+        data: calcPortfolioAfterRedemption(fund, costBasis, amount, units),
       });
 
-      // 3. Credit Balance
       const user = await tx.user.update({
         where: { id: userId },
-        data: { balance: { increment: amount } },
+        data: {
+          balance: {
+            increment: amount,
+          },
+        },
       });
 
-      // 4. Log transaction
+      await tx.mfOrder.update({
+        where: { id: orderId },
+        data: {
+          status: "COMPLETED",
+          nav,
+          units,
+        },
+      });
+
       await tx.transaction.create({
         data: {
           userId,
@@ -169,33 +214,5 @@ export const processRedemptionOrder = async (orderData) => {
         },
       });
     }
-
-    // At the end mark the order as completed
-    await tx.mfOrder.update({
-      where: { id: orderId },
-      data: { status: "COMPLETED", nav, units: redemptionUnits },
-    });
   });
-};
-
-export const validateAndFailOrder = async (orderId, fund, amount) => {
-  let failureReason;
-  if (!fund) {
-    failureReason = "Fund not available in portfolio";
-  } else if (amount > fund.current.toNumber()) {
-    failureReason = "Insufficient fund balance";
-  }
-
-  if (!failureReason) return true;
-
-  // Else mark order as failed and return false
-  await db.mfOrder.update({
-    where: { id: orderId },
-    data: {
-      status: "FAILED",
-      failureReason,
-    },
-  });
-
-  return false;
 };

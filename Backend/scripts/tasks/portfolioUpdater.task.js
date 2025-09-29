@@ -1,6 +1,5 @@
 import { tz } from "@date-fns/tz";
 import { startOfToday } from "date-fns";
-import { portfolioRepo } from "../../src/mutualfund/repositories/index.repository.js";
 import { navCache } from "../external/fetchLatestNAVData.js";
 import { updateFundPortfolio } from "../processors/portfolioUpdater.processor.js";
 import { printSummary } from "../utils/printSummary.utils.js";
@@ -9,11 +8,13 @@ import { db } from "../../config/db.config.js";
 export const portfolioUpdater = async () => {
   navCache.clear();
 
-  const portfolios = await portfolioRepo.findMany({
-    updatedAt: {
-      lte: startOfToday({
-        in: tz("Asia/Kolkata"),
-      }),
+  const portfolios = await db.mfPortfolio.findMany({
+    where: {
+      updatedAt: {
+        lte: startOfToday({
+          in: tz("Asia/Kolkata"),
+        }),
+      },
     },
   });
 

@@ -1,10 +1,9 @@
 import { db } from "../../config/db.config.js";
-import { pendingSipChangeRepo } from "../../src/mutualfund/repositories/index.repository.js";
 import { applySipChanges } from "../processors/applySipChanges.processor.js";
 import { printSummary } from "../utils/printSummary.utils.js";
 
 export async function applySipChangess() {
-  const pendingChanges = await pendingSipChangeRepo.findMany();
+  const pendingChanges = await db.pendingSipChange.findMany();
 
   if (!pendingChanges.length) {
     return console.log("No pending SIP changes to apply");

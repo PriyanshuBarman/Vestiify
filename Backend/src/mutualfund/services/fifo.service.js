@@ -1,12 +1,12 @@
-import { holdingRepo } from "../repositories/holding.repository.js";
-
 export const fifoRedemption = async (
   userId,
   schemeCode,
   redemptionUnits,
   tx
 ) => {
-  const holdings = await holdingRepo.findMany({ userId, schemeCode }, tx);
+  const holdings = await tx.mfHolding.findMany({
+    where: { userId, schemeCode },
+  });
 
   let remainingUnits = redemptionUnits;
   let costBasis = 0;
@@ -15,21 +15,20 @@ export const fifoRedemption = async (
     if (remainingUnits === 0) break;
 
     const holdingUnits = holding.units.toNumber();
-    const holdingNav = holding.purchaseNav.toNumber();
+    const holdingNav = holding.nav.toNumber();
 
     if (remainingUnits >= holdingUnits) {
       costBasis += holding.amount.toNumber();
       remainingUnits -= holdingUnits;
 
-      await holdingRepo.delete({ id: holding.id }, tx);
+      await tx.mfHolding.delete({ where: { id: holding.id } });
     } else {
-      await holdingRepo.update(
-        { id: holding.id },
+      await tx.mfHolding.update(
+        { where: { id: holding.id } },
         {
           units: holding.units.toNumber() - remainingUnits,
           amount: holding.amount.toNumber() - remainingUnits * holdingNav,
-        },
-        tx
+        }
       );
 
       // Add the amount to cost basis

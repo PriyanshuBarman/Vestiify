@@ -1,6 +1,6 @@
-import { portfolioRepo } from "../../src/mutualfund/repositories/index.repository.js";
-import { fetchLatestNAVData } from "../external/fetchLatestNAVData.js";
+import { db } from "../../config/db.config.js";
 import { getPrevBusinessDate } from "../../src/shared/utils/holidays.utils.js";
+import { fetchLatestNAVData } from "../external/fetchLatestNAVData.js";
 import { parseDDMMYYYY } from "../utils/parseDDMMYYYY.utils.js";
 
 export const updateFundPortfolio = async (fund) => {
@@ -24,14 +24,14 @@ export const updateFundPortfolio = async (fund) => {
   const dayChangeValue = current - fund.current.toNumber();
   const dayChangePercent = (dayChangeValue / fund.current.toNumber()) * 100;
 
-  await portfolioRepo.update(
-    { id: fund.id },
-    {
+  await db.mfPortfolio.update({
+    where: { id: fund.id },
+    data: {
       current,
       pnl,
       returnPercent,
       dayChangeValue,
       dayChangePercent,
-    }
-  );
+    },
+  });
 };

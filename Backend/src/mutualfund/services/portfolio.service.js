@@ -1,14 +1,14 @@
+import { db } from "../../../config/db.config.js";
 import { ApiError } from "../../shared/utils/apiError.utils.js";
-import { portfolioRepo } from "../repositories/index.repository.js";
 import { formatPortfolio } from "../utils/formatPortfolio.utils.js";
 
 export const fetchPortfolio = async (data) => {
   const { userId, fundType, sort_by = "current", order_by = "desc" } = data;
 
-  const portfolio = await portfolioRepo.findMany(
-    { userId, fundType },
-    { orderBy: { [sort_by]: order_by } }
-  );
+  const portfolio = await db.mfPortfolio.findMany({
+    where: { userId, fundType },
+    orderBy: { [sort_by]: order_by },
+  });
 
   if (!portfolio.length) {
     throw new ApiError(404, "No portfolio found.");
@@ -19,8 +19,8 @@ export const fetchPortfolio = async (data) => {
 
 export const fetchFundPortfolio = async (userId, schemeCode) => {
   schemeCode = parseInt(schemeCode);
-  const fund = await portfolioRepo.findUnique({
-    userId_schemeCode: { userId, schemeCode },
+  const fund = await db.mfPortfolio.findUnique({
+    where: { userId_schemeCode: { userId, schemeCode } },
   });
 
   if (!fund) throw new ApiError(404, "Fund not found in portfolio.");
@@ -29,7 +29,17 @@ export const fetchFundPortfolio = async (userId, schemeCode) => {
 };
 
 export const fetchPortfolioSummary = async (userId) => {
-  const result = await portfolioRepo.getPortfolioSummary(userId);
+  const result = await db.mfPortfolio.aggregate({
+    where: { userId },
+    _sum: {
+      current: true,
+      invested: true,
+      pnl: true,
+      returnPercent: true,
+      dayChangeValue: true,
+      dayChangePercent: true,
+    },
+  });
 
   if (!result._sum.invested) {
     throw new ApiError(404, "No portfolio found.");

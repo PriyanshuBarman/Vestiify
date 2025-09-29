@@ -9,10 +9,10 @@ export const getMe = asyncHandler(async (req, res) => {
   return res.status(200).json({ success: true, user });
 });
 
-export const dailyReward = asyncHandler(async (req, res) => {
+export const claimDailyReward = asyncHandler(async (req, res) => {
   const { userId } = req.user;
 
-  const updatedBalance = await userService.dailyReward(userId);
+  const updatedBalance = await userService.claimDailyReward(userId);
 
   return res.status(200).json({
     success: true,

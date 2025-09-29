@@ -1,8 +1,10 @@
-import { profileRepo } from "../../shared/repositories/index.repository.js";
+import { db } from "../../../config/db.config.js";
 import { ApiError } from "../../shared/utils/apiError.utils.js";
 
 export const fetchProfile = async (userId) => {
-  const profile = await profileRepo.findUnique({ userId });
+  const profile = await db.profile.findUnique({
+    where: { userId },
+  });
 
   if (!profile) {
     throw new ApiError(404, "Profile not found");
@@ -12,19 +14,14 @@ export const fetchProfile = async (userId) => {
 };
 
 export const searchProfile = async (userId, query, limit) => {
-  return await profileRepo.findMany(
-    {
-      AND: [
-        {
-          OR: [
-            { fullName: { contains: query } },
-            { username: { contains: query } },
-          ],
-        },
+  return await db.profile.findMany({
+    where: {
+      userId: { not: userId },
+      OR: [
+        { fullName: { contains: query } },
+        { username: { contains: query } },
       ],
     },
-    {
-      take: parseInt(limit || 8),
-    }
-  );
+    take: parseInt(limit || 8),
+  });
 };
