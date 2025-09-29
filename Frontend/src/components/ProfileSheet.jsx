@@ -7,7 +7,14 @@ function ProfileSheet({ children }) {
 
   return (
     <Sheet modal={!isMobile}>
-      <SheetTrigger asChild>{children}</SheetTrigger>
+      <SheetTrigger asChild>
+        <button
+          type="button"
+          className="relative flex size-8.5 shrink-0 overflow-hidden rounded-full"
+        >
+          {children}
+        </button>
+      </SheetTrigger>
       <SheetContent
         side="right"
         className="h-svh min-w-md py-18 sm:rounded-l-2xl"

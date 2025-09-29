@@ -7,10 +7,10 @@ import { Loader2Icon, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import FilterTabs from "./components/FilterTabs";
-import SearchHistoryList from "./components/SearchHistoryList";
-import SearchResultList from "./components/SearchResultList";
-import TrendingSearchList from "./components/TrendingSearchList";
+import FilterTabs from "../components/FilterTabs";
+import SearchHistoryList from "../components/SearchHistoryList";
+import SearchResultList from "../components/SearchResultList";
+import TrendingSearchList from "../components/TrendingSearchList";
 
 function MobileSearchPage() {
   const navigate = useNavigate();

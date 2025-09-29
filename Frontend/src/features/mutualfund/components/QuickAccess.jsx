@@ -44,7 +44,7 @@ function QuickAccess() {
                 <CardContent className="p-0">
                   <img
                     src={img}
-                    alt={label}
+                    alt={label + " Logo"}
                     className="min-h-6 min-w-6 sm:size-7 dark:brightness-0 dark:invert"
                     loading="lazy"
                   />

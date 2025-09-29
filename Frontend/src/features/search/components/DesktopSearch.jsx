@@ -10,12 +10,12 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import FilterTabs from "./components/FilterTabs";
-import LoadingSkeleton from "./components/LoadingSkeleton";
-import SearchBar from "./components/SearchBar";
-import TrendingSearchList from "./components/TrendingSearchList";
-import SearchHistoryList from "./components/SearchHistoryList";
-import SearchResultList from "./components/SearchResultList";
+import FilterTabs from "./FilterTabs";
+import LoadingSkeleton from "./LoadingSkeleton";
+import SearchBar from "./SearchBar";
+import TrendingSearchList from "./TrendingSearchList";
+import SearchHistoryList from "./SearchHistoryList";
+import SearchResultList from "./SearchResultList";
 
 function DesktopSearch() {
   const { data: popularFunds } = useGetPopularFunds();

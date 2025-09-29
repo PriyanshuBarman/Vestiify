@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import Tabs from "./components/Tabs";
+import Tabs from "./Tabs";
 
 function MutualFundLayout() {
   return (

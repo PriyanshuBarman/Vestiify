@@ -1,6 +1,6 @@
 import LoadingState from "@/components/LoadingState";
 import { lazy, Suspense } from "react";
-const MutualFundLayout = lazy(() => import("./MutualFundLayout"));
+const MutualFundLayout = lazy(() => import("./components/MutualFundLayout"));
 const SipDetailsPage = lazy(() => import("./pages/SipDetailsPage"));
 const EditSipPage = lazy(() => import("./pages/EditSipPage"));
 const InvestPage = lazy(() => import("./pages/InvestPage"));
@@ -18,7 +18,11 @@ export const mutualFundRoutes = {
   children: [
     {
       index: true,
-      element: <HomePage />,
+      element: (
+        <Suspense fallback={<LoadingState fullPage />}>
+          <HomePage />
+        </Suspense>
+      ),
     },
     {
       path: "invest",

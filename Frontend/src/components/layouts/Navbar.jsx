@@ -10,7 +10,7 @@ import MediaQuery from "react-responsive";
 import { NavLink, useLocation, useNavigate } from "react-router";
 const ProfileSheet = lazy(() => import("@/components/ProfileSheet"));
 const DesktopSearch = lazy(
-  () => import("../features/search/components/DesktopSearch"),
+  () => import("../../features/search/components/DesktopSearch"),
 );
 
 const allowedRoutes = new Set([
@@ -60,6 +60,7 @@ function Navbar() {
         {isMobile ? (
           <Avatar onClick={() => navigate("/profile")} className="size-8.5">
             <AvatarImage
+              referrerPolicy="no-referrer"
               src={user?.profile?.avatar}
               alt="User Profile Picture"
             />
@@ -71,6 +72,7 @@ function Navbar() {
           <ProfileSheet>
             <Avatar className="size-8.5">
               <AvatarImage
+                referrerPolicy="no-referrer"
                 src={user?.profile?.avatar}
                 alt="User Profile Picture"
               />

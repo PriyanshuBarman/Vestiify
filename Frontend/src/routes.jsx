@@ -5,12 +5,12 @@ import LoadingState from "./components/LoadingState";
 import { authRoutes } from "./features/auth/routes";
 import { mutualFundRoutes } from "./features/mutualfund/routes";
 import { walletRoutes } from "./features/wallet/routes";
-import Layout from "./layouts/Layout";
+import Layout from "./components/layouts/Layout";
 import ProfilePage from "./pages/ProfilePage";
 
 const ComingSoonPage = lazy(() => import("./pages/ComingSoonPage"));
 const MobileSearchPage = lazy(
-  () => import("./features/search/MobileSearchPage"),
+  () => import("./features/search/pages/MobileSearchPage"),
 );
 const AllOrdersPage = lazy(
   () => import("./features/mutualfund/pages/AllOrdersPage"),

@@ -1,7 +1,7 @@
 import LoadingState from "@/components/LoadingState";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import ScrollToTop from "@/layouts/ScrollToTop";
+import ScrollToTop from "@/components/layouts/ScrollToTop";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { useGetAllOrders } from "../hooks/useGetAllOrders";
