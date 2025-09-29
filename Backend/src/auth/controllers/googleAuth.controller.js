@@ -35,7 +35,7 @@ export const googleAuth = asyncHandler(async (req, res) => {
         profile: {
           create: {
             username,
-            fullName: name,
+            name,
             avatar: picture,
           },
         },

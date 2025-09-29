@@ -102,7 +102,7 @@ function TableLG({
                           }}
                           className="size-5"
                         />
-                        {columnsConfig[key].fullName}
+                        {columnsConfig[key].name}
                       </Label>
                     ))}
                   </div>

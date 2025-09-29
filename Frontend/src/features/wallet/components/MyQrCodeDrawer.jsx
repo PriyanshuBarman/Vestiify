@@ -47,7 +47,7 @@ export default function MyQrCodeDrawer({ children }) {
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({
           files: [file],
-          title: `${user?.profile?.fullName}'s Vestify QR Code`,
+          title: `${user?.profile?.name}'s Vestify QR Code`,
           text: "Scan this QR code",
         });
       } else {

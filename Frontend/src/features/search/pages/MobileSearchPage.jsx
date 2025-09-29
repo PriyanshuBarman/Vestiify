@@ -69,7 +69,7 @@ function MobileSearchPage() {
       </div>
       {/* ============================// SearchBar ============================ */}
 
-      <FilterTabs searchType={searchType} setSearchType={setSearchType} />
+      {/* <FilterTabs searchType={searchType} setSearchType={setSearchType} /> */}
 
       <div className="Lists space-y-4 px-2">
         <SearchResultList

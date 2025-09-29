@@ -10,7 +10,7 @@ import { useSignup } from "../hooks/useSignup";
 
 export function SignupForm({ className, ...props }) {
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     email: "",
     password: "",
   });
@@ -41,13 +41,13 @@ export function SignupForm({ className, ...props }) {
       </div>
       <div className="grid gap-6">
         <div className="grid gap-3">
-          <Label htmlFor="fullName">Name</Label>
+          <Label htmlFor="name">Name</Label>
           <Input
             required
             type="text"
-            name="fullName"
+            name="name"
             placeholder="John Doe"
-            value={formData.fullName}
+            value={formData.name}
             onChange={handleChange}
           />
         </div>

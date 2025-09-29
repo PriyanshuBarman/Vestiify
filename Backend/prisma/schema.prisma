@@ -21,17 +21,17 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  profile           Profile?
-  mfPortfolio       MfPortfolio[]
-  mfHolding         MfHolding[]
-  mfWatchlist       MfWatchlist[]
-  mfOrders          MfOrder[]
-  mfSips            MfSip[]
-  pendingSipChanges PendingSipChange[]
-  transactions      Transaction[]      @relation("UserTransactions")
-  peerTransactions  Transaction[]      @relation("PeerTransactions")
+  profile             Profile?
+  mfPortfolio         MfPortfolio[]
+  mfHolding           MfHolding[]
+  mfWatchlist         MfWatchlist[]
+  mfOrders            MfOrder[]
+  mfSips              MfSip[]
+  pendingMfSipChanges PendingMfSipChange[]
+  transactions        Transaction[]        @relation("UserTransactions")
+  peerTransactions    Transaction[]        @relation("PeerTransactions")
 
-  @@map("user")
+  @@map("users")
 }
 
 enum Role {
@@ -41,7 +41,7 @@ enum Role {
 
 model Profile {
   id       String  @id @default(uuid())
-  fullName String
+  name     String
   username String  @unique
   avatar   String?
 
@@ -51,7 +51,7 @@ model Profile {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
 
-  @@map("profile")
+  @@map("profiles")
 }
 
 // ======== Transaction =======
@@ -77,7 +77,7 @@ model Transaction {
   assetOrder    MfOrder?       @relation(fields: [assetOrderId], references: [id], onDelete: Restrict)
   assetOrderId  String?
 
-  @@map("transaction")
+  @@map("transactions")
 }
 
 enum TransactionType {
@@ -118,7 +118,7 @@ model MfOrder {
 
   Transaction Transaction[]
 
-  @@map("mf_order")
+  @@map("mf_orders")
 }
 
 enum TnxMethod {
@@ -163,7 +163,7 @@ model MfPortfolio {
   mfHoldings MfHolding[]
 
   @@unique([userId, schemeCode])
-  @@map("mf_portfolio")
+  @@map("mf_portfolios")
 }
 
 enum FundType {
@@ -188,7 +188,7 @@ model MfHolding {
   mfPortfolio MfPortfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
   portfolioId String
 
-  @@map("mf_holding")
+  @@map("mf_holdings")
 }
 
 model MfSip {
@@ -208,10 +208,10 @@ model MfSip {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  pendingChanges PendingSipChange[]
+  pendingChanges PendingMfSipChange[]
 
   @@index([userId, schemeCode])
-  @@map("mf_sip")
+  @@map("mf_sips")
 }
 
 enum SipStatus {
@@ -219,7 +219,7 @@ enum SipStatus {
   PAUSED
 }
 
-model PendingSipChange {
+model PendingMfSipChange {
   id                  String    @id @default(uuid())
   amount              Decimal?  @db.Decimal(18, 2) // future amount
   sipDate             Int?
@@ -234,7 +234,7 @@ model PendingSipChange {
   userId String
 
   @@unique([userId, sipId])
-  @@map("pending_sip_changes")
+  @@map("pending_mf_sip_changes")
 }
 
 model MfWatchlist {
@@ -248,5 +248,5 @@ model MfWatchlist {
   userId String
 
   @@unique([userId, schemeCode])
-  @@map("mf_watchlist")
+  @@map("mf_watchlists")
 }

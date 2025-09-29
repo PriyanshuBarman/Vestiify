@@ -2,7 +2,12 @@ import { memo } from "react";
 import CompanyLogo from "./CompanyLogo";
 import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 
-function SearchResultList({ searchResult, handleClick, activeIdx, searchType }) {
+function SearchResultList({
+  searchResult,
+  handleClick,
+  activeIdx,
+  searchType,
+}) {
   if (!searchResult?.length) return null;
 
   return (
@@ -16,7 +21,7 @@ function SearchResultList({ searchResult, handleClick, activeIdx, searchType }) 
           <CompanyLogo searchType={searchType} item={item} />
           <div className="flex w-full items-center justify-between">
             <div>
-              <p className="Fund-Name text-foreground max-w-[28ch] truncate text-sm sm:max-w-[30ch] sm:text-[0.95rem]">
+              <p className="Fund-Name text-foreground max-w-[28ch] truncate text-sm sm:max-w-[30ch] sm:text-sm">
                 {item.short_name || item.name}
               </p>
               <span className="Category text-muted-foreground text-xs">
@@ -25,7 +30,7 @@ function SearchResultList({ searchResult, handleClick, activeIdx, searchType }) 
             </div>
 
             {/*  Return */}
-            <div className="Returns hidden text-xs sm:flex">
+            {/* <div className="Returns hidden text-xs sm:flex">
               1Y
               <span
                 className={`ml-1 flex gap-1 ${item.one_year_return < 0 ? "text-red-400" : "text-primary"} `}
@@ -37,7 +42,7 @@ function SearchResultList({ searchResult, handleClick, activeIdx, searchType }) 
                   <TrendingUpIcon size={16} className="text-inherit" />
                 )}
               </span>
-            </div>
+            </div> */}
           </div>
         </li>
       ))}

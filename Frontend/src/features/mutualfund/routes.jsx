@@ -19,7 +19,9 @@ export const mutualFundRoutes = {
     {
       index: true,
       element: (
-        <Suspense fallback={<LoadingState fullPage />}>
+        <Suspense
+          fallback={<LoadingState fullPage className="h-[calc(100vh-250px)]" />}
+        >
           <HomePage />
         </Suspense>
       ),

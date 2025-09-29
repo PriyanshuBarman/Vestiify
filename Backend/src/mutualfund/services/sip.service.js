@@ -75,7 +75,7 @@ export const editSip = async ({ userId, sipId, amount, sipDate }) => {
   }
 
   // Otherwise, create or update a pending change
-  await db.pendingSipChange.upsert({
+  await db.pendingMfSipChange.upsert({
     where: { userId_sipId: { userId, sipId } },
     create: {
       userId,
@@ -113,7 +113,7 @@ export const skipSip = async (userId, sipId) => {
   }
 
   // Otherwise, create or update a pending change
-  await db.pendingSipChange.upsert({
+  await db.pendingMfSipChange.upsert({
     where: { userId_sipId: { userId, sipId } },
     create: {
       userId,

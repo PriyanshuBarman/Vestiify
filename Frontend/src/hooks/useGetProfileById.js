@@ -5,7 +5,7 @@ export const useGetProfileById = (userId, state) => {
     return useQuery({
       queryKey: ["profile", userId],
       queryFn: () => fetchProfileById(userId),
-      enabled: !state?.fullName && !state?.username && !state?.avatar,
+      enabled: !state?.name && !state?.username && !state?.avatar,
     });
   };
   

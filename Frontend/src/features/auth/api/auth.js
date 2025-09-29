@@ -1,10 +1,10 @@
 import { VITE_BACKEND_BASE_URL } from "@/config/env";
 import axios from "axios";
 
-export const signupUser = async ({ fullName, email, password }) => {
+export const signupUser = async ({ name, email, password }) => {
   const { data } = await axios.post(
     `${VITE_BACKEND_BASE_URL}/auth/signup`,
-    { fullName, email, password },
+    { name, email, password },
     { withCredentials: true },
   );
 

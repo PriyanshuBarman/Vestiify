@@ -42,13 +42,13 @@ function TnxHistoryPage() {
                       }
                     />
                     <AvatarFallback className="text-sm uppercase">
-                      {tnx.peerUser?.profile?.fullName?.charAt(0) ||
+                      {tnx.peerUser?.profile?.name?.charAt(0) ||
                         tnx.assetCategory?.charAt(0)}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col justify-between gap-1.5">
                     <h3 className="text-sm font-medium capitalize">
-                      {tnx.peerUser?.profile?.fullName ||
+                      {tnx.peerUser?.profile?.name ||
                         assetConfig[tnx.assetCategory]?.name}
                     </h3>
                     <p className="text-muted-foreground text-xs">

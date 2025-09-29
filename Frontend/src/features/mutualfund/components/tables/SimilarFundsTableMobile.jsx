@@ -41,7 +41,7 @@ function SimilarFundsTableMobile({ fund }) {
             </TableHead>
             <TableHead onClick={handleSortClick} className="text-primary">
               <div className="flex items-center justify-end gap-1">
-                <span>{columnsConfig[activeColumn].fullName}</span>
+                <span>{columnsConfig[activeColumn].name}</span>
                 <ChevronsUpDown className="fill-primary size-3.5" />
               </div>
             </TableHead>

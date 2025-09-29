@@ -22,7 +22,7 @@ function EnterAmountPage() {
   const { data: profile } = useGetProfileById(receiverId, location.state);
 
   // Use profile data from API if not provided in state
-  const receiverName = location.state?.receiverName || profile?.fullName;
+  const receiverName = location.state?.receiverName || profile?.name;
   const receiverUsername =
     location.state?.receiverUsername || profile?.username;
   const receiverAvatar = location.state?.receiverAvatar || profile?.avatar;
@@ -35,7 +35,7 @@ function EnterAmountPage() {
       note,
       receiverId,
       pin,
-      fullName: receiverName,
+      name: receiverName,
     });
   };
 

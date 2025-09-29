@@ -13,6 +13,6 @@ export const applySipChanges = async (data) => {
       },
     });
 
-    await db.pendingSipChange.delete({ where: { id } });
+    await db.pendingMfSipChange.delete({ where: { id } });
   });
 };

@@ -65,7 +65,7 @@ function Navbar() {
               alt="User Profile Picture"
             />
             <AvatarFallback>
-              {user?.profile?.fullName.charAt(0).toUpperCase()}
+              {user?.profile?.name.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
         ) : (
@@ -77,7 +77,7 @@ function Navbar() {
                 alt="User Profile Picture"
               />
               <AvatarFallback>
-                {user?.profile?.fullName.charAt(0).toUpperCase()}
+                {user?.profile?.name.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
           </ProfileSheet>

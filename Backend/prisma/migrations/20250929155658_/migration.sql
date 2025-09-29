@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE `user` (
+CREATE TABLE `users` (
     `id` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NULL,
@@ -11,27 +11,27 @@ CREATE TABLE `user` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `user_email_key`(`email`),
+    UNIQUE INDEX `users_email_key`(`email`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `profile` (
+CREATE TABLE `profiles` (
     `id` VARCHAR(191) NOT NULL,
-    `fullName` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
     `username` VARCHAR(191) NOT NULL,
     `avatar` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
 
-    UNIQUE INDEX `profile_username_key`(`username`),
-    UNIQUE INDEX `profile_userId_key`(`userId`),
+    UNIQUE INDEX `profiles_username_key`(`username`),
+    UNIQUE INDEX `profiles_userId_key`(`userId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `transaction` (
+CREATE TABLE `transactions` (
     `id` VARCHAR(191) NOT NULL,
     `amount` DECIMAL(18, 2) NOT NULL,
     `note` VARCHAR(191) NULL,
@@ -47,7 +47,7 @@ CREATE TABLE `transaction` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `mf_order` (
+CREATE TABLE `mf_orders` (
     `id` VARCHAR(191) NOT NULL,
     `schemeCode` INTEGER NOT NULL,
     `fundName` VARCHAR(191) NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE `mf_order` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `mf_portfolio` (
+CREATE TABLE `mf_portfolios` (
     `id` VARCHAR(191) NOT NULL,
     `schemeCode` INTEGER NOT NULL,
     `fundName` VARCHAR(191) NOT NULL,
@@ -90,12 +90,12 @@ CREATE TABLE `mf_portfolio` (
     `updatedAt` DATETIME(3) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
 
-    UNIQUE INDEX `mf_portfolio_userId_schemeCode_key`(`userId`, `schemeCode`),
+    UNIQUE INDEX `mf_portfolios_userId_schemeCode_key`(`userId`, `schemeCode`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `mf_holding` (
+CREATE TABLE `mf_holdings` (
     `id` VARCHAR(191) NOT NULL,
     `schemeCode` INTEGER NOT NULL,
     `nav` DECIMAL(10, 4) NOT NULL,
@@ -110,7 +110,7 @@ CREATE TABLE `mf_holding` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `mf_sip` (
+CREATE TABLE `mf_sips` (
     `id` VARCHAR(191) NOT NULL,
     `sipDate` INTEGER NOT NULL,
     `nextInstallmentDate` DATE NOT NULL,
@@ -125,12 +125,12 @@ CREATE TABLE `mf_sip` (
     `updatedAt` DATETIME(3) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
 
-    INDEX `mf_sip_userId_schemeCode_idx`(`userId`, `schemeCode`),
+    INDEX `mf_sips_userId_schemeCode_idx`(`userId`, `schemeCode`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `pending_sip_changes` (
+CREATE TABLE `pending_mf_sip_changes` (
     `id` VARCHAR(191) NOT NULL,
     `amount` DECIMAL(18, 2) NULL,
     `sipDate` INTEGER NULL,
@@ -141,12 +141,12 @@ CREATE TABLE `pending_sip_changes` (
     `sipId` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
 
-    UNIQUE INDEX `pending_sip_changes_userId_sipId_key`(`userId`, `sipId`),
+    UNIQUE INDEX `pending_mf_sip_changes_userId_sipId_key`(`userId`, `sipId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `mf_watchlist` (
+CREATE TABLE `mf_watchlists` (
     `id` VARCHAR(191) NOT NULL,
     `schemeCode` INTEGER NOT NULL,
     `fundName` VARCHAR(191) NOT NULL,
@@ -154,42 +154,42 @@ CREATE TABLE `mf_watchlist` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `userId` VARCHAR(191) NOT NULL,
 
-    UNIQUE INDEX `mf_watchlist_userId_schemeCode_key`(`userId`, `schemeCode`),
+    UNIQUE INDEX `mf_watchlists_userId_schemeCode_key`(`userId`, `schemeCode`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `profile` ADD CONSTRAINT `profile_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `profiles` ADD CONSTRAINT `profiles_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `transaction` ADD CONSTRAINT `transaction_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `transactions` ADD CONSTRAINT `transactions_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `transaction` ADD CONSTRAINT `transaction_peerUserId_fkey` FOREIGN KEY (`peerUserId`) REFERENCES `user`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `transactions` ADD CONSTRAINT `transactions_peerUserId_fkey` FOREIGN KEY (`peerUserId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `transaction` ADD CONSTRAINT `transaction_assetOrderId_fkey` FOREIGN KEY (`assetOrderId`) REFERENCES `mf_order`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `transactions` ADD CONSTRAINT `transactions_assetOrderId_fkey` FOREIGN KEY (`assetOrderId`) REFERENCES `mf_orders`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `mf_order` ADD CONSTRAINT `mf_order_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `mf_orders` ADD CONSTRAINT `mf_orders_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `mf_portfolio` ADD CONSTRAINT `mf_portfolio_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `mf_portfolios` ADD CONSTRAINT `mf_portfolios_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `mf_holding` ADD CONSTRAINT `mf_holding_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `mf_holdings` ADD CONSTRAINT `mf_holdings_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `mf_holding` ADD CONSTRAINT `mf_holding_portfolioId_fkey` FOREIGN KEY (`portfolioId`) REFERENCES `mf_portfolio`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `mf_holdings` ADD CONSTRAINT `mf_holdings_portfolioId_fkey` FOREIGN KEY (`portfolioId`) REFERENCES `mf_portfolios`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `mf_sip` ADD CONSTRAINT `mf_sip_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `mf_sips` ADD CONSTRAINT `mf_sips_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `pending_sip_changes` ADD CONSTRAINT `pending_sip_changes_sipId_fkey` FOREIGN KEY (`sipId`) REFERENCES `mf_sip`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `pending_mf_sip_changes` ADD CONSTRAINT `pending_mf_sip_changes_sipId_fkey` FOREIGN KEY (`sipId`) REFERENCES `mf_sips`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `pending_sip_changes` ADD CONSTRAINT `pending_sip_changes_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `pending_mf_sip_changes` ADD CONSTRAINT `pending_mf_sip_changes_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `mf_watchlist` ADD CONSTRAINT `mf_watchlist_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `mf_watchlists` ADD CONSTRAINT `mf_watchlists_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

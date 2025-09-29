@@ -3,7 +3,7 @@ import { applySipChanges } from "../processors/applySipChanges.processor.js";
 import { printSummary } from "../utils/printSummary.utils.js";
 
 export async function applySipChangess() {
-  const pendingChanges = await db.pendingSipChange.findMany();
+  const pendingChanges = await db.pendingMfSipChange.findMany();
 
   if (!pendingChanges.length) {
     return console.log("No pending SIP changes to apply");

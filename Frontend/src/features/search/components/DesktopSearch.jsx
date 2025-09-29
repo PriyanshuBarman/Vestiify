@@ -109,7 +109,7 @@ function DesktopSearch() {
 
         {isSearchOpen && (
           <div className="Search-Popover bg-background absolute z-10 w-full space-y-4 rounded-b-lg border border-t-0 px-6 py-4">
-            <FilterTabs searchType={searchType} setSearchType={setSearchType} />
+            {/* <FilterTabs searchType={searchType} setSearchType={setSearchType} /> */}
 
             <ScrollArea className="h-[60vh]">
               <LoadingSkeleton isLoading={isLoading} />

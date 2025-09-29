@@ -11,13 +11,13 @@ export const useSendMoney = () => {
   return useMutation({
     mutationFn: sendMoney,
     onSuccess: (balance, variables) => {
-      const { amount, fullName } = variables;
+      const { amount, name } = variables;
       queryClient.setQueryData(["balance"], balance);
       navigate("/payment-success", {
         state: {
           amount,
           title: "Payment Successful",
-          description: `${formatToINR(amount)} has been successfully sent to ${fullName}.`,
+          description: `${formatToINR(amount)} has been successfully sent to ${name}.`,
           orderDetailsRoute: "/wallet/transactions",
           doneRoute: "/wallet",
         },

@@ -48,7 +48,7 @@ function ProfilePage() {
           <ProfileAvatar />
           <div>
             <h3 className="text-center text-lg font-semibold capitalize">
-              {user.profile.fullName}
+              {user.profile.name}
             </h3>
           </div>
         </div>

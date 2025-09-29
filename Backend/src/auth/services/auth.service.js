@@ -7,13 +7,13 @@ import { db } from "../../../config/db.config.js";
 import { JWT_SECRET } from "../../../config/env.config.js";
 import { TOKEN_EXPIRY } from "../constants/auth.constants.js";
 
-export const signupUser = async (fullName, email, password) => {
+export const signupUser = async (name, email, password) => {
   const existingUser = await db.user.findUnique({ where: { email } });
 
   if (existingUser) throw new ApiError(400, "User Already Exists");
 
   const hashPassword = await bcrypt.hash(password, 10);
-  const username = await generateUniqueUsername(fullName);
+  const username = await generateUniqueUsername(name);
 
   const user = await db.user.create({
     data: {
@@ -21,7 +21,7 @@ export const signupUser = async (fullName, email, password) => {
       password: hashPassword,
       profile: {
         create: {
-          fullName,
+          name,
           username,
         },
       },
@@ -65,8 +65,8 @@ export const setPin = async (userId, pin) => {
   });
 };
 
-export async function generateUniqueUsername(fullName) {
-  const base = fullName.toLowerCase().replace(/\s+/g, "");
+export async function generateUniqueUsername(name) {
+  const base = name.toLowerCase().replace(/\s+/g, "");
   let username = base;
 
   // First check if base username is available

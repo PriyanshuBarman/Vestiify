@@ -17,10 +17,7 @@ export const searchProfile = async (userId, query, limit) => {
   return await db.profile.findMany({
     where: {
       userId: { not: userId },
-      OR: [
-        { fullName: { contains: query } },
-        { username: { contains: query } },
-      ],
+      OR: [{ name: { contains: query } }, { username: { contains: query } }],
     },
     take: parseInt(limit || 8),
   });

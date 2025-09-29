@@ -5,13 +5,9 @@ import { COOKIE_OPTIONS } from "../constants/auth.constants.js";
 import { ApiError } from "../../shared/utils/apiError.utils.js";
 
 export const signup = asyncHandler(async (req, res) => {
-  const { fullName, email, password } = req.body;
+  const { name, email, password } = req.body;
 
-  const { token, user } = await authService.signupUser(
-    fullName,
-    email,
-    password
-  );
+  const { token, user } = await authService.signupUser(name, email, password);
 
   return res
     .cookie("token", token, COOKIE_OPTIONS)

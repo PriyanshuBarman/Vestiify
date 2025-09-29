@@ -58,7 +58,7 @@ function AllFunds() {
             >
               <ChevronsLeftRight className="size-4 shrink-0" />
               <span className="border-muted-foreground border-b border-dashed">
-                {columnsConfig[activeColumn].fullName}
+                {columnsConfig[activeColumn].name}
               </span>
             </TableHead>
           </TableRow>

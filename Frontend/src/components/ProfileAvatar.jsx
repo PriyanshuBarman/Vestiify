@@ -10,7 +10,7 @@ function ProfileAvatar() {
       <Avatar className="size-20">
         <AvatarImage src={user.profile.avatar} alt="User Profile Picture" />
         <AvatarFallback className="text-3xl font-semibold text-shadow-lg">
-          {user.profile.fullName?.charAt(0).toUpperCase()}
+          {user.profile.name?.charAt(0).toUpperCase()}
         </AvatarFallback>
       </Avatar>
 

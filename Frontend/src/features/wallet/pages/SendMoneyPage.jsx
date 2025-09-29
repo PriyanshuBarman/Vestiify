@@ -59,7 +59,7 @@ function SendMoneyPage() {
                   navigate("/wallet/enter-amount", {
                     state: {
                       receiverId: profile.userId,
-                      receiverName: profile.fullName,
+                      receiverName: profile.name,
                       receiverUsername: profile.username,
                       receiverAvatar: profile.avatar,
                     },
@@ -70,11 +70,11 @@ function SendMoneyPage() {
                 <Avatar className="size-12">
                   <AvatarImage src={profile.avatar} />
                   <AvatarFallback className="uppercase">
-                    {profile?.fullName.charAt(0)}
+                    {profile?.name.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <h3 className="font-medium capitalize">{profile.fullName}</h3>
+                  <h3 className="font-medium capitalize">{profile.name}</h3>
                   <p className="text-muted-foreground text-md">
                     @{profile.username}
                   </p>
