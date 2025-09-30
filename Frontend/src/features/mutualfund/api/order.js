@@ -17,7 +17,7 @@ export const createInvestOrder = async ({ amount, fund, pin }) => {
     { withCredentials: true },
   );
 
-  return data;
+  return data.orderDetail;
 };
 
 export const fetchOrders = async () => {

@@ -4,43 +4,53 @@ import { ApiError } from "../../shared/utils/apiError.utils.js";
 
 export const addToWatchlist = asyncHandler(async (req, res) => {
   const { userId } = req.user;
-  const { schemeCode, fundName, shortName } = req.body;
-
-  if (!schemeCode) {
-    throw new ApiError(400, "schemeCode is required");
-  }
-  if (!fundName) {
-    throw new ApiError(400, "fundName is required");
-  }
-  if (!shortName) {
-    throw new ApiError(400, "shortName is required");
-  }
+  const { schemeCode, fundName, shortName, fundHouseDomain } = req.body;
 
   await watchlistService.addToWatchlist({
     userId,
     schemeCode,
     fundName,
     shortName,
+    fundHouseDomain,
   });
 
   res.status(201).json({ success: true, message: "added to watchlist" });
 });
 
 export const removeFromWatchlist = asyncHandler(async (req, res) => {
-  const { watchlistId } = req.params;
+  const { userId } = req.user;
+  const { schemeCode } = req.params;
 
-  if (!watchlistId) {
-    throw new ApiError(400, "watchlistId is required");
+  if (!schemeCode) {
+    throw new ApiError(400, "schemeCode is required");
   }
 
-  await watchlistService.removeFromWatchlist(watchlistId);
+  await watchlistService.removeFromWatchlist(userId, schemeCode);
 
-  res.status(200).json({ success: true, message: "removed from watchlist" });
+  res
+    .status(200)
+    .json({ success: true, message: "Successfully removed from watchlist" });
 });
 
 export const getWatchlist = asyncHandler(async (req, res) => {
   const { userId } = req.user;
-  const wishlist = await watchlistService.fetchWatchlist(userId);
+  const watchlist = await watchlistService.fetchWatchlist(userId);
 
-  res.status(200).json({ success: true, wishlist });
+  res.status(200).json({ success: true, watchlist });
+});
+
+export const isInWatchlist = asyncHandler(async (req, res) => {
+  const { userId } = req.user;
+  const { schemeCode } = req.params;
+
+  if (!schemeCode) {
+    throw new ApiError(400, "schemeCode is required");
+  }
+
+  const isWatchlisted = await watchlistService.isInWatchlist(
+    userId,
+    schemeCode
+  );
+
+  res.status(200).json({ success: true, isWatchlisted });
 });

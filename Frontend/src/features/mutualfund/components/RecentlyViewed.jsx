@@ -82,7 +82,7 @@ function Row({ fund, activeLabelIdx }) {
       onClick={handleClick}
       className="flex min-w-full items-center border-b pb-4 sm:hidden"
     >
-      <FundLogo logoCode={fund.short_code} />
+      <FundLogo fundHouseDomain={fund.detail_info} />
 
       <div className="ml-4">
         <h3 className="text-sm">{fund.short_name}</h3>

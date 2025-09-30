@@ -1,6 +1,7 @@
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import ProfilePage from "@/pages/ProfilePage";
+import { Button } from "./ui/button";
 
 function ProfileSheet({ children }) {
   const isMobile = useIsMobile();
@@ -8,12 +9,13 @@ function ProfileSheet({ children }) {
   return (
     <Sheet modal={!isMobile}>
       <SheetTrigger asChild>
-        <button
+        <Button
+        variant="ghost"
           type="button"
           className="relative flex size-8.5 shrink-0 overflow-hidden rounded-full"
         >
           {children}
-        </button>
+        </Button>
       </SheetTrigger>
       <SheetContent
         side="right"

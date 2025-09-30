@@ -162,7 +162,7 @@ function WalletPage() {
           </ul>
           <Link
             to="/wallet/transactions"
-            className="flex items-center justify-between gap-1 border-y px-4 py-4 text-sm font-medium"
+            className="flex items-center justify-between gap-1 border-y py-4 text-sm font-medium sm:px-4"
           >
             <span>View all</span>
             <ChevronRightIcon size={20} />

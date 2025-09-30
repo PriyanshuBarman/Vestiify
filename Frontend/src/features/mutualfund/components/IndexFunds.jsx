@@ -25,7 +25,7 @@ function IndexFunds() {
             >
               <Card className="h-35 w-39 cursor-pointer justify-between gap-2 p-4 text-inherit transition-all duration-300 hover:scale-101 sm:h-42 sm:w-47">
                 <FundLogo fundHouseDomain={fund.detail_info} />
-                <CardTitle className="text-xs font-medium sm:text-sm">
+                <CardTitle className="text-[0.75rem] font-medium sm:text-sm">
                   {fund.short_name}
                 </CardTitle>
 

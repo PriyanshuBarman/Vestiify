@@ -4,7 +4,7 @@ import { isValidRange } from "../../utils/chartHelper";
 
 function TimeRangeBtns({ setSelectedRange, selectedRange, fullChartData }) {
   return (
-    <CardFooter className="mt-6 flex justify-center gap-2 sm:mt-0 sm:gap-4 sm:border-t sm:pt-4">
+    <CardFooter className="mt-6 flex justify-center gap-2 pb-2 sm:mt-0 sm:gap-4 sm:border-t sm:pt-4">
       {["1M", "6M", "1Y", "3Y", "5Y", "All"].map((timePeriod) => (
         <Button
           variant="outline"

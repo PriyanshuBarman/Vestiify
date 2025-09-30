@@ -1,4 +1,34 @@
 import { db } from "../../../config/db.config.js";
+import { ApiError } from "../../shared/utils/apiError.utils.js";
+
+export const addToWatchlist = async ({
+  userId,
+  schemeCode,
+  fundName,
+  shortName,
+  fundHouseDomain,
+}) => {
+  const isAlreadyWatchlisted = await isInWatchlist(userId, schemeCode);
+  if (isAlreadyWatchlisted) {
+    throw new ApiError(400, "Fund is already in watchlist");
+  }
+
+  return await db.mfWatchlist.create({
+    data: {
+      userId,
+      schemeCode: parseInt(schemeCode),
+      fundName,
+      shortName,
+      fundHouseDomain,
+    },
+  });
+};
+
+export const removeFromWatchlist = async (userId, schemeCode) => {
+  return await db.mfWatchlist.delete({
+    where: { userId_schemeCode: { userId, schemeCode: parseInt(schemeCode) } },
+  });
+};
 
 export const fetchWatchlist = async (userId) => {
   return await db.mfWatchlist.findMany({
@@ -6,24 +36,10 @@ export const fetchWatchlist = async (userId) => {
   });
 };
 
-export const addToWatchlist = async ({
-  userId,
-  schemeCode,
-  fundName,
-  shortName,
-}) => {
-  return await db.mfWatchlist.create({
-    data: {
-      userId,
-      schemeCode,
-      fundName,
-      shortName,
-    },
+export const isInWatchlist = async (userId, schemeCode) => {
+  const isWatchlisted = await db.mfWatchlist.findUnique({
+    where: { userId_schemeCode: { userId, schemeCode: parseInt(schemeCode) } },
   });
-};
 
-export const removeFromWatchlist = async (watchlistId) => {
-  return await db.mfWatchlist.delete({
-    where: { id: watchlistId },
-  });
+  return !!isWatchlisted;
 };

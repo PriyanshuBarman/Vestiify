@@ -238,11 +238,12 @@ model PendingMfSipChange {
 }
 
 model MfWatchlist {
-  id         String   @id @default(uuid())
-  schemeCode Int
-  fundName   String
-  shortName  String
-  createdAt  DateTime @default(now())
+  id              String   @id @default(uuid())
+  schemeCode      Int
+  shortName       String
+  fundName        String
+  fundHouseDomain String
+  createdAt       DateTime @default(now())
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String

@@ -14,6 +14,10 @@ import FundPortfolioPreview from "../components/fundPortfolioPreview";
 import RecentlyViewed from "../components/RecentlyViewed";
 import { useGetFundData } from "../hooks/useGetFundData";
 import { formatFundCategory } from "../utils/formaters";
+import { useAddToWatchlist } from "../hooks/useAddToWatchlist";
+import { useGetIsInWatchlist } from "../hooks/useGetIsInWatchlist";
+import { useRemoveFromWatchlist } from "../hooks/useRemoveFromWatchlist";
+import { Button } from "@/components/ui/button";
 
 const PurchaseBtns = lazy(() => import("../components/PurchaseBtns"));
 const DesktopPaymentCard = lazy(
@@ -23,10 +27,27 @@ const DesktopPaymentCard = lazy(
 function FundPage() {
   const { scheme_code } = useParams();
   const { data: fund = {}, isPending } = useGetFundData(scheme_code);
+  const { data: isInWatchlist } = useGetIsInWatchlist(scheme_code);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+
+  const { mutate: addToWatchlist } = useAddToWatchlist();
+  const { mutate: removeFromWatchlist } = useRemoveFromWatchlist();
+
+  const handleWatchlistClick = () => {
+    if (isInWatchlist) {
+      removeFromWatchlist({ schemeCode: scheme_code });
+    } else {
+      addToWatchlist({
+        schemeCode: scheme_code,
+        fundName: fund.name,
+        shortName: fund.short_name,
+        fundHouseDomain: fund.detail_info,
+      });
+    }
+  };
 
   const handleSearchClick = () => {
     isMobile ? navigate("/search") : dispatch(setIsSearchOpen(true));
@@ -36,15 +57,34 @@ function FundPage() {
     <div className="mt-4 sm:flex sm:gap-6">
       <GoBackBar />
       <div className="h-full w-full space-y-4 text-inherit sm:space-y-6 lg:w-[67%]">
-        <div className="px-4">
+        <div className="px-4 max-sm:pr-6">
           <div className="flex justify-between">
             <FundLogo
               fundHouseDomain={fund?.detail_info}
               className="border sm:size-13"
             />
-            <div className="icons flex items-center gap-8">
-              <Search onClick={handleSearchClick} className="sm:hidden" />
-              <Bookmark />
+            <div className="icons flex items-center gap-4">
+              <Button
+                disabled={isPending}
+                onClick={handleSearchClick}
+                size="icon"
+                variant="ghost"
+                className="bg-accent rounded-full p-5 sm:bg-transparent sm:p-6"
+              >
+                <Search className="size-5 sm:size-6" />
+              </Button>
+
+              <Button
+                disabled={isPending}
+                onClick={handleWatchlistClick}
+                size="icon"
+                variant="ghost"
+                className="bg-accent rounded-full p-5 sm:bg-transparent sm:p-6"
+              >
+                <Bookmark
+                  className={`${isInWatchlist && "fill-primary text-primary stroke-primary"} size-5 sm:size-6`}
+                />
+              </Button>
             </div>
           </div>
 
