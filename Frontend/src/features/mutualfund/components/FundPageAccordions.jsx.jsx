@@ -14,6 +14,7 @@ import ReturnCalculator from "./ReturnCalculator";
 import SimilarFundsTableDesktop from "./tables/SimilarFundsTableDesktop";
 import SimilarFundsTableMobile from "./tables/SimilarFundsTableMobile";
 import { UnderstandTermsInfo } from "./info/UnderstandTermsInfo";
+import { formatDate } from "date-fns";
 
 function FundPageAccordions({ fund }) {
   const isMobile = useIsMobile();
@@ -77,7 +78,7 @@ function FundPageAccordions({ fund }) {
               </p>
             </li>
 
-            <div className="sm:text-md text-muted-foreground relative right-2 mt-4 flex items-center sm:right-0 sm:font-semibold">
+            <div className="sm:text-md text-muted-foreground relative right-2 mt-4 flex items-center gap-2 sm:right-0 sm:font-medium">
               Understand terms <UnderstandTermsInfo />
             </div>
           </ul>
@@ -128,14 +129,14 @@ function FundPageAccordions({ fund }) {
         </AccordionTrigger>
         <AccordionContent className="space-y-8">
           <div className="mt-4 flex items-center gap-2">
-            <FundLogo logoCode={fund.short_code} />
+            <FundLogo fundHouseDomain={fund.detail_info} />
             <h2 className="ml-2 text-sm sm:text-base sm:font-[450]">
               {fund.amc_name}
             </h2>
           </div>
 
           <div className="AUM Details relative space-y-6 sm:flex sm:flex-wrap sm:justify-between sm:gap-y-6 sm:text-base">
-            <p className="flex w-full justify-between sm:w-[45%]">
+            {/* <p className="flex w-full justify-between sm:w-[45%]">
               <span className="sm:text-muted-foreground">
                 Rank ( total assets )
               </span>
@@ -144,7 +145,7 @@ function FundPageAccordions({ fund }) {
             <p className="flex w-full justify-between sm:w-[45%]">
               <span className="sm:text-muted-foreground">Total AUM</span>
               <span className="sm:font-[450]">$4393987 Crors</span>
-            </p>
+            </p> */}
 
             <Separator
               orientation="vertical"
@@ -152,15 +153,17 @@ function FundPageAccordions({ fund }) {
             />
 
             <p className="flex w-full justify-between sm:w-[45%]">
-              <span className="sm:text-muted-foreground">
-                Date of incorporation
+              <span>Start Date</span>
+              <span className="sm:font-[450]">
+                {fund.start_date
+                  ? formatDate(new Date(fund.start_date), "do MMMM yyyy")
+                  : "N/A"}
               </span>
-              <span className="sm:font-[450]">20 January 2025</span>
             </p>
           </div>
 
           <div>
-            <h5 className="font-[450]">Investment Objective</h5>
+            <h5 className="font-[450] sm:text-base">Investment Objective</h5>
             <p
               onClick={() => setTextClamp(!textClamp)}
               className={`text-muted-foreground sm:text-foreground mt-4 text-sm/4.5 sm:mt-2 sm:text-base ${textClamp ? "line-clamp-3" : ""}`}

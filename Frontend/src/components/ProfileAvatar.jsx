@@ -3,14 +3,14 @@ import { useGetUser } from "@/hooks/useGetUser";
 import { formatDate } from "date-fns";
 
 function ProfileAvatar() {
-  const { data: user = {} } = useGetUser();
+  const { data: user } = useGetUser();
 
   return (
     <div className="relative flex items-center justify-center">
       <Avatar className="size-20">
-        <AvatarImage src={user.profile.avatar} alt="User Profile Picture" />
+        <AvatarImage src={user?.profile?.avatar} alt="User Profile Picture" />
         <AvatarFallback className="text-3xl font-semibold text-shadow-lg">
-          {user.profile.name?.charAt(0).toUpperCase()}
+          {user?.profile?.name?.charAt(0).toUpperCase()}
         </AvatarFallback>
       </Avatar>
 
@@ -28,8 +28,8 @@ function ProfileAvatar() {
         <text fill="currentColor">
           <textPath href="#circlePath" startOffset="50%" textAnchor="middle">
             • Growing Since{" "}
-            {user.createdAt && formatDate(user.createdAt, "MMM yy")} • Growing
-            Since {user.createdAt && formatDate(user.createdAt, "MMM yy")}
+            {user?.createdAt && formatDate(user.createdAt, "MMM yy")} • Growing
+            Since {user?.createdAt && formatDate(user.createdAt, "MMM yy")}
           </textPath>
         </text>
       </svg>

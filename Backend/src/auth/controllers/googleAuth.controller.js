@@ -31,7 +31,7 @@ export const googleAuth = asyncHandler(async (req, res) => {
     const username = await generateUniqueUsername(name);
     user = await db.user.create({
       data: {
-        email: true,
+        email,
         profile: {
           create: {
             username,

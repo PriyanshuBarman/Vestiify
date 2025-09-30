@@ -3,18 +3,17 @@ import { Badge } from "@/components/ui/badge";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { setIsSearchOpen } from "@/store/slices/searchSlice";
 import { Bookmark, LockKeyholeIcon, Search } from "lucide-react";
+import { lazy } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router";
-import FundPageAccordions from "../components/FundPageAccordions.jsx";
 import Chart from "../components/chart/Chart";
 import FundDescription from "../components/FundDescription";
 import FundLogo from "../components/FundLogo";
+import FundPageAccordions from "../components/FundPageAccordions.jsx";
 import FundPortfolioPreview from "../components/fundPortfolioPreview";
 import RecentlyViewed from "../components/RecentlyViewed";
 import { useGetFundData } from "../hooks/useGetFundData";
 import { formatFundCategory } from "../utils/formaters";
-import { getMainDomain } from "../utils/getMainDomain";
-import { lazy } from "react";
 
 const PurchaseBtns = lazy(() => import("../components/PurchaseBtns"));
 const DesktopPaymentCard = lazy(
@@ -40,11 +39,11 @@ function FundPage() {
         <div className="px-4">
           <div className="flex justify-between">
             <FundLogo
-              fundHouseDomain={getMainDomain(fund?.detail_info)}
+              fundHouseDomain={fund?.detail_info}
               className="border sm:size-13"
             />
             <div className="icons flex items-center gap-8">
-              <Search onClick={handleSearchClick} />
+              <Search onClick={handleSearchClick} className="sm:hidden" />
               <Bookmark />
             </div>
           </div>

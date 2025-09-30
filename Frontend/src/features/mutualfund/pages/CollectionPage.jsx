@@ -38,7 +38,10 @@ function CollectionPage() {
 
   const [visibleColumns, setVisibleColumns] = useState(DEFAULT_COLUMNS);
 
-  const { data } = useGetCategoryFundList(name, collectionConfig[name]?.url);
+  const { data, isPending } = useGetCategoryFundList(
+    name,
+    collectionConfig[name]?.url,
+  );
 
   useEffect(() => {
     if (data) setPeers(data);
@@ -88,6 +91,7 @@ function CollectionPage() {
         // ----------- MOBILE TABLE -----------
         <TableSM
           funds={peers}
+          isPending={isPending}
           activeColumn={activeColumn}
           activeSortBy={activeSortBy}
           order={orderBy}
@@ -102,6 +106,7 @@ function CollectionPage() {
         // ----------- LARGE SCREEN TABLE -----------
         <TableLG
           funds={peers}
+          isPending={isPending}
           visibleColumns={visibleColumns}
           setVisibleColumns={setVisibleColumns}
           activeColumn={activeColumn}

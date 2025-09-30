@@ -1,23 +1,18 @@
-import FundRating from "@/features/mutualfund/components/FundRating";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card";
+import FundRating from "@/features/mutualfund/components/FundRating";
 import { Link } from "react-router";
 import FundLogo from "./FundLogo";
-import { getMainDomain } from "../utils/getMainDomain";
 
 function CardSM({ fund }) {
   return (
     <Link to={`/mutual-funds/${fund.scheme_code}`}>
       <Card className="min-w-72 gap-2 p-4">
-        <FundLogo
-          fundHouseDomain={getMainDomain(fund.detail_info)}
-          className="size-8.5"
-        />
+        <FundLogo fundHouseDomain={fund.detail_info} className="size-8.5" />
 
         <CardContent className="p-0">
           <CardTitle className="flex justify-between gap-2 text-sm font-medium">

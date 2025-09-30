@@ -7,6 +7,7 @@ import { selectTheme, setTheme } from "@/store/slices/themeSlice";
 import {
   ArrowLeftIcon,
   ArrowLeftRightIcon,
+  LogOutIcon,
   LogsIcon,
   MoonIcon,
   Settings,
@@ -103,7 +104,10 @@ function ProfilePage() {
             ))}
           </div>
           <Button asChild size="lg" variant="outline" className="w-full">
-            <Link to="/auth/logout">Logout</Link>
+            <Link to="/auth/logout">
+              Logout
+              <LogOutIcon />
+            </Link>
           </Button>
           {/* 
           <div className="flex flex-col items-center gap-2">

@@ -8,15 +8,14 @@ import {
 } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { useDebounce } from "@/hooks/useDebounce";
+import { formatToINR } from "@/utils/formatters";
 import { useMemo, useState } from "react";
 import CountUp from "react-countup";
 import { useGetChart } from "../hooks/useGetChart";
-import { formatToINR } from "@/utils/formatters";
 import {
   calculateAbsoluteReturn,
   calculateSIPReturns,
 } from "../utils/returnCalculatorHelper";
-import { InfoDrawer } from "@/components/InfoDrawer";
 import SIPCalculationInfo from "./info/SIPCalculationInfo";
 
 const TIME_OPTIONS = [
@@ -58,9 +57,9 @@ function ReturnCalculator({ fund }) {
           <Button
             variant="ghost"
             onClick={() => switchCalculationType("sip")}
-            className={`sm:text-md h-7 rounded-full px-3 font-medium sm:px-4 sm:py-2 ${
+            className={`sm:text-md h-7 rounded-full px-3 text-xs font-normal hover:bg-transparent sm:px-4 sm:py-2 sm:font-medium ${
               type === "sip"
-                ? "text-primary border-primary bg-primary/10 sm:border"
+                ? "text-primary border-primary bg-primary/10 hover:bg-primary/10 hover:text-primary sm:border"
                 : ""
             }`}
           >
@@ -69,9 +68,9 @@ function ReturnCalculator({ fund }) {
           <Button
             variant="ghost"
             onClick={() => switchCalculationType("one-time")}
-            className={`sm:text-md h-7 rounded-full px-3 font-medium sm:px-4 sm:py-2 ${
+            className={`sm:text-md h-7 rounded-full px-3 text-xs font-normal hover:bg-transparent sm:px-4 sm:py-2 sm:font-medium ${
               type === "one-time"
-                ? "text-primary border-primary bg-primary/10 sm:border"
+                ? "text-primary border-primary bg-primary/10 hover:bg-primary/10 hover:text-primary sm:border"
                 : ""
             }`}
           >
@@ -81,13 +80,12 @@ function ReturnCalculator({ fund }) {
       </CardHeader>
 
       <CardContent className="px-0 sm:px-10">
-        <div className="flex items-center gap-2 font-semibold">
+        <div className="mt-4 flex items-center gap-2 font-semibold">
           <span className="text-primary sm:text-foreground text-lg tracking-tighter tabular-nums">
             {formatToINR(amount)}
           </span>
-          <div className="sm:text-foreground flex items-center font-normal sm:text-base">
+          <div className="sm:text-foreground flex items-center gap-2 font-normal sm:text-base">
             <span>{type === "sip" ? "per month " : "one-time"}</span>
-
             {type === "sip" && <SIPCalculationInfo />}
           </div>
         </div>

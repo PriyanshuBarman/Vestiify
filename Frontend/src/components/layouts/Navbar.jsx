@@ -30,7 +30,7 @@ function Navbar() {
   if (!allowedRoutes.has(location.pathname) && isMobile) return;
 
   return (
-    <nav className="bg-background z-50 flex items-center justify-between gap-8 px-4 pt-4 pb-2 sm:px-12 sm:py-2 xl:px-0">
+    <nav className="bg-background z-50 flex items-center justify-between gap-8 px-4 pt-4 pb-2 sm:sticky sm:top-0 sm:px-12 sm:py-2 xl:px-0">
       <div className="flex items-center gap-2 sm:gap-4">
         <Logo />
         <NavLinks />
@@ -60,12 +60,11 @@ function Navbar() {
         {isMobile ? (
           <Avatar onClick={() => navigate("/profile")} className="size-8.5">
             <AvatarImage
-              referrerPolicy="no-referrer"
               src={user?.profile?.avatar}
               alt="User Profile Picture"
             />
             <AvatarFallback>
-              {user?.profile?.name.charAt(0).toUpperCase()}
+              {user?.profile?.name?.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
         ) : (
@@ -77,7 +76,7 @@ function Navbar() {
                 alt="User Profile Picture"
               />
               <AvatarFallback>
-                {user?.profile?.name.charAt(0).toUpperCase()}
+                {user?.profile?.name?.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
           </ProfileSheet>

@@ -10,6 +10,7 @@ import { useCreateInvestOrder } from "../hooks/useCreateInvestOrder";
 import { useCreateSip } from "../hooks/useCreateSip";
 import { formatToINR } from "@/utils/formatters";
 import DatePicker from "./DatePicker";
+import { toast } from "sonner";
 
 function DesktopPaymentCard({ fund }) {
   const [isPinDialogOpen, setIsPinDialogOpen] = useState(false);
@@ -30,7 +31,7 @@ function DesktopPaymentCard({ fund }) {
   };
 
   return (
-    <div className="bg-background fixed top-30 hidden h-[450px] w-[400px] rounded-xl border p-6 lg:right-[2%] lg:flex xl:right-30 xl:flex-col">
+    <div className="bg-background fixed top-36 hidden h-[450px] w-[400px] rounded-xl border p-6 lg:right-[2%] lg:flex xl:right-30 xl:flex-col">
       <Tabs
         defaultValue="lumpsum"
         className="flex h-full w-full flex-col"

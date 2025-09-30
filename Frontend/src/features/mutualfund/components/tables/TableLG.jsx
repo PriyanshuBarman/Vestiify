@@ -1,3 +1,4 @@
+import LoadingState from "@/components/LoadingState";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -16,12 +17,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import FundRating from "@/features/mutualfund/components/FundRating";
+import { formatToINR } from "@/utils/formatters";
 import { ChevronDownIcon } from "lucide-react";
 import { Link } from "react-router";
-import { formatToINR } from "@/utils/formatters";
 import FundLogo from "../FundLogo";
-import LoadingState from "@/components/LoadingState";
-import { getMainDomain } from "../../utils/getMainDomain";
 
 /**
  *  Reusable Large screen table with pagination support
@@ -30,6 +29,7 @@ import { getMainDomain } from "../../utils/getMainDomain";
 
 function TableLG({
   funds,
+  isPending, // Becomes true only when the first request is loading
   totalCount,
   visibleColumns,
   setVisibleColumns,
@@ -45,7 +45,7 @@ function TableLG({
   inViewRef = null,
 }) {
   return (
-    <ScrollArea className="h-[90vh] overflow-auto rounded-3xl border">
+    <ScrollArea className="h-dvh overflow-auto rounded-3xl border">
       <Table>
         <TableHeader className="bg-accent sticky top-0 z-10 h-16">
           <TableRow>
@@ -113,17 +113,10 @@ function TableLG({
         </TableHeader>
 
         <TableBody className={`${isFetchingNextPage && "blur-xs"}`}>
-          {isFetching && (
-            <TableRow className="border-none">
-              <TableCell colSpan={11} className="p-0">
-                <LoadingState isLoading={isFetching} className="mt-10" />
-              </TableCell>
-            </TableRow>
-          )}
           {funds?.map((fund) => (
             <TableRow key={fund.scheme_code}>
               <TableCell className="flex items-center gap-8 py-4 pl-8">
-                <FundLogo fundHouseDomain={getMainDomain(fund.detail_info)} />
+                <FundLogo fundHouseDomain={fund.detail_info} />
                 <div>
                   <Link to={`/mutual-funds/${fund.scheme_code}`}>
                     <h4 className="text-base text-wrap">{fund.short_name}</h4>
@@ -163,6 +156,16 @@ function TableLG({
               <TableCell />
             </TableRow>
           ))}
+
+          {/* =============== Loading States =============== */}
+          {/* First Request Loading State */}
+          {isPending && (
+            <TableRow className="border-none">
+              <TableCell colSpan={visibleColumns.length + 2} className="p-0">
+                <LoadingState fullPage className="h-[calc(100vh-200px)]" />
+              </TableCell>
+            </TableRow>
+          )}
 
           {/* Pagination */}
           {enablePagination && (

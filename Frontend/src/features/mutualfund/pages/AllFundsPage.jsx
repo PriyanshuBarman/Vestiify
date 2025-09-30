@@ -29,8 +29,14 @@ function AllFundsPage() {
   const orderBy = filters.order_by;
 
   // Pagination
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
-    useGetFilteredFunds(filters);
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isFetching,
+    isPending,
+  } = useGetFilteredFunds(filters);
 
   const totalCount = data?.pages[0].totalCount;
   const funds = data?.pages.flatMap((page) => page.funds) || []; // automatically adds next page funds to the array
@@ -57,13 +63,14 @@ function AllFundsPage() {
   };
 
   return (
-    <section>
+    <section className="h-dvh">
       <GoBackBar title="All Mutual Funds" />
       <FilterBtns />
       {isMobile ? (
         <TableSM
           show="fundCount"
           funds={funds}
+          isPending={isPending}
           totalCount={totalCount}
           activeColumn={activeColumn}
           onColumnClick={handleColumnClick}
@@ -78,6 +85,7 @@ function AllFundsPage() {
       ) : (
         <TableLG
           funds={funds}
+          isPending={isPending}
           totalCount={totalCount}
           visibleColumns={visibleColumns}
           setVisibleColumns={setVisibleColumns}

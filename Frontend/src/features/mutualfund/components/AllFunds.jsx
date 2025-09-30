@@ -19,9 +19,8 @@ import { useGetFilteredFunds } from "../hooks/useGetFilteredFunds";
 import { columnsConfig, getNextColumn } from "../utils/similarFundsTable";
 import FundLogo from "./FundLogo";
 import FundRating from "./FundRating";
-import FilterBtns from "./filters/FilterBtns";
-import { getMainDomain } from "../utils/getMainDomain";
 import SectionHeading from "./SectionHeading";
+import FilterBtns from "./filters/FilterBtns";
 
 function AllFunds() {
   const dispatch = useDispatch();
@@ -69,7 +68,7 @@ function AllFunds() {
             <TableRow key={fund.scheme_code}>
               <TableCell className="flex items-center gap-4 py-4 pl-4">
                 <FundLogo
-                  fundHouseDomain={getMainDomain(fund.detail_info)}
+                  fundHouseDomain={fund.detail_info}
                   className="size-8.5"
                 />
                 <div>

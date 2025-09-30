@@ -1,15 +1,13 @@
 import {
   Card,
-  CardDescription,
   CardFooter,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Link } from "react-router";
+import { useGetIndexFunds } from "../hooks/useGetIndexFunds";
 import FundLogo from "./FundLogo";
 import SectionHeading from "./SectionHeading";
-import { useGetIndexFunds } from "../hooks/useGetIndexFunds";
-import { getMainDomain } from "../utils/getMainDomain";
 
 function IndexFunds() {
   const { data: funds } = useGetIndexFunds();
@@ -26,7 +24,7 @@ function IndexFunds() {
               to={`/mutual-funds/${fund.scheme_code}`}
             >
               <Card className="h-35 w-39 cursor-pointer justify-between gap-2 p-4 text-inherit transition-all duration-300 hover:scale-101 sm:h-42 sm:w-47">
-                <FundLogo fundHouseDomain={getMainDomain(fund.detail_info)} />
+                <FundLogo fundHouseDomain={fund.detail_info} />
                 <CardTitle className="text-xs font-medium sm:text-sm">
                   {fund.short_name}
                 </CardTitle>

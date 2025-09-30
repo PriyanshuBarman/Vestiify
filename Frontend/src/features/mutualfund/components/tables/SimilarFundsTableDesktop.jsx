@@ -47,7 +47,7 @@ function SimilarFundsTableDesktop({ fund }) {
                 <div
                   onClick={() => handleSortClick(key)}
                   className={`flex h-full cursor-pointer items-center gap-2 py-4 ${
-                    activeColumn === key && "fill-foreground font-semibold"
+                    activeColumn === key && "fill-foreground font-bold"
                   }`}
                 >
                   {columnsConfig[key].shortName}

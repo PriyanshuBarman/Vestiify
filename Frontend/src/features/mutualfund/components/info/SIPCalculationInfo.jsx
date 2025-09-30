@@ -9,7 +9,7 @@ function SIPCalculationInfo() {
       <div className="space-y-4 text-sm">
         <p className="text-muted-foreground">
           This calculator shows what your returns would have been if you had
-          started a SIP for the selected time period.
+          started a SIP in this fund for the selected time period.
         </p>
 
         <div>
@@ -18,7 +18,7 @@ function SIPCalculationInfo() {
             <li>
               • SIP investment on the <strong>1st of every month</strong>
             </li>
-            <li>• If 1st is a holiday, next available trading day is used</li>
+            <li>• If 1st date of month is holiday, next available trading day is used</li>
             <li>• Exactly 12 monthly installments per year</li>
             <li>• Uses actual historical NAV data for calculations</li>
           </ul>

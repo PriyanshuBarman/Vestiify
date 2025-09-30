@@ -1,4 +1,4 @@
-import FundRating from "@/features/mutualfund/components/FundRating";
+import LoadingState from "@/components/LoadingState";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Table,
@@ -8,13 +8,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import FundRating from "@/features/mutualfund/components/FundRating";
 import { ChevronsLeftRight, Loader2 } from "lucide-react";
 import { Link } from "react-router";
+import { formatFundCategory, formatToINR } from "../../utils/formaters";
 import FundLogo from "../FundLogo";
 import SortByButton from "../filters/SortByButton";
-import { formatFundCategory, formatToINR } from "../../utils/formaters";
-import LoadingState from "@/components/LoadingState";
-import { getMainDomain } from "../../utils/getMainDomain";
 
 /**
  *  Reusable Small screen table with pagination support
@@ -22,6 +21,7 @@ import { getMainDomain } from "../../utils/getMainDomain";
 
 function TableSM({
   funds,
+  isPending, // Becomes true only when the first request is loading
   totalCount,
   activeColumn,
   activeSortBy,
@@ -40,7 +40,7 @@ function TableSM({
   inViewRef = null,
 }) {
   return (
-    <ScrollArea className="h-[80vh] overflow-x-auto">
+    <ScrollArea className="overflow-x-auto">
       <Table className="table-fixed">
         <TableHeader className="bg-background sticky top-0 z-10 text-xs">
           <TableRow>
@@ -74,18 +74,10 @@ function TableSM({
         </TableHeader>
 
         <TableBody>
-          {isFetching && (
-            <TableRow className="border-none">
-              <TableCell colSpan={2} className="p-0">
-                <LoadingState isLoading={isFetching} className="mt-8" />
-              </TableCell>
-            </TableRow>
-          )}
-
           {funds?.map((fund) => (
             <TableRow key={fund.scheme_code}>
               <TableCell className="flex items-center gap-4 py-4 pl-4">
-                <FundLogo fundHouseDomain={getMainDomain(fund.detail_info)} />
+                <FundLogo fundHouseDomain={fund.detail_info} />
                 <div>
                   <Link to={`/mutual-funds/${fund.scheme_code}`}>
                     <h4 className="Fund-Name text-foreground text-wrap">
@@ -117,6 +109,15 @@ function TableSM({
             </TableRow>
           ))}
 
+          {/* =============== Loading States =============== */}
+          {/* First Request Loading State */}
+          {isPending && (
+            <TableRow className="border-none">
+              <TableCell colSpan={2} className="p-0">
+                <LoadingState fullPage className="h-[calc(100vh-200px)]" />
+              </TableCell>
+            </TableRow>
+          )}
           {/* Pagination loader row - only show if pagination is enabled */}
           {enablePagination && (
             <TableRow>
