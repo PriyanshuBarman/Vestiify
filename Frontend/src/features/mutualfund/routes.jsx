@@ -35,6 +35,14 @@ export const mutualFundRoutes = {
       ),
     },
     {
+      path: "collections",
+      element: (
+        <Suspense fallback={<LoadingState fullPage />}>
+          <CollectionPage />
+        </Suspense>
+      ),
+    },
+    {
       path: ":scheme_code",
       element: (
         <Suspense fallback={<LoadingState fullPage />}>
@@ -47,14 +55,6 @@ export const mutualFundRoutes = {
       element: (
         <Suspense fallback={<LoadingState fullPage />}>
           <CompareFundsPage />
-        </Suspense>
-      ),
-    },
-    {
-      path: "collections/:name",
-      element: (
-        <Suspense fallback={<LoadingState fullPage />}>
-          <CollectionPage />
         </Suspense>
       ),
     },

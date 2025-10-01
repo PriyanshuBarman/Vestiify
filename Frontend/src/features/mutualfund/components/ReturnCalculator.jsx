@@ -107,7 +107,7 @@ function ReturnCalculator({ fund }) {
                 key={item.year}
                 variant="outline"
                 onClick={() => setSelectedYear(item.year)}
-                className={`sm:!border-border h-7 rounded-full !border-transparent !bg-transparent px-3 shadow-none sm:h-9 sm:w-22 ${selectedYear === item.year && "sm:!bg-accent !bg-primary/10 text-primary sm:!border-foreground sm:text-foreground"}`}
+                className={`sm:!border-border h-7 rounded-full !border-transparent !bg-transparent px-4 font-normal shadow-none sm:h-9 sm:w-22 sm:font-medium ${selectedYear === item.year && "sm:!bg-accent !bg-primary/10 text-primary sm:!border-foreground sm:text-foreground"}`}
               >
                 {item.label}
               </Button>

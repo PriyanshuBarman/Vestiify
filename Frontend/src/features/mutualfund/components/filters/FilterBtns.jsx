@@ -15,18 +15,7 @@ import { getActiveFilterCount } from "../../utils/filterUtils";
 import SortByBtn from "../filters/SortByButton";
 import ActiveFilterButtons from "./ActiveFilterButtons";
 import OpenFilterSheetBtn from "./OpenFilterSheetBtn";
-
-const SORT_OPTIONS = {
-  popularity: "Popularity",
-  return_1y: "1Y Returns",
-  return_3y: "3Y Returns",
-  return_5y: "5Y Returns",
-  fund_rating: "Rating",
-  aum: "Fund Size",
-  expense_ratio: "Expense Ratio",
-  lump_min: "Min Lumpsum",
-  sip_min: "Min SIP",
-};
+import { sortOptions } from "../../constants/collectionConstants";
 
 const FUND_CATEGORIES = ["Flexi Cap Fund", "Small Cap Fund"];
 
@@ -86,7 +75,7 @@ function FilterBtns() {
         order={orderBy}
         onSortChange={handleSortChange}
         onOrderChange={handleOrderChange}
-        sortOptions={SORT_OPTIONS}
+        sortOptions={sortOptions}
         columnsConfig={columnsConfig}
         activeSortBy={activeSortBy}
       />

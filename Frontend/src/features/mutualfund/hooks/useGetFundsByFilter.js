@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchFundsByFilter } from "../api/external";
 
-export function useGetFundsByFilter(filters, limit) {
+export function useGetFundsByFilter(filters) {
   return useQuery({
-    queryKey: ["fundByFilter", filters, limit],
-    queryFn: () => fetchFundsByFilter(filters, limit),
+    queryKey: ["fundByFilter", filters],
+    queryFn: () => fetchFundsByFilter(filters),
   });
 }

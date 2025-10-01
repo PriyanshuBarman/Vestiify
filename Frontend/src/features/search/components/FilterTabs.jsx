@@ -15,7 +15,7 @@ function FilterTabs({ setSearchType, searchType }) {
 
   return (
     <div className="flex w-full gap-3 px-4 sm:px-2">
-      {Object.keys(filterTabs).map((label) => (
+      {/* {Object.keys(filterTabs).map((label) => (
         <Button
           size="sm"
           key={label}
@@ -28,7 +28,7 @@ function FilterTabs({ setSearchType, searchType }) {
         >
           {label}
         </Button>
-      ))}
+      ))} */}
 
       <Button
         onClick={() => dispatch(clearSearchHistory({ type: searchType }))}

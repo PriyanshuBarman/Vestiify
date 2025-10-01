@@ -16,7 +16,7 @@ const labelArr = [
   { key: "expense_ratio", label: "Expense Ratio" },
 ];
 
-function RecentlyViewed() {
+function RecentlyViewedFunds() {
   const [activeLabelIdx, setActiveLabelIdx] = useState(0);
   const recentlyViewedFunds = useRecentlyViewedFunds();
 
@@ -65,7 +65,7 @@ function RecentlyViewed() {
   );
 }
 
-export default RecentlyViewed;
+export default RecentlyViewedFunds;
 
 function Row({ fund, activeLabelIdx }) {
   const navigate = useNavigate();

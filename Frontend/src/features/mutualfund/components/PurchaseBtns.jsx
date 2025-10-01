@@ -7,8 +7,9 @@ function PurchaseBtns({ fund, isPending }) {
   return (
     <div className="bg-background fixed bottom-0 flex w-full justify-evenly py-4">
       <Button
-        className="text-primary bg-primary/15 w-[42%]"
+        className="text-primary bg-primary/15 w-[42%] shadow-xs"
         size="lg"
+        variant="ghost"
         disabled={isPending}
         onClick={() =>
           navigate("/mutual-funds/invest", {
@@ -16,7 +17,7 @@ function PurchaseBtns({ fund, isPending }) {
           })
         }
       >
-        ONE-TIME
+        One-time
       </Button>
 
       <Button
@@ -29,7 +30,7 @@ function PurchaseBtns({ fund, isPending }) {
         }
         className="w-[42%]"
       >
-        MONTHLY-SIP
+        Monthly SIP
       </Button>
     </div>
   );

@@ -13,7 +13,7 @@ const defaultFilters = {
 const initialState = {
   activeTabIndex: 0,
 
-  activeColumn: "return_1y",
+  activeColumn: "return_3y",
   filters: defaultFilters,
 };
 

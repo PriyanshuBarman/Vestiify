@@ -65,7 +65,6 @@ function WatchlistTab() {
           </div>
           <div className="ml-auto flex flex-col items-end space-y-1">
             <span className="sm:text-md text-sm font-medium">
-              {/* {fund[labelArr[activeLabelIdx].key] || "NA"}% */}
               {fundsData[index]?.[labelArr[activeLabelIdx].key] || "NA"}%
             </span>
             <span className="text-muted-foreground mr-0.5 text-xs">

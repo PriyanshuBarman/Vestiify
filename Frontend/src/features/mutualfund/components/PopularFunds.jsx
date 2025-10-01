@@ -13,7 +13,7 @@ function PopularFunds() {
     <section className="swiper-no-swiping">
       <SectionHeading
         heading={"Popular Funds"}
-        subHeading={"All Mutual Funds"}
+        subHeading={"View all"}
         navigateTo="/mutual-funds/all-funds"
       />
       <ScrollArea>

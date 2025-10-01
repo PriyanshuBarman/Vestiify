@@ -1,47 +1,29 @@
+import GoBackBar from "@/components/GoBackBar";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { useParams } from "react-router";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router";
 import TableLG from "../components/tables/TableLG";
 import TableSM from "../components/tables/TableSM";
-import {
-  collectionConfig,
-  DEFAULT_COLUMNS,
-} from "../constants/collectionConstants";
-import { useEffect, useState } from "react";
-import { useGetCategoryFundList } from "../hooks/useGetCategoryFundList";
+import { DEFAULT_COLUMNS, sortOptions } from "../constants/collectionConstants";
+import { useGetFundsByFilter } from "../hooks/useGetFundsByFilter";
 import {
   columnsConfig,
-  getNextColumn,
   getNewOrder,
+  getNextColumn,
+  sortPeersBy,
 } from "../utils/collectionsHelper";
-import { sortPeersBy } from "../utils/collectionsHelper";
-import GoBackBar from "@/components/GoBackBar";
-
-const sortOptions = {
-  return_1y: "1Y Returns",
-  return_3y: "3Y Returns",
-  return_5y: "5Y Returns",
-  fund_rating: "Rating",
-  expense_ratio: "Expense Ratio",
-  aum: "Fund Size",
-  lump_min: "Min Lumpsum",
-  sip_min: "Min SIP",
-};
 
 function CollectionPage() {
   const isMobile = useIsMobile();
   const [peers, setPeers] = useState();
-  const [activeColumn, setActiveColumn] = useState("return_1y"); // default active column (return_1y)
-  const [activeSortBy, setActiveSortBy] = useState("return_1y");
+  const [activeColumn, setActiveColumn] = useState("popularity"); // default active column (popularity)
+  const [activeSortBy, setActiveSortBy] = useState("popularity");
   const [orderBy, setOrderBy] = useState("desc");
-  const { name } = useParams();
-
   const [visibleColumns, setVisibleColumns] = useState(DEFAULT_COLUMNS);
 
-  const { data, isPending } = useGetCategoryFundList(
-    name,
-    collectionConfig[name]?.url,
-  );
+  const { label, filters, description, img } = useLocation().state ?? {};
+  const { data, isPending } = useGetFundsByFilter(filters);
 
   useEffect(() => {
     if (data) setPeers(data);
@@ -61,6 +43,11 @@ function CollectionPage() {
   };
 
   const handleSortChange = (columnKey) => {
+    if (columnKey === "popularity") {
+      setActiveSortBy("popularity");
+      setPeers(data);
+      return;
+    }
     setActiveSortBy(columnKey);
     setActiveColumn(columnKey);
     setPeers((prevPeers) => sortPeersBy(prevPeers, columnKey, orderBy));
@@ -75,17 +62,19 @@ function CollectionPage() {
   return (
     <section className="relative">
       <GoBackBar />
-      <header className="bg-background mb-4 flex items-center gap-8 px-4 sm:mb-10">
-        <div className="space-y-2 sm:space-y-4">
-          <h2 className="text-lg font-semibold sm:text-2xl">{name} </h2>
-          <p className="text-muted-foreground text-sm">
-            {collectionConfig[name].description || ""}
-          </p>
-        </div>
-        <Avatar className="size-18 rounded-lg border p-2 sm:h-24 sm:w-34 dark:mix-blend-hard-light">
-          <AvatarImage src={`/${name}.svg`} />
-        </Avatar>
-      </header>
+      <div className="top-0 z-10">
+        <header className="bg-background mb-4 flex items-center gap-8 px-4 sm:mb-10">
+          <div className="space-y-2 sm:space-y-4">
+            <h2 className="text-lg font-semibold sm:text-2xl">{label} </h2>
+            <p className="text-muted-foreground text-sm">{description || ""}</p>
+          </div>
+          {img && (
+            <Avatar className="size-18 rounded-lg border p-2 sm:h-24 sm:w-34 dark:mix-blend-hard-light">
+              <AvatarImage src={img} />
+            </Avatar>
+          )}
+        </header>
+      </div>
 
       {isMobile ? (
         // ----------- MOBILE TABLE -----------

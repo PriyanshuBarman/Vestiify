@@ -15,7 +15,7 @@ function CardSM({ fund }) {
         <FundLogo fundHouseDomain={fund.detail_info} className="size-8.5" />
 
         <CardContent className="p-0">
-          <CardTitle className="flex justify-between gap-2 text-sm font-medium">
+          <CardTitle className="flex justify-between gap-2 text-sm font-[450]">
             <p className="line-clamp-1">{fund.short_name}</p>
             <p className="text-[0.8rem]">{fund.return_3y}%</p>
           </CardTitle>

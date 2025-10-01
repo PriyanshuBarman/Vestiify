@@ -17,7 +17,7 @@ function YourInvestments() {
         <CardContent className="flex justify-between text-center lg:flex-col xl:flex-row">
           <div>
             <span
-              className={`font-semibold tabular-nums sm:text-lg ${portfolio && portfolio.pnl < 0 ? "text-negative" : "text-positive"}`}
+              className={`font-semibold tabular-nums sm:text-lg ${portfolio && portfolio.pnl < 0 ? "text-negative" : "text-positive"} `}
             >
               {formatToINR(portfolio.pnl || 0)}
             </span>

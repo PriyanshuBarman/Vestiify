@@ -1,30 +1,61 @@
-import { VITE_MF_API_BASE_URL } from "@/config/env";
-
-export const collectionConfig = {
-  "High Returns": {
-    url: `${VITE_MF_API_BASE_URL}?plan=Growth&limit=20&sort_by=return_1y&category=Equity`,
+export const collectionConfig = [
+  {
+    label: "High Returns",
+    img: "/high-returns.svg",
     description: "Funds with highest returns in the last 1 years.",
+    filters: {
+      plan: "GROWTH",
+      limit: 40,
+      fund_type: "Equity",
+    },
   },
-  "Gold Funds": {
-    url: `${VITE_MF_API_BASE_URL}?plan=Growth&limit=20&sort_by=return_1y&category=debt`,
+  {
+    label: "Gold Funds",
+    img: "/gold-funds.svg",
+    description:
+      "Alternative to buying physical gold as it replicates the price of gold on a daily basis",
+    filters: {
+      plan: "GROWTH",
+      goldFunds: true,
+    },
   },
-  "5 Star Funds": {
-    url: `${VITE_MF_API_BASE_URL}?plan=Growth&limit=20&sort_by=return_1y&fund_rating=5`,
-    description: "Funds rated 5 stars by Value Research.",
+  {
+    label: "Sip with ₹100",
+    img: "/sip-with-100.svg",
+    description: "Funds with min investment of just 100 every month",
+    filters: { plan: "GROWTH", limit: 40, sip_min: 100, fund_type: "Equity" },
   },
-  "Large Cap": {
-    url: `${VITE_MF_API_BASE_URL}?plan=Growth&sort_by=return_1y&category=Equity&fund_category=Large%20Cap%20Fund`,
+  {
+    label: "Large Cap",
+    img: "/large-cap.svg",
     description: "Funds with majority investments in large cap companies.",
+    filters: {
+      plan: "GROWTH",
+      category: "Equity",
+      fund_category: "Large Cap Fund",
+    },
   },
-  "Mid Cap": {
-    url: `${VITE_MF_API_BASE_URL}?plan=Growth&sort_by=return_1y&category=Equity&fund_category=Mid%20Cap%20Fund`,
+  {
+    label: "Mid Cap",
+    img: "/mid-cap.svg",
     description: "Funds with majority investments in mid cap companies.",
+    filters: {
+      plan: "GROWTH",
+      category: "Equity",
+      fund_category: "Mid Cap Fund",
+    },
   },
-  "Small Cap": {
-    url: `${VITE_MF_API_BASE_URL}?plan=Growth&sort_by=return_1y&category=Equity&fund_category=Small%20Cap%20Fund`,
+  {
+    label: "Small Cap",
+    img: "/small-cap.svg",
     description: "Funds with majority investments in small cap companies.",
+    filters: {
+      plan: "GROWTH",
+      category: "Equity",
+      fund_category: "Small Cap Fund",
+    },
   },
-};
+];
 
 export const DEFAULT_COLUMNS = [
   "return_1y",
@@ -33,3 +64,16 @@ export const DEFAULT_COLUMNS = [
   "return_since_inception",
   "aum",
 ];
+
+export const sortOptions = {
+  popularity: "Popularity",
+  return_1y: "1Y Returns",
+  return_3y: "3Y Returns",
+  return_5y: "5Y Returns",
+  fund_rating: "Rating",
+  aum: "Fund Size",
+  expense_ratio: "Expense Ratio",
+  lump_min: "Min Lumpsum",
+  sip_min: "Min SIP",
+  return_since_inception: "All Return",
+};

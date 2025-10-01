@@ -13,7 +13,7 @@ import SectionHeading from "./SectionHeading";
 
 function SipsTab() {
   const { data, isPending } = useGetSips();
-  const { data: funds } = useGetFundsByFilter({ sip_min: 100 }, 6);
+  const { data: funds } = useGetFundsByFilter({ sip_min: 100, limit: 6 });
   const isMobile = useIsMobile();
 
   if (isPending) {

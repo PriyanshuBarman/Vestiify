@@ -36,7 +36,7 @@ const OpenFilterSheetBtn = () => {
         >
           <SlidersHorizontalIcon className="size-3.5 sm:size-4" />
           {activeFilterCount > 0 && (
-            <Badge className="bg-foreground text-primary-foreground absolute -top-2 -right-2 flex h-5 min-w-5 rounded-full p-0 font-mono">
+            <Badge className="bg-foreground text-background absolute -top-2 -right-2 flex h-5 min-w-5 rounded-full p-0 font-mono tabular-nums">
               {activeFilterCount}
             </Badge>
           )}

@@ -14,7 +14,10 @@ function CompanyLogo({ searchType, item }) {
       )}
 
       {searchType === "mutualFunds" && (
-        <FundLogo logoCode={item.short_code} className="size-10 rounded-full" />
+        <FundLogo
+          fundHouseDomain={item.detail_info}
+          className="size-10 rounded-full"
+        />
       )}
     </>
   );

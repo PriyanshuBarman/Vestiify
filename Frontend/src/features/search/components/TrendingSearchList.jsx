@@ -6,7 +6,7 @@ function TrendingSearchList({ activeIdx, handleClick }) {
 
   return (
     <div className="mt-2 px-2">
-      <h6 className="text-sm">Popular Funds</h6>
+      <h6 className="text-sm sm:font-medium">Popular Funds</h6>
 
       <ul className="mt-4 flex flex-wrap justify-between gap-4 sm:gap-6">
         {popularFunds?.map((fund, idx) => (

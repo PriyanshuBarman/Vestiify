@@ -1,8 +1,4 @@
-import {
-  Card,
-  CardFooter,
-  CardTitle
-} from "@/components/ui/card";
+import { Card, CardFooter, CardTitle } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Link } from "react-router";
 import { useGetIndexFunds } from "../hooks/useGetIndexFunds";
@@ -14,16 +10,30 @@ function IndexFunds() {
 
   return (
     <section className="swiper-no-swiping">
-      <SectionHeading heading={"Index Funds"} subHeading={"View All"} />
+      <SectionHeading
+        heading={"Index Funds"}
+        subHeading={"View all"}
+        navigateTo="/mutual-funds/collections"
+        navState={{
+          label: "Index Funds",
+          filters: {
+            limit: 20,
+            plan: "GROWTH",
+            fund_category: "Index Funds",
+          },
+          description:
+            "Index funds track a particular market index, such as NIFTY or Sensex, at a lower cost, providing diversification and professional management.",
+        }}
+      />
 
       <ScrollArea>
-        <div className="flex justify-between gap-4 px-4 sm:m-0.5 sm:gap-3 sm:px-0">
+        <div className="flex justify-between gap-3 px-4 sm:m-0.5 sm:gap-3 sm:px-0">
           {funds?.map((fund) => (
             <Link
               key={fund.scheme_code}
               to={`/mutual-funds/${fund.scheme_code}`}
             >
-              <Card className="h-35 w-39 cursor-pointer justify-between gap-2 p-4 text-inherit transition-all duration-300 hover:scale-101 sm:h-42 sm:w-47">
+              <Card className="h-40 w-40 cursor-pointer justify-between gap-0 p-4 text-inherit duration-200 hover:scale-101 sm:h-44 sm:w-48">
                 <FundLogo fundHouseDomain={fund.detail_info} />
                 <CardTitle className="text-[0.75rem] font-medium sm:text-sm">
                   {fund.short_name}

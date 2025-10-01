@@ -27,7 +27,7 @@ function SortByButton({
     setIsDrawerOpen(false);
   };
 
-  const isDefaultSort = activeSortBy === Object.keys(sortOptions)[0];
+  const isDefaultSort = activeSortBy === "popularity";
 
   return (
     <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
@@ -99,7 +99,7 @@ function SortByButton({
               onClick={() => setShowMore(!showMore)}
               className="mt-2 w-full"
             >
-              {showMore ? "Show Less" : "Show More"}
+              {showMore ? "Show less" : "More options"}
             </Button>
           )}
         </RadioGroup>

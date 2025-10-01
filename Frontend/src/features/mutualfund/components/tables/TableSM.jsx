@@ -39,6 +39,20 @@ function TableSM({
   isFetching = false,
   inViewRef = null,
 }) {
+  const getValue = (fund) => {
+    if (activeColumn === "popularity") {
+      return fund["return_3y"] ? `${fund["return_3y"]}%` : "NA";
+    }
+    if (activeColumn === "aum") {
+      return fund[activeColumn]
+        ? `${formatToINR(fund[activeColumn] / 10)}Cr`
+        : "NA";
+    }
+    return fund[activeColumn]
+      ? `${columnsConfig[activeColumn].prefix || ""}${fund[activeColumn]} ${columnsConfig[activeColumn].suffix || ""}`
+      : "NA";
+  };
+
   return (
     <ScrollArea className="overflow-x-auto">
       <Table className="table-fixed">
@@ -67,7 +81,11 @@ function TableSM({
             >
               <ChevronsLeftRight className="size-4 shrink-0" />
               <span className="border-muted-foreground border-b border-dashed">
-                {columnsConfig[activeColumn].name}
+                {
+                  columnsConfig[
+                    activeColumn === "popularity" ? "return_3y" : activeColumn
+                  ].name
+                }
               </span>
             </TableHead>
           </TableRow>
@@ -98,13 +116,7 @@ function TableSM({
                 onClick={onColumnClick}
                 className="pr-4 text-right font-[450] break-words whitespace-normal"
               >
-                {activeColumn === "aum"
-                  ? fund[activeColumn]
-                    ? `${formatToINR(fund[activeColumn] / 10)}Cr`
-                    : "NA"
-                  : fund[activeColumn]
-                    ? `${columnsConfig[activeColumn].prefix || ""}${fund[activeColumn]} ${columnsConfig[activeColumn].suffix || ""}`
-                    : "NA"}
+                {getValue(fund)}
               </TableCell>
             </TableRow>
           ))}

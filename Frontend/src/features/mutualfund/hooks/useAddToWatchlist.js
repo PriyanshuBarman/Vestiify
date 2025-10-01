@@ -27,8 +27,7 @@ export function useAddToWatchlist() {
         ["isInWatchlist", context.variables.schemeCode],
         context.previousData,
       );
-      toast.error(error.response?.data?.message || "Something went wrong");
-      console.log(error);
+      toast.error(error.response?.data?.message || "Error adding to watchlist");
     },
 
     onSettled: (data, error, variables) => {

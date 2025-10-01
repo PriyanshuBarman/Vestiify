@@ -11,7 +11,7 @@ import FundDescription from "../components/FundDescription";
 import FundLogo from "../components/FundLogo";
 import FundPageAccordions from "../components/FundPageAccordions.jsx";
 import FundPortfolioPreview from "../components/fundPortfolioPreview";
-import RecentlyViewed from "../components/RecentlyViewed";
+import RecentlyViewedFunds from "../components/RecentlyViewedFunds";
 import { useGetFundData } from "../hooks/useGetFundData";
 import { formatFundCategory } from "../utils/formaters";
 import { useAddToWatchlist } from "../hooks/useAddToWatchlist";
@@ -58,7 +58,7 @@ function FundPage() {
       <GoBackBar />
       <div className="h-full w-full space-y-4 text-inherit sm:space-y-6 lg:w-[67%]">
         <div className="px-4 max-sm:pr-6">
-          <div className="flex justify-between">
+          <div className="flex items-center justify-between">
             <FundLogo
               fundHouseDomain={fund?.detail_info}
               className="border sm:size-13"
@@ -121,7 +121,7 @@ function FundPage() {
         <FundPortfolioPreview schemeCode={scheme_code} />
         <FundDescription fund={fund} />
         <FundPageAccordions fund={fund} />
-        <RecentlyViewed />
+        <RecentlyViewedFunds />
         {isMobile && <PurchaseBtns fund={fund} isPending={isPending} />}
       </div>
 

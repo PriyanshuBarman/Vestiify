@@ -16,11 +16,7 @@ export function useDeleteSip() {
       navigate("/mutual-funds/#sips");
     },
     onError: (error) => {
-      toast.error(
-        error.status === 500
-          ? "Something went wrong"
-          : error.response?.data?.message,
-      );
+      toast.error(error.response?.data?.message || "Error deleting SIP");
     },
   });
 }

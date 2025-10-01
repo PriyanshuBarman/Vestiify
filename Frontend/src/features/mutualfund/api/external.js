@@ -58,7 +58,7 @@ export const fetchAMCs = async () => {
   return data.amcs;
 };
 
-export const fetchFundsByFilter = async (filters, LIMIT) => {
+export const fetchFundsByFilter = async (filters) => {
   const params = [];
 
   for (const [key, value] of Object.entries(filters)) {
@@ -71,7 +71,7 @@ export const fetchFundsByFilter = async (filters, LIMIT) => {
     }
   }
 
-  params.push(`limit=${LIMIT}`);
+  // params.push(`limit=${LIMIT}`);
 
   const queryString = `?${params.join("&")}`;
   const { data } = await axios.get(`${VITE_MF_API_BASE_URL}${queryString}`);
