@@ -14,18 +14,18 @@ const tabsMapping = [
     icon: PieChartIcon,
     link: "/mutual-funds#explore",
   },
-  // {
-  //   id: 2,
-  //   name: "Stocks",
-  //   icon: ChartNoAxesCombined,
-  //   link: "/stocks",
-  // },
   {
-    id: 3,
-    name: "Gold",
-    icon: HandCoins,
-    link: "/gold",
+    id: 2,
+    name: "Stocks",
+    icon: ChartNoAxesCombined,
+    link: "/stocks",
   },
+  // {
+  //   id: 3,
+  //   name: "Gold",
+  //   icon: HandCoins,
+  //   link: "/gold",
+  // },
   {
     id: 4,
     name: "Wallet",

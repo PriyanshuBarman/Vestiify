@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
-import { VITE_MF_API_BASE_URL } from "@/config/env";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useGetSips } from "../hooks/useGetSips";
 
 function StartSip() {
@@ -24,12 +23,10 @@ function StartSip() {
           onClick={() =>
             navigate("/mutual-funds/collections", {
               state: {
-                detail: {
-                  label: "Pick a fund",
-                  apiUrl: `${VITE_MF_API_BASE_URL}?plan=Growth&limit=20&fund_type=Equity`,
-                  description:
-                    "Funds that invest in india's top and trustworthy companies",
-                },
+                label: "Pick a fund",
+                filters: { limit: 20, fund_type: "Equity" },
+                description:
+                  "Funds that invest in india's top and trustworthy companies",
               },
             })
           }

@@ -4,7 +4,6 @@ export const collectionConfig = [
     img: "/high-returns.svg",
     description: "Funds with highest returns in the last 1 years.",
     filters: {
-      plan: "GROWTH",
       limit: 40,
       fund_type: "Equity",
     },
@@ -15,7 +14,6 @@ export const collectionConfig = [
     description:
       "Alternative to buying physical gold as it replicates the price of gold on a daily basis",
     filters: {
-      plan: "GROWTH",
       goldFunds: true,
     },
   },
@@ -30,8 +28,6 @@ export const collectionConfig = [
     img: "/large-cap.svg",
     description: "Funds with majority investments in large cap companies.",
     filters: {
-      plan: "GROWTH",
-      category: "Equity",
       fund_category: "Large Cap Fund",
     },
   },
@@ -40,8 +36,6 @@ export const collectionConfig = [
     img: "/mid-cap.svg",
     description: "Funds with majority investments in mid cap companies.",
     filters: {
-      plan: "GROWTH",
-      category: "Equity",
       fund_category: "Mid Cap Fund",
     },
   },
@@ -50,8 +44,6 @@ export const collectionConfig = [
     img: "/small-cap.svg",
     description: "Funds with majority investments in small cap companies.",
     filters: {
-      plan: "GROWTH",
-      category: "Equity",
       fund_category: "Small Cap Fund",
     },
   },

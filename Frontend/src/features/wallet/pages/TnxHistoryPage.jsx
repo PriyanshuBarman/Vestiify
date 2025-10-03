@@ -7,7 +7,6 @@ import { useGetAllTnx } from "../hooks/useGetAllTnx";
 import { assetConfig } from "../utils/constants";
 
 function TnxHistoryPage() {
-  const navigate = useNavigate();
   const { data } = useGetAllTnx();
 
   return (

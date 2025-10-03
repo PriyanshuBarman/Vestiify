@@ -63,30 +63,32 @@ function AmcFundsPage() {
     setPeers((prevPeers) => sortPeersBy(prevPeers, activeColumn, newOrder));
   };
 
-  const categories = isPending ? [] : Object.keys(data);
+  const categories = data ? Object.keys(data) : [];
 
   return (
-    <section className="relative">
+    <div className="relative">
       <GoBackBar />
-      <div className="top-0 z-10 mb-4">
-        <header className="bg-background flex items-center justify-between sm:justify-start sm:gap-12 gap-8 px-4 sm:mb-10">
-          <div className="">
+      <section className="top-0 z-10 mb-4">
+        <div className="bg-background flex items-center justify-between gap-8 px-4 sm:mb-10 sm:justify-start sm:gap-12">
+          <div>
             <h2 className="text-lg font-semibold sm:text-2xl">{amcName} </h2>
-            <p className="text-muted-foreground mt-2 sm:mt-4 space-x-2 text-xs font-medium">
+            <p className="text-muted-foreground font mt-2 space-x-2 text-xs sm:mt-4 sm:text-sm">
               <span>Rank(total asset):</span>
-              <span className="text-sm">#{rank} in India</span>
+              <span className="text-sm font-medium">#{rank} in India</span>
             </p>
-            <p className="text-muted-foreground space-x-2 font-medium">
+            <p className="text-muted-foreground font space-x-2 sm:text-sm">
               <span className="text-xs">Total AUM </span>
-              <span className="text-sm">{formatToINR(aum / 10)}Cr</span>
+              <span className="text-sm font-medium">
+                {formatToINR(aum / 10)}Cr
+              </span>
             </p>
           </div>
           <FundLogo
             fundHouseDomain={fundHouseDomain}
-            className="size-18 sm:size-24"
+            className="size-18 border sm:size-24"
           />
-        </header>
-      </div>
+        </div>
+      </section>
 
       <FilterCategoryButton
         categories={categories}
@@ -122,7 +124,7 @@ function AmcFundsPage() {
           columnsConfig={columnsConfig}
         />
       )}
-    </section>
+    </div>
   );
 }
 

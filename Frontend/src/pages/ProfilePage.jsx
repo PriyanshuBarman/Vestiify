@@ -73,7 +73,7 @@ function ProfilePage() {
             <span className="ml-4">Account Details</span>
           </div>
 
-          <Link to="/upi/transactions" className="flex">
+          <Link to="/wallet/transactions" className="flex">
             <ArrowLeftRightIcon className="text-muted-foreground" />
             <span className="ml-4">Transactions</span>
           </Link>

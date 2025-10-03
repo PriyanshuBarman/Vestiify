@@ -1,7 +1,7 @@
 import LoadingState from "@/components/LoadingState";
 import { lazy, Suspense } from "react";
-import FundHousesPage from "./pages/FundHousesPage";
-import AmcFundsPage from "./pages/AmcFundsPage";
+const FundHousesPage = lazy(() => import("./pages/FundHousesPage"));
+const AmcFundsPage = lazy(() => import("./pages/AmcFundsPage"));
 const MutualFundLayout = lazy(() => import("./components/MutualFundLayout"));
 const SipDetailsPage = lazy(() => import("./pages/SipDetailsPage"));
 const EditSipPage = lazy(() => import("./pages/EditSipPage"));

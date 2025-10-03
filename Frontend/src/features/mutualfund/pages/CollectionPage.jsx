@@ -60,10 +60,10 @@ function CollectionPage() {
   };
 
   return (
-    <section className="relative">
+    <div className="relative">
       <GoBackBar />
-      <div className="top-0 z-10">
-        <header className="bg-background mb-4 flex items-center gap-8 px-4 sm:mb-10">
+      <section className="top-0 z-10">
+        <div className="bg-background mb-4 flex items-center gap-8 px-4 sm:mb-10">
           <div className="space-y-2 sm:space-y-4">
             <h2 className="text-lg font-semibold sm:text-2xl">{label} </h2>
             <p className="text-muted-foreground text-sm">{description || ""}</p>
@@ -73,8 +73,8 @@ function CollectionPage() {
               <AvatarImage src={img} />
             </Avatar>
           )}
-        </header>
-      </div>
+        </div>
+      </section>
 
       {isMobile ? (
         // ----------- MOBILE TABLE -----------
@@ -104,7 +104,7 @@ function CollectionPage() {
           columnsConfig={columnsConfig}
         />
       )}
-    </section>
+    </div>
   );
 }
 

@@ -7,9 +7,18 @@ function FundHousesPage() {
   const { data: amcs } = useGetAMCs();
   return (
     <div>
-      <GoBackBar title="Fund houses" />
+      <GoBackBar />
 
-      <div className="flex flex-wrap justify-between gap-4 px-4 sm:m-0.5 sm:gap-3 sm:px-0">
+      <section className="top-0 z-10">
+        <div className="bg-background px-4 sm:mb-10 sm:space-y-4">
+          <h2 className="text-lg font-semibold sm:text-2xl">Fund Houses </h2>
+          <p className="text-muted-foreground text-sm">
+            All fund houses are sorted by the total AUM.
+          </p>
+        </div>
+      </section>
+
+      <div className="mt-6 grid grid-cols-2 justify-between gap-4 px-4 sm:m-0.5 sm:grid-cols-3 sm:gap-x-12 sm:px-0">
         {amcs?.map((amc) => (
           <Link
             key={amc.amc_code}
@@ -22,7 +31,7 @@ function FundHousesPage() {
               rank:
                 amcs.findIndex((item) => item.amc_code === amc.amc_code) + 1,
             }}
-            className="w-[47%] cursor-pointer space-y-2 rounded-2xl border p-3 duration-200 hover:scale-101 sm:m-0.5 sm:space-y-4 sm:p-4"
+            className="w-full cursor-pointer space-y-2 rounded-2xl border p-3 duration-200 hover:scale-101 sm:m-0.5 sm:space-y-4 sm:p-4"
           >
             <div className="flex items-end gap-2 sm:gap-4">
               <FundLogo fundHouseDomain={amc.detail_info} className="size-10" />

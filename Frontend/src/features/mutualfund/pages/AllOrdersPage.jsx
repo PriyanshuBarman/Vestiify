@@ -1,7 +1,7 @@
+import GoBackBar from "@/components/GoBackBar";
+import { formatToINR } from "@/utils/formatters";
 import { useNavigate } from "react-router";
 import { useGetAllOrders } from "../hooks/useGetAllOrders";
-import { formatToINR } from "@/utils/formatters";
-import GoBackBar from "@/components/GoBackBar";
 
 const OrderTypeConfig = {
   ONE_TIME: "One-Time",
@@ -20,16 +20,7 @@ function AllOrdersPage() {
   const { data: orders } = useGetAllOrders();
   const navigate = useNavigate();
 
-  if (!orders) {
-    return (
-      <div className="h-svh">
-        <GoBackBar title="All Orders" />
-        <h3 className="mt-[50%] text-center">
-          You have not placed any Mutual Fund orders yet
-        </h3>
-      </div>
-    );
-  }
+  if (!orders) return <NoOrders />;
 
   return (
     <div>
@@ -66,3 +57,24 @@ function AllOrdersPage() {
   );
 }
 export default AllOrdersPage;
+
+function NoOrders() {
+  return (
+    <div className="mx-auto sm:w-xl">
+      <GoBackBar title="All Orders" className="fixed" />
+      <div className="flex h-dvh flex-col items-center justify-center gap-2">
+        <img
+          src="/No data-rafiki.svg"
+          alt="sip"
+          className="size-60 md:size-96"
+        />
+        <h3 className="text-foreground-secondary font-medium sm:text-lg">
+          No Orders Found
+        </h3>
+        <p className="text-xs sm:text-sm">
+          Start exploring funds to find the one that suits you best.
+        </p>
+      </div>
+    </div>
+  );
+}

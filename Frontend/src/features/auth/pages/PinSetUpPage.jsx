@@ -21,11 +21,12 @@ function PinSetupPage() {
   return (
     <div className="flex h-dvh flex-col sm:justify-center sm:gap-4">
       {/* Top Content */}
-      <div className="mt-10 flex flex-1 flex-col gap-y-8 px-6 sm:flex-0">
+      <div className="mt-10 flex flex-1 flex-col gap-y-8 px-8 sm:flex-0">
         <div className="text-center">
           <h1 className="mb-1 text-xl font-semibold">Set up your PIN</h1>
           <p className="text-muted-foreground text-sm">
-            Create a secure 4-digit PIN
+            Your PIN will be required for investments and sending the virtual
+            money to other users
           </p>
         </div>
 
@@ -41,8 +42,9 @@ function PinSetupPage() {
             pattern={REGEXP_ONLY_DIGITS}
             value={pin}
             onChange={(value) => {
-              if (pin.length === 4 && value.length === 4 && value !== pin)
+              if (pin.length === 4 && value.length === 4 && value !== pin) {
                 return;
+              }
               if (value.length <= 4) setPin(value);
             }}
           >
