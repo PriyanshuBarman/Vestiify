@@ -23,7 +23,7 @@ function RecentlyViewedSection() {
             className="flex w-[48%] cursor-pointer items-center gap-2 rounded-2xl border px-3 py-3 duration-200 hover:scale-101 sm:m-0.5"
           >
             <FundLogo fundHouseDomain={fund.detail_info} className="size-8" />
-            <p className="text-foreground/80 sm:text-foreground line-clamp-2 text-xs sm:text-sm sm:font-medium">
+            <p className="sm:text-foreground line-clamp-2 text-xs sm:text-sm sm:font-medium">
               {fund.short_name}
             </p>
           </Link>

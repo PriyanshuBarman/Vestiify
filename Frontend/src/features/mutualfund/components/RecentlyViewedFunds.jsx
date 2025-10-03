@@ -41,7 +41,7 @@ function RecentlyViewedFunds() {
         <Button
           onClick={handleClick}
           variant="ghost"
-          className="text-foreground-secondary flex gap-1 text-[0.8rem] sm:hidden"
+          className="flex gap-1 text-[0.8rem] sm:hidden"
         >
           <ChevronsUpDown strokeWidth={2.5} />
           {labelArr[activeLabelIdx].label}
@@ -92,9 +92,7 @@ function Row({ fund, activeLabelIdx }) {
         </div>
       </div>
       <div className="ml-auto">
-        <span className="text-foreground-secondary text-sm font-medium">
-          {value}
-        </span>
+        <span className="text-sm font-medium">{value}</span>
       </div>
     </div>
   );

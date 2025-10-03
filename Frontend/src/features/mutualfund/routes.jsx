@@ -1,5 +1,7 @@
 import LoadingState from "@/components/LoadingState";
 import { lazy, Suspense } from "react";
+import FundHousesPage from "./pages/FundHousesPage";
+import AmcFundsPage from "./pages/AmcFundsPage";
 const MutualFundLayout = lazy(() => import("./components/MutualFundLayout"));
 const SipDetailsPage = lazy(() => import("./pages/SipDetailsPage"));
 const EditSipPage = lazy(() => import("./pages/EditSipPage"));
@@ -95,6 +97,22 @@ export const mutualFundRoutes = {
       element: (
         <Suspense fallback={<LoadingState fullPage />}>
           <SipCalculatorPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "fund-houses",
+      element: (
+        <Suspense fallback={<LoadingState fullPage />}>
+          <FundHousesPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "amc-funds",
+      element: (
+        <Suspense fallback={<LoadingState fullPage />}>
+          <AmcFundsPage />
         </Suspense>
       ),
     },

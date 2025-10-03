@@ -103,8 +103,13 @@ export const fetchFilteredFunds = async ({ pageParam = 0, filters, LIMIT }) => {
 
 // Fetch categories and subcategories
 export const fetchCategories = async () => {
-  const { data } = await axios.get(
-    "https://envest-helper.vercel.app/api/v1/mutual-funds/categories",
-  );
+  const { data } = await axios.get(`${VITE_MF_API_BASE_URL}/categories`);
+
   return data.result;
+};
+
+export const fetchAmcFunds = async (amcCode) => {
+  const { data } = await axios.get(`${VITE_MF_API_BASE_URL}/amcs/${amcCode}`);
+
+  return data.categories;
 };
