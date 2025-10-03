@@ -1,15 +1,12 @@
 import { CardHeader } from "@/components/ui/card";
-import CountUp from "react-countup";
+import NumberFlow from "@number-flow/react";
 
 function ChartLegend({ selectedRange, fund, returnPercent }) {
   return (
     <CardHeader className="gap-0 pl-4">
       <div className="flex items-center gap-2">
-        <CountUp
-          end={returnPercent}
-          decimals={2}
-          duration={0.7}
-          useEasing={true}
+        <NumberFlow
+          value={returnPercent}
           suffix="%"
           className={`text-2xl font-semibold sm:text-[1.65rem] ${!returnPercent || returnPercent >= 0 ? "text-positive" : "text-negative"}`}
         />

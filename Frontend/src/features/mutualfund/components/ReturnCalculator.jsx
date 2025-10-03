@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+
 import {
   Card,
   CardContent,
@@ -9,8 +10,8 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { useDebounce } from "@/hooks/useDebounce";
 import { formatToINR } from "@/utils/formatters";
+import NumberFlow from "@number-flow/react";
 import { useMemo, useState } from "react";
-import CountUp from "react-countup";
 import { useGetChart } from "../hooks/useGetChart";
 import {
   calculateAbsoluteReturn,
@@ -107,7 +108,7 @@ function ReturnCalculator({ fund }) {
                 key={item.year}
                 variant="outline"
                 onClick={() => setSelectedYear(item.year)}
-                className={`sm:!border-border h-7 rounded-full !border-transparent !bg-transparent px-4 font-normal shadow-none sm:h-9 sm:w-22 sm:font-medium ${selectedYear === item.year && "sm:!bg-accent !bg-primary/10 text-primary sm:!border-foreground sm:text-foreground"}`}
+                className={`sm:!border-border h-7 rounded-full !border-transparent !bg-transparent px-3 font-normal shadow-none sm:h-9 sm:w-22 sm:font-medium ${selectedYear === item.year && "sm:!bg-accent !bg-primary/10 text-primary sm:!border-foreground sm:text-foreground"}`}
               >
                 {item.label}
               </Button>
@@ -120,24 +121,18 @@ function ReturnCalculator({ fund }) {
         <p className="text-sm sm:text-base">
           Total investment of {formatToINR(result.totalInvestment)}
         </p>
-        <div className="text-foreground space-x-2 text-base font-medium sm:text-lg">
-          <span>Would have become</span>
-          <CountUp
-            end={result.finalValue}
-            duration={0.5}
-            separator=","
+        <div className="text-foreground space-x-2 font-medium">
+          <span className="text-sm sm:text-base">Would have become</span>
+          <NumberFlow
+            format={{ maximumFractionDigits: 0 }}
+            value={result.finalValue}
             prefix="₹"
+            className="text-md sm:text-base"
           />
-          <CountUp
-            end={result.returnPercentage}
-            duration={0.5}
-            separator=","
-            prefix={result.returnPercentage > 0 ? "(+" : "("}
-            suffix=")%"
-            className={
-              result.returnPercentage > 0 ? "text-positive" : "text-negative"
-            }
-            decimals={2}
+          <NumberFlow
+            value={result.returnPercentage}
+            suffix="%"
+            className={`${result.returnPercentage > 0 ? "text-positive" : "text-negative"} text-md sm:text-base`}
           />
           {type === "sip" && result.annualizedReturn && (
             <span className="text-muted-foreground text-sm">

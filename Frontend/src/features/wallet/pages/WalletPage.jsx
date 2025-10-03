@@ -13,6 +13,7 @@ import QrReader from "../components/QrReader";
 import { useGetAllTnx } from "../hooks/useGetAllTnx";
 import { assetConfig } from "../utils/constants";
 import { getLatestTnx } from "../utils/getLatestTnx";
+import NumberFlow from "@number-flow/react";
 
 function WalletPage() {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ function WalletPage() {
       <h2 className="space-x-2 leading-0">
         <span className="font-[450] italic">Balance.</span>
         <span className="text-2xl font-semibold tabular-nums">
-          {formatToINR(balance)}
+          <NumberFlow value={balance || 0} prefix="₹" />
         </span>
       </h2>
 
